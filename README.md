@@ -1,4 +1,4 @@
-# eabyBSB
+# easyBSB
 
 ## Install
 
