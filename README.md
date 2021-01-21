@@ -1,5 +1,12 @@
 # easyBSB
 
+## Connecting the BSB / LPB
+
+via bsbLAN -> but only API
+via bsbLAN interface board on Rapsi -> see docu
+bsbLAN board + ftdi kabel (see docu howto connect)
+sehr simple without galvanic isolation (nur empfangen fehlt noch senden) https://www.mikrocontroller.net/attachment/163762/BSB-to-USB_Adapter.png
+
 ## Install
 
 ### electron
