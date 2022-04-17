@@ -1,0 +1,23 @@
+
+> easy-bsb@0.0.0 start
+> nx serve "web" "--host" "0.0.0.0" "--disableHostCheck" "--poll" "500"
+
+
+> nx run web:serve:development --host=0.0.0.0 --disableHostCheck --poll=500
+
+
+Initial Chunk Files   | Names         |  Raw Size
+vendor.js             | vendor        |   2.05 MB |
+polyfills.js          | polyfills     | 299.92 kB |
+styles.css, styles.js | styles        | 173.73 kB |
+main.js               | main          |   6.95 kB |
+runtime.js            | runtime       |   6.50 kB |
+
+| Initial Total |   2.53 MB
+
+Build at: 2022-03-17T14:10:17.703Z - Hash: 39f377fbb6968b86 - Time: 6074ms
+
+** Angular Live Development Server is listening on 0.0.0.0:4200, open your browser on http://localhost:4200/ **
+
+
+✔ Compiled successfully.
