@@ -1,0 +1,11 @@
+function Ampel () {
+
+  state: 0;
+
+  count: 0;
+  
+  updateCount() {
+  }
+}
+
+Ampel1.updateCount()

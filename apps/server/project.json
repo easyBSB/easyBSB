@@ -11,7 +11,8 @@
         "main": "apps/server/src/main.ts",
         "tsConfig": "apps/server/tsconfig.app.json",
         "assets": ["apps/server/src/assets"],
-        "generatePackageJson": true
+        "generatePackageJson": true,
+        "webpackConfig": "apps/server/webpack-hmr.config.js"
       },
       "configurations": {
         "production": {

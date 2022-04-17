@@ -1,0 +1,15 @@
+FROM node:16-alpine
+WORKDIR /usr/share/easy-bsb
+
+RUN apk add nginx bash tini
+
+# nginx
+COPY ./nginx/nginx.dev.conf /etc/nginx/http.d/default.conf
+# remove possible window line endings
+RUN sed -i 's/\r//' /etc/nginx/http.d/default.conf
+
+COPY ./docker/run.dev.sh /start.sh
+RUN chmod +x /start.sh
+
+ENTRYPOINT ["/sbin/tini", "--"]
+CMD [ "bash", "/start.sh" ]
