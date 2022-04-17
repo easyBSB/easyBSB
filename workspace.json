@@ -1,6 +1,7 @@
 {
   "version": 2,
   "projects": {
+    "easybsb-parser": "libs/easybsb-parser",
     "server": "apps/server",
     "web": "apps/web"
   }
