@@ -9,6 +9,7 @@
         "nestjs",
         "ngcc",
         "nrwl",
-        "QINF"
+        "QINF",
+        "undecoded"
     ]
 }
