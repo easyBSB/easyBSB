@@ -186,7 +186,7 @@ export class BSB {
             }
         }
 
-        // if no device familiy or variant is set try to fetch
+        // if no device family or variant is set try to fetch
         if ((this.device.family == 0 || this.device.var == 0) && (Date.now()-this.lastFetchDevice > 2000)) {
             if (this.device.family == 0) {
                 this.get(6225)
