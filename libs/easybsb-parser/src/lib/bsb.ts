@@ -261,7 +261,7 @@ export class BSB {
                 value = new Payloads.Error(msg.payload)
             }
 
-            // for INF Messages, see the reRead from the bus as succsessfull receive
+            // for INF Messages, see the reRead from the bus as successfully receive
             if (msg.typ != MSG_TYPE.QUR && msg.typ != MSG_TYPE.QRV && msg.typ != MSG_TYPE.SET) {
                 if (this.openRequest && (this.openRequest?.command.command === command.command)) {
                     this.openRequest.done({
