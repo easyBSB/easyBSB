@@ -8,22 +8,32 @@ export class BsbCore {
 
     private connection: BSB
 
-    log() {
-        if (this.connection) {
+    async log() {
+        if (!this.connection) {
             this.connection = this.createConnection()
         }
 
-        this.connection = this.createConnection()
-        this.connection.Log$.subscribe({
-            next: (payload) => console.log(payload.value.toString()),
-            error: (error) => console.error(error)
-        })
+        return await this.connection.get(700);
     }
 
     private createConnection() {
         const def = new Definition(definition as unknown as BSBDefinition)
-        const bsb = new BSB(def, { family: 0, var: 0}, 0XC3)
+
+        // could have multiple ones ?
+        const bsb = new BSB(def, { family: 163, var: 5}, 0XC3)
+
+        // multiple connections but if exists do not create again
         bsb.connect('192.168.203.179', 1000)
+
+        bsb.Log$.subscribe({
+            next: (payload) => console.log(payload),
+            error: (error) => console.error(error)
+        })
+
         return bsb
     }
 }
+
+// 700
+// 8310 kessel temp
+// 8311 kessel sollwert

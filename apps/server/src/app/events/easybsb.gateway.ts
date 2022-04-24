@@ -9,7 +9,8 @@ import { interval, map, Observable } from 'rxjs';
 @WebSocketGateway({
   cors: {
     origin: '*'
-  }
+  },
+  path: '/api/trace'
 })
 export class EasyBSBGateway {
 

@@ -13,7 +13,8 @@
     "test": "nx test",
     "build:all": "nx run-many --target=build --configuration=production --all --parallel",
     "build:all:no-cache": "npm run build:all -- --skip-nx-cache",
-    "postinstall": "ngcc --properties es2015 browser module main"
+    "postinstall": "ngcc --properties es2015 browser module main",
+    "typeorm": "typeorm-ts-node-commonjs --dataSource ./apps/server/src/typeorm/datasource.ts"
   },
   "private": true,
   "dependencies": {
@@ -40,7 +41,9 @@
     "sql.js": "1.6.2",
     "socket.io": "4.4.1",
     "swagger-ui-express": "4.3.0",
+    "ts-node": "^10.7.0",
     "tslib": "2.0.0",
+    "typeorm": "0.3.6",
     "zone.js": "0.11.4"
   },
   "devDependencies": {

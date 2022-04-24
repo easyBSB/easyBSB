@@ -115,7 +115,7 @@ export class BSB {
     //#endregion
 
     //#region constructor
-    constructor(definition: Definition, device: Device, src: number = 0xC2) {
+    constructor(definition: Definition, device: Device, src = 0xC2) {
 
         this.definition = definition;
         this.device = device;
@@ -397,6 +397,7 @@ export class BSB {
         return await Promise.all(queue)
     }
 
+    // parameter 700
     public async get(param: number | number[], dst = 0x00): Promise<busRequestAnswer[]> {
         if (!Array.isArray(param)) {
             param = [param]
