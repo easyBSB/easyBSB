@@ -12,5 +12,4 @@ export class setup1650828104095 implements MigrationInterface {
         await queryRunner.query(`DROP TABLE "easy_bsb_device"`);
         await queryRunner.query(`DROP TABLE "easy_bsb_connection"`);
     }
-
 }

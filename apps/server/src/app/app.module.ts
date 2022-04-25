@@ -8,10 +8,12 @@ import { EventsModule } from './events/events.module';
 @Module({
   imports: [
     AppTypeormModule,
+    EventsModule,
     ConnectionsModule,
-    EventsModule
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService
+  ],
 })
 export class AppModule {}

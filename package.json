@@ -14,7 +14,9 @@
     "build:all": "nx run-many --target=build --configuration=production --all --parallel",
     "build:all:no-cache": "npm run build:all -- --skip-nx-cache",
     "postinstall": "ngcc --properties es2015 browser module main",
-    "typeorm": "typeorm-ts-node-commonjs --dataSource ./apps/server/src/typeorm/datasource.ts"
+    "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js --config apps/server/src/app/src/ormconfig.ts",
+    "typeorm:migrate": "npm run typeorm migration:generate -- karl",
+    "typeorm:run": "npm run typeorm migration:run"
   },
   "private": true,
   "dependencies": {
