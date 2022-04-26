@@ -10,10 +10,9 @@ import { EventsModule } from './events/events.module';
     AppTypeormModule,
     EventsModule,
     ConnectionsModule,
+    EventsModule
   ],
   controllers: [AppController],
-  providers: [
-    AppService
-  ],
+  providers: [AppService],
 })
 export class AppModule {}

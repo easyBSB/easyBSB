@@ -1,15 +1,10 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { EasyBsbConnection } from './typeorm/entities/connection.entity';
+
 import { ConnectionsController } from './connections.controller';
-import { ConnectionsService } from './connections.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([EasyBsbConnection])],
-  exports: [TypeOrmModule],
+  imports: [],
   controllers: [ConnectionsController],
-  providers: [
-    ConnectionsService
-  ],
+  providers: [],
 })
 export class ConnectionsModule {}

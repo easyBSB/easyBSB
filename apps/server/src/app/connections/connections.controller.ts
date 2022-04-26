@@ -23,7 +23,7 @@ export class ConnectionsController {
 
   @ApiOperation({ 
     description: 'Will return in the future a websocket connection that returns the trace of the device',
-  })
+   })
   @Get('trace')
   wsTrace() {
     return ""

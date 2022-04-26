@@ -1,7 +1,0 @@
-
-> easy-bsb@0.0.0 start
-> nx serve "web" "--host" "0.0.0.0" "--disableHostCheck" "--poll" "500"
-
-
-> nx run web:serve:development --host=0.0.0.0 --disableHostCheck --poll=500
-

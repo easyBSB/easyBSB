@@ -15,10 +15,7 @@ import { SocketIoModule } from 'ngx-socket-io';
     HttpClientModule,
     EasyBsbTraceModule,
     SocketIoModule.forRoot({
-      url: 'http://localhost:3333',
-      options: {
-        path: '/api/trace'
-      }
+      url: 'http://localhost:3333'
     })
   ],
   providers: [],
