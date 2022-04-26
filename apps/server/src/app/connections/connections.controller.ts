@@ -1,15 +1,24 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, Post } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ConnectionsService } from './connections.service';
 
 
 @ApiTags('connections')
 @Controller('/connections')
 export class ConnectionsController {
-  constructor() {}
+
+  constructor(
+    private readonly connectionService: ConnectionsService
+  ) {}
 
   @Get(':id')
   getConnections(@Param('id') id: string) {
     return ""+id;
+  }
+
+  @Post()
+  createConnection() {
+    this.connectionService.addEntry();
   }
 
   @ApiOperation({ 

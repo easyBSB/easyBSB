@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { BsbCore } from '@easybsb/parser';
 
 @Injectable()
 export class AppService {
@@ -9,8 +8,6 @@ export class AppService {
   }
 
   log() {
-    const core = new BsbCore()
-    core.log()
-    return { message: 'logger' }
+    // must be singlton
   }
 }

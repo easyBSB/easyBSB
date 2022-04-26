@@ -47,6 +47,30 @@
         "jestConfig": "apps/server/jest.config.js",
         "passWithNoTests": true
       }
+    },
+    "migration-generate": {
+      "builder": "@nrwl/workspace:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "ts-node --project tsconfig.app.json ../../node_modules/typeorm/cli.js migration:generate -o true -d src/typeorm/datasource.ts src/typeorm/migrations/{args.name}",
+        "cwd": "apps/server"
+      }
+    },
+    "migration-run": {
+      "builder": "@nrwl/workspace:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "ts-node --project tsconfig.app.json ../../node_modules/typeorm/cli.js migration:run -d src/typeorm/datasource.ts",
+        "cwd": "apps/server"
+      }
+    },
+    "migration-create": {
+      "builder": "@nrwl/workspace:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "ts-node --project tsconfig.app.json ../../node_modules/typeorm/cli.js migration:create -o true src/typeorm/migrations/{args.name}",
+        "cwd": "apps/server"
+      }
     }
   },
   "tags": []

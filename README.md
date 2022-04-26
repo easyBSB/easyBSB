@@ -35,3 +35,8 @@ NOTE:  HowTo Exposing a tty serial device if needed
 
 ... Config the connection .-> bsbLAN, direct serial, tcp serial,...
 
+## Typeorm
+
+npx nx run server:migration-generate --name <NAME> to create a new migration
+npx nx run server:migration-run to run migrations
+
