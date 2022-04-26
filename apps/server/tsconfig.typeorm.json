@@ -1,0 +1,14 @@
+
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../dist/apps/server",
+    "module": "commonjs",
+    "types": ["node"],
+    "emitDecoratorMetadata": true,
+    "target": "es2015",
+    "rootDir": "./src/app",
+  },
+  "exclude": ["**/*.spec.ts", "**/*.test.ts"],
+  "include": ["**/*.entity.ts"]
+}
