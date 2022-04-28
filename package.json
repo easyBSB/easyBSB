@@ -51,7 +51,7 @@
     "@angular/cli": "13.2.4",
     "@angular/compiler-cli": "13.2.4",
     "@angular/language-service": "13.2.4",
-    "@nestjs/schematics": "8.0.7",
+    "@nestjs/schematics": "8.0.10",
     "@nestjs/testing": "8.3.1",
     "@nrwl/cli": "13.8.3",
     "@nrwl/cypress": "13.8.3",
