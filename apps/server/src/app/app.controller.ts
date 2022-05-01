@@ -15,4 +15,11 @@ export class AppController {
   getInfo() {
     return this.appService.log();
   }
+
+  @Get('ping')
+  getPing() {
+    return {
+      message: 'pong'
+    };
+  }
 }

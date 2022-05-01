@@ -3,6 +3,7 @@
   "compilerOptions": {
     "module": "commonjs",
     "resolveJsonModule": true,
+    "declarationMap": true,
     "outDir": "../../dist/out-tsc",
     "declaration": true
   },
