@@ -14,7 +14,8 @@
     "build:all": "nx run-many --target=build --configuration=production --all --parallel",
     "build:all:no-cache": "npm run build:all -- --skip-nx-cache",
     "postinstall": "npm run executors:build && ngcc --properties es2015 browser module main",
-    "executors:build": "npm run build --prefix ./libs/executors"
+    "executors:build": "npm run build --prefix ./libs/executors",
+    "e2e": "nx run web:e2e"
   },
   "private": true,
   "dependencies": {
@@ -63,7 +64,7 @@
     "@nrwl/node": "13.8.3",
     "@nrwl/tao": "13.8.3",
     "@nrwl/workspace": "13.8.3",
-    "@playwright/test": "^1.21.1",
+    "@playwright/test": "1.21.1",
     "@types/jest": "27.0.2",
     "@types/node": "16.11.7",
     "@typescript-eslint/eslint-plugin": "5.10.0",
@@ -74,7 +75,6 @@
     "eslint-config-prettier": "8.5.0",
     "eslint-plugin-cypress": "2.10.3",
     "jest": "27.2.3",
-    "jest-cli": "^28.0.3",
     "jest-preset-angular": "11.1.1",
     "playwright": "1.21.1",
     "prettier": "2.5.1",
