@@ -8,9 +8,6 @@ export default async function* runApiServer(context: ExecutorContext) {
   }
 
   for await (const output of await runExecutor<{ success: boolean; path: string; }>(executorOptions, {}, context)) {
-
-    console.log(output);
-
     if (!output.success)
       throw new Error('Could not compile application files');
 
