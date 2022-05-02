@@ -5,7 +5,7 @@ import { relative } from "path"
 export default function runPlaywright(path?: string): Promise<{success: boolean}> {
   // playwright
   const playwrightCmd: string = platform() === 'win32' ? 'playwright.cmd' : 'playwright'
-  const playwrightArgs: string[] = ['playwright', 'test', `--config=./apps/web-e2e/playwright.config.js`]
+  const playwrightArgs: string[] = ['test', `--config=./apps/web-e2e/playwright.config.js`]
 
   if (path && path.trim() !== '') {
     // for windows systems we get something like this foo\\file.spec.ts which not works
