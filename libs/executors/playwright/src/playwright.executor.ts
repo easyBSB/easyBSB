@@ -30,8 +30,8 @@ export default async function playwrightExecutor(
   let success = true
 
   // run all servers
-  process.stdout.write('\x1b[32m***** Api starting *****\x1b[0m' + EOL)
   await runApiServer(context).next()
+
   process.stdout.write('\x1b[32m***** Web starting ******\x1b[0m' + EOL)
   await runDevServer(context).next()
 

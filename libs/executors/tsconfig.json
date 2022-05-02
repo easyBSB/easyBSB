@@ -6,5 +6,8 @@
     {
       "path": "./playwright/tsconfig.lib.json"
     },
+    {
+      "path": "./api-server-e2e/tsconfig.lib.json"
+    },
   ]
 }

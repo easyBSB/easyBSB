@@ -1,0 +1,11 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "type": "object",
+  "cli": "nx",
+  "properties": {
+    "textToEcho": {
+      "type": "string",
+      "description": "run a api server on e2e returns a process id to kill"
+    }
+  }
+}

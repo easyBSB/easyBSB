@@ -71,6 +71,10 @@
         "command": "ts-node --project tsconfig.app.json ../../node_modules/typeorm/cli.js migration:create -o true src/typeorm/migrations/{args.name}",
         "cwd": "apps/server"
       }
+    },
+    "serve-e2e": {
+      "executor": "./libs/executors:serve-e2e",
+      "outputs": []
     }
   },
   "tags": []
