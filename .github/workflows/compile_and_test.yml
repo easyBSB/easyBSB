@@ -1,4 +1,4 @@
-name: Compile & Test
+name: CompileAndTest
 
 on:
   push:
@@ -19,4 +19,4 @@ jobs:
         cache: 'npm'
     - run: npm ci
     - run: npm run build:all
-#    - run: npm test
+    - run: npm run e2e
