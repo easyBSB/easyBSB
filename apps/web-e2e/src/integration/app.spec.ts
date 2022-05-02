@@ -1,13 +1,7 @@
-import { getGreeting } from '../support/app.po';
+import { test, expect } from '@playwright/test';
 
-describe('web', () => {
-  beforeEach(() => cy.visit('/'));
-
-  it('should display welcome message', () => {
-    // Custom command example, see `../support/commands.ts` file
-    cy.login('my-email@something.com', 'myPassword');
-
-    // Function helper example, see `../support/app.po.ts` file
-    getGreeting().contains('Welcome web');
-  });
+test('basic test', async ({ page }) => {
+  await page.goto('http://localhost:4200');
+  const pingEl = page.locator('[data-e2e="ping"]');
+  await expect(pingEl).toHaveText('We ping the server and he respond with: pong');
 });
