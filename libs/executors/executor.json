@@ -4,6 +4,11 @@
       "implementation": "./playwright/bin/playwright.executor",
       "schema": "./playwright/schema.json",
       "description": "Runs `echo` (to test executors out)."
+    },
+    "serve-e2e": {
+      "implementation": "./api-server-e2e/bin/api-server-e2e.executor",
+      "schema": "./api-server-e2e/schema.json",
+      "description": "Runs `echo` (to test executors out)."
     }
   }
 }
