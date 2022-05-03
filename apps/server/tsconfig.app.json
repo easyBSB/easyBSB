@@ -1,12 +1,19 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "../../dist/out-tsc",
-    "module": "commonjs",
-    "types": ["node"],
+    "baseUrl": "./",
     "emitDecoratorMetadata": true,
-    "target": "es2015"
+    "module": "commonjs",
+    "outDir": "../../dist/out-tsc",
+    "paths": {
+      "@auth/*": ["./src/app/auth/*"],
+      "@connections/*": ["./src/app/connections/*"],
+      "@users/*": ["./src/app/users/*"],
+      "@easybsb/parser": ["../../libs/easybsb-parser/src"]
+    },
+    "target": "es2015",
+    "types": ["node"],
   },
   "exclude": ["**/*.spec.ts", "**/*.test.ts"],
-  "include": ["**/*.ts"]
+  "include": ["**/*.ts"],
 }
