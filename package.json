@@ -35,7 +35,7 @@
     "@nestjs/swagger": "5.2.1",
     "@nestjs/typeorm": "9.0.0-next.2",
     "@nestjs/websockets": "8.4.4",
-    "@nrwl/angular": "14.0.3",
+    "@nrwl/angular": "14.0.5",
     "ngx-socket-io": "4.2.0",
     "reflect-metadata": "0.1.13",
     "rxjs": "7.5.5",
