@@ -42,7 +42,7 @@
     "socket.io": "4.5.0",
     "sql.js": "1.6.2",
     "swagger-ui-express": "4.3.0",
-    "tslib": "2.0.0",
+    "tslib": "2.4.0",
     "zone.js": "0.11.5"
   },
   "devDependencies": {
@@ -50,7 +50,7 @@
     "@angular-eslint/eslint-plugin": "13.2.1",
     "@angular-eslint/eslint-plugin-template": "13.2.1",
     "@angular-eslint/template-parser": "13.2.1",
-    "@angular/cli": "13.2.4",
+    "@angular/cli": "13.3.5",
     "@angular/compiler-cli": "13.2.4",
     "@angular/language-service": "13.3.5",
     "@nestjs/schematics": "8.0.10",
