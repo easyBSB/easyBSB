@@ -1,14 +1,9 @@
-import { BadRequestException, HttpException, Injectable } from "@nestjs/common";
+import { BadRequestException, HttpException, Injectable, UnauthorizedException } from "@nestjs/common";
 import { validate } from "class-validator"
 import { compareSync, hashSync } from "bcrypt"
 import { JwtService } from '@nestjs/jwt'
 
-import { UserService, UsersDTO, UserEntity } from "@users/index";
-
-
-class UserAllreadyExistsException extends HttpException {
-}
-
+import { UserService, UserDto, UserEntity } from "@users/index";
 
 @Injectable()
 export class AuthService {
@@ -18,13 +13,19 @@ export class AuthService {
     private readonly jwtService: JwtService
   ) {}
 
+  /**
+   * @description login with given credentials
+   */
   async login(username: string, password: string): Promise<string> {
     if (await this.authenticateUser(username, password)) {
       return this.jwtService.sign({ username })
     }
-    return null
+    throw new UnauthorizedException('username or password wrong')
   }
 
+  /**
+   * @description register new user, throws 403 if username allready has been taken
+   */
   async register(username: string, password: string): Promise<Omit<UserEntity, 'password'>> {
     if (await this.validateParams(username, password)) {
       const user = await this.usersService.findOne(username)
@@ -32,12 +33,14 @@ export class AuthService {
         const result = await this.usersService.save({ username, password: hashSync(password, 10) })
         return this.usersService.findById(result.identifiers[0].id)
       }
-
-      throw new UserAllreadyExistsException(`A user with the name ${username} allready exists`, 403)
+      throw new HttpException(`A user with the name ${username} allready exists`, 403)
     }
     throw new BadRequestException()
   }
 
+  /**
+   * @description login with given credentials
+   */
   private async authenticateUser(username: string, password: string): Promise<boolean> {
     let isValid = await this.validateParams(username, password)
     if (isValid) {
@@ -51,8 +54,11 @@ export class AuthService {
     return isValid
   }
 
+  /**
+   * @description validate against dto
+   */
   async validateParams(username: string, password: string): Promise<boolean> {
-    const userDto = new UsersDTO()
+    const userDto = new UserDto()
     userDto.username = username
     userDto.password = password
 
@@ -64,6 +70,6 @@ export class AuthService {
       }
     })
 
-    return isValid;
+    return isValid
   }
 }
