@@ -10,9 +10,7 @@ const routes: Route[] = [{
 }]
 
 @NgModule({
-  declarations: [ LoginComponent ],
   imports: [ CommonModule, RouterModule.forChild(routes)],
   exports: [ RouterModule ],
-  providers: [],
 })
 export class AuthorizationRouterModule {}

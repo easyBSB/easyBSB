@@ -2,14 +2,21 @@ import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 import { AuthorizationBearerInterceptor } from './utils/authorization-beaerer.interceptor';
 import { authorizationAppInitializer } from './utils/authorization.app-initializer';
+import { LoginComponent } from './ui/login.component';
 
 @NgModule({
-  declarations: [],
-  imports: [ CommonModule ],
-  exports: [],
+  declarations: [
+    LoginComponent
+  ],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule
+  ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,

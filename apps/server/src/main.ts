@@ -17,10 +17,10 @@ async function bootstrap() {
   const port = process.env.PORT || 3333;
 
   const config = new DocumentBuilder()
-    .setTitle('Cats example')
-    .setDescription('The cats API description')
+    .setTitle('EasyBsb')
+    .setDescription('EasyBsb API description')
     .setVersion('1.0')
-    .addTag('cats')
+    .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

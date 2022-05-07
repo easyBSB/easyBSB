@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CanActivateChild, Router } from '@angular/router';
-import { catchError, Observable, of, tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { AuthorizationService } from './authorization.service';
 
 @Injectable({
@@ -17,10 +17,6 @@ export class AuthorizationGuard implements CanActivateChild {
     return this.authorizationService.isAuthorized().pipe(
       tap((isAuthorized) => {
         !isAuthorized ? this.router.navigate(['login']) : void 0
-      }),
-      catchError(() => {
-        console.log('da fuck bitch')
-        return of(false)
       })
     );
   }
