@@ -23,9 +23,7 @@ export class AuthorizationService {
   login(payload: LoginDto) {
     return this.httpClient.post<LoginResponseDto>('http://localhost:3333/api/auth/login', payload)
       .pipe(
-        tap((response) => {
-          sessionStorage.setItem(STORAGE_KEY_JWT, response.jwt)
-        })
+        tap((response) => sessionStorage.setItem(STORAGE_KEY_JWT, response.jwt))
       )
   }
 }

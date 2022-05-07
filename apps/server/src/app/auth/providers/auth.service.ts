@@ -20,7 +20,7 @@ export class AuthService {
     if (await this.authenticateUser(username, password)) {
       return this.jwtService.sign({ username })
     }
-    throw new UnauthorizedException('username or password wrong')
+    throw new UnauthorizedException('invalid username or password')
   }
 
   /**

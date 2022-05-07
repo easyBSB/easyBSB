@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -14,6 +15,8 @@ export class LoginComponent implements OnInit {
 
   loginForm!: FormGroup;
 
+  error?: string
+
   constructor(
     private readonly formBuilder: FormBuilder,
     private readonly authorizationService: AuthorizationService,
@@ -28,14 +31,17 @@ export class LoginComponent implements OnInit {
   }
 
   submit($event: MouseEvent | SubmitEvent): void {
-
     $event.stopPropagation()
     $event.preventDefault()
 
     const payload: LoginDto = this.loginForm.getRawValue()
-
     this.authorizationService.login(payload)
       .pipe(take(1))
-      .subscribe(() => this.router.navigate(['/']))
+      .subscribe({
+        next: () => this.router.navigate(['/']),
+        error: (response: HttpErrorResponse) => {
+          this.error = response.error.message
+        }
+      })
   }
 }

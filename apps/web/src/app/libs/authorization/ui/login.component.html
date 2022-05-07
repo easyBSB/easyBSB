@@ -1,5 +1,4 @@
-<form action="" [formGroup]="loginForm" (submit)="submit($event)">
-
+<form action="" [formGroup]="loginForm" (submit)="submit($event)" data-e2e="authorization-login">
   <div class="form-control" data-e2e="authorization-login-username">
     <label for="">
       <span>Benutzername</span>
@@ -16,5 +15,9 @@
 
   <div data-e2e="authorization-login-submit">
     <button type="submit">Login</button>
+  </div>
+
+  <div *ngIf="error?.trim() !== ''" data-e2e="authorization-login-error">
+    {{error}}
   </div>
 </form>
