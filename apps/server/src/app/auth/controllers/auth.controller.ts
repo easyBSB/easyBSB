@@ -1,9 +1,10 @@
 import { Body, Controller, Post } from "@nestjs/common";
 import { ApiOperation, ApiResponse } from "@nestjs/swagger";
 import { UserDto } from "@users/dto/user.dto";
-import { LoginDto } from "./api";
-import { LoginResponseDto } from "./api/login-response.dto";
-import { AuthService } from "./auth.service";
+import { LoginDto } from "../api";
+import { LoginResponseDto } from "../api/login-response.dto";
+import { BypassAuthorization } from "../utils/bypass-authorization";
+import { AuthService } from "../providers/auth.service";
 
 @Controller({
   path: 'auth'
@@ -16,9 +17,10 @@ export class AuthController {
     summary: 'login',
     description: 'login user by given username and password',
   })
+  @BypassAuthorization()
+  @Post('login')
   @ApiResponse({ status: 201, description: 'genearted jwt token after successful login', type: LoginResponseDto })
   @ApiResponse({ status: 401, description: 'authorization failed' })
-  @Post('login')
   async login(@Body() param: LoginDto) {
     const jwt = await this.authService.login(param.username, param.password)
     return { jwt }
