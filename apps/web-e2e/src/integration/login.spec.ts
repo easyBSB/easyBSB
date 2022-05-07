@@ -13,6 +13,7 @@ import { test, expect } from '@playwright/test';
     // send data and wait for response
     const [response] = await Promise.all([
       page.waitForResponse('http://localhost:3333/api/auth/login'),
+      page.waitForNavigation({ url: 'http://localhost:4200/dashboard' }),
       passwordControl.press('Enter')
     ])
 
@@ -21,8 +22,6 @@ import { test, expect } from '@playwright/test';
 
     expect(response.status()).toBe(201)
     expect(Object.keys(data)).toContain('jwt')
-
-    await page.waitForNavigation();
 
     // should redirect now
     expect(page.url()).toBe('http://localhost:4200/dashboard')
