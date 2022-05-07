@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from "@nestjs/common";
+import { Body, Controller, Head, Post } from "@nestjs/common";
 import { ApiOperation, ApiResponse } from "@nestjs/swagger";
 import { UserDto } from "@users/dto/user.dto";
 import { LoginDto } from "../api";
@@ -35,5 +35,16 @@ export class AuthController {
   @ApiResponse({ status: 403, description: 'usename allready taken' })
   async register(@Body() param: LoginDto) {
     return await this.authService.register(param.username, param.password)
+  }
+
+  @ApiOperation({ 
+    summary: 'authorized',
+    description: 'head request to check we are authorized, this requires a bearer inside the authorization header',
+  })
+  @Head('authorized')
+  @ApiResponse({ status: 200, description: 'authorized' })
+  @ApiResponse({ status: 401, description: 'authorization failed' })
+  async authorized() {
+    return { status: 200 }
   }
 }
