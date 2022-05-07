@@ -9,17 +9,22 @@ import { test, expect } from '@playwright/test';
     const passwordControl = page.locator('[data-e2e="authorization-login-password"] input[type="password"]')
     await usernameControl.fill('easybsb')
     await passwordControl.fill('easybsb')
-    await passwordControl.press('Enter')
 
-    // check response data
-    const response = await page.waitForResponse('http://localhost:3333/api/auth/login')
-    expect(response.status()).toBe(201)
+    // send data and wait for response
+    const [response] = await Promise.all([
+      page.waitForResponse('http://localhost:3333/api/auth/login'),
+      passwordControl.press('Enter')
+    ])
 
     const body = await response.body()
     const data = JSON.parse(body.toString('utf-8'));
+
+    expect(response.status()).toBe(201)
     expect(Object.keys(data)).toContain('jwt')
 
-    // we should have been redirected to dashboard now
+    await page.waitForNavigation();
+
+    // should redirect now
     expect(page.url()).toBe('http://localhost:4200/dashboard')
   });
 
@@ -30,12 +35,16 @@ import { test, expect } from '@playwright/test';
     // do login
     const usernameControl = page.locator('[data-e2e="authorization-login-username"] input[type="text"]')
     const passwordControl = page.locator('[data-e2e="authorization-login-password"] input[type="password"]')
+
     await usernameControl.fill('UnknownUser')
     await passwordControl.fill('SuperSecretUnknownPasswordButNobodyCaresBecauseNobodyKnows')
-    await passwordControl.press('Enter')
+
+    const [response] = await Promise.all([
+      page.waitForResponse('http://localhost:3333/api/auth/login'),
+      passwordControl.press('Enter')
+    ])
 
     // check response data
-    const response = await page.waitForResponse('http://localhost:3333/api/auth/login')
     expect(response.status()).toBe(401)
 
     // we should have been redirected to dashboard now
