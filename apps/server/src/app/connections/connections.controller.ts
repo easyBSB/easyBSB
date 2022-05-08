@@ -1,9 +1,10 @@
 import { Controller, Get, Param, Post } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ConnectionsService } from './connections.service';
 
 
 @ApiTags('connections')
+@ApiBearerAuth()
 @Controller('/connections')
 export class ConnectionsController {
 

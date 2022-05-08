@@ -30,6 +30,7 @@ export class AuthController {
   @ApiOperation({ 
     summary: 'register',
     description: 'register new user by given username and password',
+    security: [{ bearer: [] }]
   })
   @ApiHeaders([ { name: 'Authorization', description: 'Bearer auth token' } ])
   @Post('register')
@@ -42,6 +43,7 @@ export class AuthController {
   @ApiOperation({ 
     summary: 'authorized',
     description: 'head request to check we are authorized, this requires a bearer inside the authorization header',
+    security: [{ bearer: [] }]
   })
   @Head('authorized')
   @ApiResponse({ status: 200, description: 'authorized' })
