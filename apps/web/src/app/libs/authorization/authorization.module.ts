@@ -4,7 +4,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
-import { AuthorizationBearerInterceptor } from './utils/authorization-beaerer.interceptor';
+import { AuthorizationBearerInterceptor } from './utils/authorization-bearer.interceptor';
 import { authorizationAppInitializer } from './utils/authorization.app-initializer';
 import { LoginComponent } from './ui/login.component';
 

@@ -8,6 +8,6 @@ export class AppService {
   }
 
   log() {
-    // must be singlton
+    // must be singleton
   }
 }

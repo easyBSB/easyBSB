@@ -24,7 +24,7 @@ export class AuthService {
   }
 
   /**
-   * @description register new user, throws 403 if username allready has been taken
+   * @description register new user, throws 403 if username already has been taken
    */
   async register(username: string, password: string): Promise<Omit<UserEntity, 'password'>> {
     if (await this.validateParams(username, password)) {
@@ -33,7 +33,7 @@ export class AuthService {
         const result = await this.usersService.save({ username, password: hashSync(password, 10) })
         return this.usersService.findById(result.identifiers[0].id)
       }
-      throw new HttpException(`A user with the name ${username} allready exists`, 403)
+      throw new HttpException(`A user with the name ${username} already exists`, 403)
     }
     throw new BadRequestException()
   }

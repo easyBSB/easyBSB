@@ -3,7 +3,7 @@ import { Command } from "../interfaces";
 import * as Payloads from "./"
 
 /**
- * Create a new Payloadobject for the command
+ * Create a new Payload object for the command
  * @param data can be a payload with datatype number[] or data with string, number or null for empty
  * @param command the command
  */

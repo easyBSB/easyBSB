@@ -1,12 +1,12 @@
 import { TranslateItem } from "./interfaces";
 
 export class Helper {
-    public static getLanguage(langRessource: TranslateItem | null | undefined, language = "KEY"): string | null {
+    public static getLanguage(langResource: TranslateItem | null | undefined, language = "KEY"): string | null {
 
-        if (!langRessource)
+        if (!langResource)
             return null;
 
-        const lookup = langRessource;
+        const lookup = langResource;
 
         if (Object.prototype.hasOwnProperty.call(lookup, language)) {
             return lookup[language];
