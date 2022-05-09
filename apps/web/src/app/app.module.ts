@@ -21,7 +21,6 @@ import { AppRoutingModule } from './app-routing.module';
       url: 'http://localhost:3333'
     })
   ],
-  providers: [],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
