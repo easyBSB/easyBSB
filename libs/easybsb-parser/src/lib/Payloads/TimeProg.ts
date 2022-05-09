@@ -10,7 +10,7 @@ export class TimeProgEntry {
             this.start = new Date(0, 0, 0, data[0], data[1])
             this.end = new Date(0, 0, 0, data[2], data[3])
         }
-        // todo add parese from string
+        // todo add parse from string
     }
 
     public toString() {
