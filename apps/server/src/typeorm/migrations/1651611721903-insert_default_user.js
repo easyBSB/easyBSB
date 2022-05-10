@@ -1,5 +1,5 @@
 const { MigrationInterface, QueryRunner } = require("typeorm");
-const { hashSync } = require("bcrypt")
+const { hashSync } = require("bcryptjs")
 
 module.exports = class insertDefaultUser1651611721903 {
 
