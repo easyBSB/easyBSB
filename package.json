@@ -74,7 +74,7 @@
         "@types/node": "16.11.33",
         "@types/passport-jwt": "3.0.6",
         "@types/passport-local": "1.0.34",
-        "@typescript-eslint/eslint-plugin": "5.22.0",
+        "@typescript-eslint/eslint-plugin": "5.23.0",
         "@typescript-eslint/parser": "5.10.2",
         "bcrypt": "5.0.1",
         "chokidar": "3.5.3",
