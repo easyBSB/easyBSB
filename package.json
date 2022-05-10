@@ -67,7 +67,7 @@
         "@nrwl/nest": "14.1.4",
         "@nrwl/node": "14.1.4",
         "@nrwl/tao": "14.1.4",
-        "@nrwl/workspace": "14.0.5",
+        "@nrwl/workspace": "14.1.4",
         "@playwright/test": "1.21.1",
         "@types/bcrypt": "5.0.0",
         "@types/jest": "27.5.0",
