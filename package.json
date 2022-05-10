@@ -41,8 +41,8 @@
     "bcryptjs": "2.4.3",
     "class-validator": "0.13.2",
     "ngx-socket-io": "4.2.0",
-    "passport-jwt": "4.0.0",
     "passport": "0.5.2",
+    "passport-jwt": "4.0.0",
     "passport-local": "1.0.0",
     "reflect-metadata": "0.1.13",
     "rxjs": "7.5.5",
@@ -86,6 +86,7 @@
     "jest-preset-angular": "11.1.2",
     "playwright": "1.21.1",
     "prettier": "2.6.2",
+    "sane": "^5.0.1",
     "ts-jest": "27.1.4",
     "typescript": "4.5.5",
     "webpack": "5.72.0"
