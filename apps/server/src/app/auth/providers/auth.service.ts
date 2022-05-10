@@ -1,6 +1,6 @@
 import { BadRequestException, HttpException, Injectable, UnauthorizedException } from "@nestjs/common";
 import { validate } from "class-validator"
-import { compareSync, hashSync } from "bcrypt"
+import { compareSync, hashSync } from "bcryptjs"
 import { JwtService } from '@nestjs/jwt'
 
 import { UserService, UserDto, UserEntity } from "@users/index";
