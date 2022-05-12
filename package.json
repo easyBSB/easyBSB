@@ -70,7 +70,7 @@
     "@nrwl/nest": "14.1.4",
     "@nrwl/node": "14.1.5",
     "@nrwl/tao": "14.1.4",
-    "@nrwl/workspace": "14.1.4",
+    "@nrwl/workspace": "14.1.5",
     "@playwright/test": "1.21.1",
     "@types/bcryptjs": "2.4.2",
     "@types/jest": "27.5.0",
