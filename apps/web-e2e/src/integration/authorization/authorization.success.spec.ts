@@ -18,7 +18,7 @@ test.describe.serial('Test Authorization', () => {
 
     // send data and wait for response
     const [response] = await Promise.all([
-      page.waitForResponse('http://localhost:3333/api/auth/login'),
+      page.waitForResponse('http://localhost:4200/api/auth/login'),
       page.waitForNavigation({ url: 'http://localhost:4200/dashboard' }),
       passwordControl.press('Enter')
     ])
@@ -50,7 +50,10 @@ test.describe.serial('Test Authorization', () => {
 
     // go to page
     const page = await context.newPage()
-    await page.goto('http://localhost:4200', { waitUntil: 'networkidle'});
+    await Promise.all([
+      page.goto('http://localhost:4200'),
+      page.waitForNavigation({url: 'http://localhost:4200/dashboard'})
+    ])
 
     // test and clean up
     expect(page.url()).toBe('http://localhost:4200/dashboard')

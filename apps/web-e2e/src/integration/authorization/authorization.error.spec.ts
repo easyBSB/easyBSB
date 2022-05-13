@@ -13,7 +13,7 @@ test('Login Error', async ({ page }) => {
   await passwordControl.fill('SuperSecretUnknownPasswordButNobodyCaresBecauseNobodyKnows')
 
   const [response] = await Promise.all([
-    page.waitForResponse('http://localhost:3333/api/auth/login'),
+    page.waitForResponse('http://localhost:4200/api/auth/login'),
     passwordControl.press('Enter')
   ])
 
