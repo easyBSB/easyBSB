@@ -26,9 +26,6 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
-  // @todo remove
-  app.enableCors()
-
   // register auth guard global
   const reflector = app.get( Reflector );
   app.useGlobalGuards( new JwtAuthGuard( reflector ) );

@@ -6,11 +6,7 @@ import {
 import { Server } from 'socket.io';
 import { interval, map, Observable } from 'rxjs';
 
-@WebSocketGateway({
-  cors: {
-    origin: '*'
-  }
-})
+@WebSocketGateway()
 export class EasyBSBGateway {
 
   @WebSocketServer()
