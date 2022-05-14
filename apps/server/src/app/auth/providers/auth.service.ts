@@ -1,9 +1,9 @@
-import { BadRequestException, HttpException, Injectable, UnauthorizedException } from "@nestjs/common";
+import { BadRequestException, ForbiddenException, HttpException, Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common";
 import { validate } from "class-validator"
 import { compareSync, hashSync } from "bcryptjs"
 import { JwtService } from '@nestjs/jwt'
 
-import { UserService, UserDto, UserEntity } from "@users/index";
+import { UserService, User } from "@users/index";
 
 @Injectable()
 export class AuthService {
@@ -26,7 +26,7 @@ export class AuthService {
   /**
    * @description register new user, throws 403 if username already has been taken
    */
-  async register(username: string, password: string): Promise<Omit<UserEntity, 'password'>> {
+  async register(username: string, password: string): Promise<User> {
     if (await this.validateParams(username, password)) {
       const user = await this.usersService.findOne(username)
       if (!user) {
@@ -41,30 +41,34 @@ export class AuthService {
   /**
    * @description login with given credentials
    */
-  private async authenticateUser(username: string, password: string): Promise<boolean> {
-    let isValid = await this.validateParams(username, password)
-    if (isValid) {
+  private async authenticateUser(username: string, pwd: string): Promise<User> {
+    if (await this.validateParams(username, pwd)) {
       const user = await this.usersService.findOne(username)
       if (!user) {
-        return null
+        throw new NotFoundException()
       }
 
-      isValid = compareSync(password, user.password)
+      const {password, ...easyBsbUser} = user
+      if (compareSync(pwd, password)) {
+        return easyBsbUser
+      }
+      throw new ForbiddenException()
     }
-    return isValid
+
+    throw new BadRequestException();
   }
 
   /**
    * @description validate against dto
    */
-  async validateParams(username: string, password: string): Promise<boolean> {
-    const userDto = new UserDto()
-    userDto.username = username
-    userDto.password = password
+  async validateParams(username: string, password): Promise<boolean> {
+    const user = new User()
+    user.username = username
+    user.password = password
 
     let isValid = true
 
-    await validate(userDto).then((errors) => {
+    await validate(user).then((errors) => {
       if (errors.length > 0) {
         isValid = false
       }

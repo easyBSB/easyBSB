@@ -1,10 +1,10 @@
-import { Body, Controller, Head, Post } from "@nestjs/common";
+import { Body, Controller, Head, Post, Request } from "@nestjs/common";
 import { ApiHeaders, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
-import { UserDto } from "@users/dto/user.dto";
 import { LoginDto } from "../api";
 import { LoginResponseDto } from "../api/login-response.dto";
 import { BypassAuthorization } from "../utils/bypass-authorization";
 import { AuthService } from "../providers/auth.service";
+import { User } from "@users/entities/user";
 
 @ApiTags('auth')
 @Controller({
@@ -34,9 +34,10 @@ export class AuthController {
   })
   @ApiHeaders([ { name: 'Authorization', description: 'Bearer auth token' } ])
   @Post('register')
-  @ApiResponse({ status: 201, description: 'user registered', type: UserDto })
+  @ApiResponse({ status: 201, description: 'user registered', type: User })
   @ApiResponse({ status: 403, description: 'usename allready taken' })
-  async register(@Body() param: LoginDto) {
+  async register(@Body() param: LoginDto, @Request() req) {
+    console.dir(req.user);
     return await this.authService.register(param.username, param.password)
   }
 

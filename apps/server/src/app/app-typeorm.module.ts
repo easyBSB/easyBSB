@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 
 import { ENTITIES as CONNECTION_ENTITIES } from '@connections/entities'
-import { ENTITIES as USER_ENTITIES } from '@users/entities'
+import { User } from '@users/index'
 
 @Module({
   imports: [
@@ -10,7 +10,7 @@ import { ENTITIES as USER_ENTITIES } from '@users/entities'
       type: "sqljs",
       entities: [
         ...CONNECTION_ENTITIES,
-        ...USER_ENTITIES
+        User
       ],
       migrationsRun: true,
       migrationsTableName: "migrations",
