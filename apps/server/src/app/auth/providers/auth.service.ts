@@ -1,4 +1,4 @@
-import { BadRequestException, ForbiddenException, HttpException, Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common";
+import { BadRequestException, HttpException, Injectable, UnauthorizedException } from "@nestjs/common";
 import { validate } from "class-validator"
 import { compareSync, hashSync } from "bcryptjs"
 import { JwtService } from '@nestjs/jwt'
@@ -43,16 +43,12 @@ export class AuthService {
    */
   private async authenticateUser(username: string, pwd: string): Promise<User> {
     if (await this.validateParams(username, pwd)) {
-      const user = await this.usersService.findOne(username)
-      if (!user) {
-        throw new NotFoundException()
-      }
-
-      const {password, ...easyBsbUser} = user
-      if (compareSync(pwd, password)) {
+      const user: User | undefined = await this.usersService.findOne(username)
+      if (user && compareSync(pwd, user.password)) {
+        const {password, ...easyBsbUser} = user
         return easyBsbUser
       }
-      throw new ForbiddenException()
+      throw new UnauthorizedException('invalid username or password')
     }
 
     throw new BadRequestException();

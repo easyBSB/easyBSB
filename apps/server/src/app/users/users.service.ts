@@ -10,7 +10,7 @@ export class UserService {
     @InjectRepository(User) private readonly repository: Repository<User>
   ) { }
 
-  findOne(username: string): Promise<User> {
+  findOne(username: string): Promise<User | null> {
     return this.repository.findOne({
       where: { username }
     })

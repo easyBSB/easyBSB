@@ -1,12 +1,12 @@
 const { MigrationInterface, QueryRunner } = require("typeorm");
 const { hashSync } = require("bcryptjs")
 
-module.exports = class initializeEasyBsb1652546207965 {
-    name = 'initializeEasyBsb1652546207965'
+module.exports = class initializeEasyBsb1652547869250 {
+    name = 'initializeEasyBsb1652547869250'
 
     async up(queryRunner) {
         await queryRunner.query(`CREATE TABLE "easy_bsb_connection" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar NOT NULL, "ip" varchar NOT NULL, "port" integer NOT NULL, "hostId" integer NOT NULL)`);
-        await queryRunner.query(`CREATE TABLE "user" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "username" varchar NOT NULL, "userNeedPasswordChange" boolean NOT NULL, "password" boolean NOT NULL DEFAULT (0), "userrole" varchar CHECK( "userrole" IN ('require_password_change','read','write','admin') ) NOT NULL DEFAULT ('read'), CONSTRAINT "UQ_78a916df40e02a9deb1c4b75edb" UNIQUE ("username"))`);
+        await queryRunner.query(`CREATE TABLE "user" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "username" varchar NOT NULL, "userNeedPasswordChange" boolean NOT NULL, "password" varchar NOT NULL, "userrole" varchar CHECK( "userrole" IN ('require_password_change','read','write','admin') ) NOT NULL DEFAULT ('read'), CONSTRAINT "UQ_78a916df40e02a9deb1c4b75edb" UNIQUE ("username"))`);
 
         const name = 'easybsb'
         const password = hashSync('easybsb', 10)

@@ -1,4 +1,4 @@
-import { Body, Controller, Head, Post, Request } from "@nestjs/common";
+import { Body, Controller, Head, Post } from "@nestjs/common";
 import { ApiHeaders, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { LoginDto } from "../api";
 import { LoginResponseDto } from "../api/login-response.dto";
@@ -36,8 +36,7 @@ export class AuthController {
   @Post('register')
   @ApiResponse({ status: 201, description: 'user registered', type: User })
   @ApiResponse({ status: 403, description: 'usename allready taken' })
-  async register(@Body() param: LoginDto, @Request() req) {
-    console.dir(req.user);
+  async register(@Body() param: LoginDto) {
     return await this.authService.register(param.username, param.password)
   }
 

@@ -28,7 +28,7 @@ export class User {
   userNeedPasswordChange?: boolean
 
   @IsString()
-  @Column({ default: false, type: "boolean" })
+  @Column()
   password?: string
 
   @ApiProperty({ type: 'enum', enum: UserRoles, example: UserRoles.READ })
