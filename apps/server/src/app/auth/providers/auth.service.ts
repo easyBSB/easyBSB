@@ -3,7 +3,7 @@ import { validate } from "class-validator"
 import { compareSync, hashSync } from "bcryptjs"
 import { JwtService } from '@nestjs/jwt'
 
-import { UserService, User } from "@users/index";
+import { UserService, User } from "@app/users";
 
 @Injectable()
 export class AuthService {

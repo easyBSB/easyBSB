@@ -1,7 +1,7 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { User } from "./entities/user";
-import { UserService } from "./users.service";
+import { UserService } from "./providers/users.service";
 
 @Module({
   imports: [

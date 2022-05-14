@@ -3,7 +3,7 @@
  * This is only a minimal backend to get started.
  */
 
-import { JwtAuthGuard } from '@auth/utils/jwt-auth.guard';
+import { JwtAuthGuard } from '@app/auth/utils/jwt-auth.guard';
 import { Logger } from '@nestjs/common';
 import { NestFactory, Reflector } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';

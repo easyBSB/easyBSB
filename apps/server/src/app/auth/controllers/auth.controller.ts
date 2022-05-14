@@ -4,9 +4,8 @@ import { LoginDto } from "../api";
 import { LoginResponseDto } from "../api/login-response.dto";
 import { BypassAuthorization } from "../utils/bypass-authorization";
 import { AuthService } from "../providers/auth.service";
-import { User } from "@users/entities/user";
-import { CaslService } from "src/app/casl/providers/casl.service";
-import { Actions } from "src/app/casl/constants/actions";
+import { User } from "@app/users";
+import { Actions, AbilityFactory } from "@app/roles";
 
 @ApiTags('auth')
 @Controller({
@@ -16,7 +15,7 @@ export class AuthController {
 
   constructor(
     private readonly authService: AuthService,
-    private readonly caslService: CaslService,
+    private readonly abilityFactory: AbilityFactory,
   ) {}
 
   @ApiOperation({ 
@@ -44,8 +43,8 @@ export class AuthController {
   async register(@Body() param: LoginDto, @Request() req) {
 
     // find ich nun gar nicht so toll hier an der Stelle das sollte on top passieren
-    const ability = this.caslService.defineAbility(req.user)
-    const isAllowed = ability.can(Actions.CREATE, User)
+    const ability = this.abilityFactory.defineAbility(req.user)
+    const isAllowed = ability.can(Actions.Create, User)
 
     if (isAllowed) {
       return await this.authService.register(param.username, param.password)

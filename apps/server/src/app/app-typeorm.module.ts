@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 
 import { ENTITIES as CONNECTION_ENTITIES } from '@connections/entities'
-import { User } from '@users/index'
+import { User } from '@app/users'
 
 @Module({
   imports: [

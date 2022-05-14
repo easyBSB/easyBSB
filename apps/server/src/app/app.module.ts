@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common'
 
 import { AppConfigModule } from './app-config.module';
 import { AppTypeormModule } from './app-typeorm.module'
-import { AuthModule } from '@auth/auth.module'
+import { AuthModule } from '@app/auth/auth.module'
 import { EventsModule } from './events/events.module';
 
 import { ConnectionsModule } from '@connections/connections.module'

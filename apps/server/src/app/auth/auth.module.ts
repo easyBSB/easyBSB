@@ -4,8 +4,8 @@ import { JwtModule } from "@nestjs/jwt"
 import { ConfigModule, ConfigService } from '@nestjs/config'
 
 // app modules
-import { UsersModule } from "@users/users.module"
-import { CaslModule } from "../casl/casl.module";
+import { UsersModule } from "@app/users"
+import { RolesModule } from "@app/roles";
 
 import { AuthController } from "./controllers/auth.controller";
 import { AuthService } from "./providers/auth.service";
@@ -19,7 +19,7 @@ import { JwtStrategy } from "./utils/jwt-auth.strategy";
     JwtStrategy
   ],
   imports: [
-    CaslModule,
+    RolesModule,
     ConfigModule,
     PassportModule,
     UsersModule,

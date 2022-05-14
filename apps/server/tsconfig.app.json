@@ -6,9 +6,10 @@
     "module": "commonjs",
     "outDir": "../../dist/out-tsc",
     "paths": {
-      "@auth/*": ["./src/app/auth/*"],
+      "@app/auth/*": ["./src/app/auth/*"],
+      "@app/users": ["./src/app/users/index.ts"],
+      "@app/roles": ["./src/app/roles/index.ts"],
       "@connections/*": ["./src/app/connections/*"],
-      "@users/*": ["./src/app/users/*"],
       "@easybsb/parser": ["../../libs/easybsb-parser/src"]
     },
     "target": "es2015",
