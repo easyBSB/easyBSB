@@ -1,10 +1,12 @@
-import { Body, Controller, Head, Post } from "@nestjs/common";
+import { Body, Controller, ForbiddenException, Head, Post, Request } from "@nestjs/common";
 import { ApiHeaders, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { LoginDto } from "../api";
 import { LoginResponseDto } from "../api/login-response.dto";
 import { BypassAuthorization } from "../utils/bypass-authorization";
 import { AuthService } from "../providers/auth.service";
 import { User } from "@users/entities/user";
+import { CaslService } from "src/app/casl/providers/casl.service";
+import { Actions } from "src/app/casl/constants/actions";
 
 @ApiTags('auth')
 @Controller({
@@ -12,7 +14,10 @@ import { User } from "@users/entities/user";
 })
 export class AuthController {
 
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly caslService: CaslService,
+  ) {}
 
   @ApiOperation({ 
     summary: 'login',
@@ -36,8 +41,17 @@ export class AuthController {
   @Post('register')
   @ApiResponse({ status: 201, description: 'user registered', type: User })
   @ApiResponse({ status: 403, description: 'usename allready taken' })
-  async register(@Body() param: LoginDto) {
-    return await this.authService.register(param.username, param.password)
+  async register(@Body() param: LoginDto, @Request() req) {
+
+    // find ich nun gar nicht so toll hier an der Stelle das sollte on top passieren
+    const ability = this.caslService.defineAbility(req.user)
+    const isAllowed = ability.can(Actions.CREATE, User)
+
+    if (isAllowed) {
+      return await this.authService.register(param.username, param.password)
+    }
+
+    throw new ForbiddenException('Not allowed to add new users')
   }
 
   @ApiOperation({ 

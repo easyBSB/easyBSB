@@ -3,10 +3,10 @@ import { IsBoolean, IsEnum, IsOptional, IsString } from "class-validator"
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 export enum UserRoles {
-  REQUIRE_PASSWORD_CHANGE = 'require_password_change',
-  READ = 'read',
-  WRITE = 'write',
-  ADMIN = 'admin'
+  RequirePasswordChange = 'require_password_change',
+  Read = 'read',
+  Write = 'write',
+  Admin = 'admin'
 }
 
 @Entity()
@@ -31,9 +31,9 @@ export class User {
   @Column()
   password?: string
 
-  @ApiProperty({ type: 'enum', enum: UserRoles, example: UserRoles.READ })
+  @ApiProperty({ type: 'enum', enum: UserRoles, example: UserRoles.Read })
   @IsEnum(UserRoles)
   @IsOptional()
-  @Column({ default: UserRoles.READ, enum: UserRoles})
+  @Column({ default: UserRoles.Read, enum: UserRoles})
   userrole?: UserRoles
 }

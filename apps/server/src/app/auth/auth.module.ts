@@ -5,6 +5,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
 
 // app modules
 import { UsersModule } from "@users/users.module"
+import { CaslModule } from "../casl/casl.module";
 
 import { AuthController } from "./controllers/auth.controller";
 import { AuthService } from "./providers/auth.service";
@@ -18,6 +19,7 @@ import { JwtStrategy } from "./utils/jwt-auth.strategy";
     JwtStrategy
   ],
   imports: [
+    CaslModule,
     ConfigModule,
     PassportModule,
     UsersModule,

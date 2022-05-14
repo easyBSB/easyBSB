@@ -17,10 +17,10 @@ export class AuthService {
    * @description login with given credentials
    */
   async login(username: string, password: string): Promise<string> {
-    if (await this.authenticateUser(username, password)) {
-      return this.jwtService.sign({ username })
+    const user = await this.authenticateUser(username, password);
+    if (user) {
+      return this.jwtService.sign({ ...user })
     }
-    throw new UnauthorizedException('invalid username or password')
   }
 
   /**
@@ -41,7 +41,7 @@ export class AuthService {
   /**
    * @description login with given credentials
    */
-  private async authenticateUser(username: string, pwd: string): Promise<User> {
+  private async authenticateUser(username: string, pwd: string): Promise<Omit<User, 'password'>> {
     if (await this.validateParams(username, pwd)) {
       const user: User | undefined = await this.usersService.findOne(username)
       if (user && compareSync(pwd, user.password)) {
