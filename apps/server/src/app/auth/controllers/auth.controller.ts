@@ -1,11 +1,11 @@
-import { Body, Controller, ForbiddenException, Head, Post, Request } from "@nestjs/common";
+import { Body, Controller, Head, Post } from "@nestjs/common";
 import { ApiHeaders, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { LoginDto } from "../api";
 import { LoginResponseDto } from "../api/login-response.dto";
 import { BypassAuthorization } from "../utils/bypass-authorization";
 import { AuthService } from "../providers/auth.service";
-import { User } from "@app/users";
-import { Actions, AbilityFactory } from "@app/roles";
+import { CreateUserAbility, User } from "@app/users";
+import { CheckAbility } from "@app/roles";
 
 @ApiTags('auth')
 @Controller({
@@ -15,7 +15,6 @@ export class AuthController {
 
   constructor(
     private readonly authService: AuthService,
-    private readonly abilityFactory: AbilityFactory,
   ) {}
 
   @ApiOperation({ 
@@ -37,20 +36,13 @@ export class AuthController {
     security: [{ bearer: [] }]
   })
   @ApiHeaders([ { name: 'Authorization', description: 'Bearer auth token' } ])
-  @Post('register')
   @ApiResponse({ status: 201, description: 'user registered', type: User })
   @ApiResponse({ status: 403, description: 'usename allready taken' })
-  async register(@Body() param: LoginDto, @Request() req) {
-
-    // find ich nun gar nicht so toll hier an der Stelle das sollte on top passieren
-    const ability = this.abilityFactory.defineAbility(req.user)
-    const isAllowed = ability.can(Actions.Create, User)
-
-    if (isAllowed) {
-      return await this.authService.register(param.username, param.password)
-    }
-
-    throw new ForbiddenException('Not allowed to add new users')
+  @ApiResponse({ status: 403, description: 'not allowed to create a new user' })
+  @CheckAbility(CreateUserAbility)
+  @Post('register')
+  async register(@Body() param: LoginDto) {
+    await this.authService.register(param.username, param.password)
   }
 
   @ApiOperation({ 

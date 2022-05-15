@@ -1,11 +1,9 @@
-import { InferSubjects, Ability, AbilityBuilder, AbilityClass, ExtractSubjectType } from "@casl/ability"
+import { Ability, AbilityBuilder, AbilityClass, ExtractSubjectType } from "@casl/ability"
 import { Injectable } from "@nestjs/common"
 
 import { User, UserRoles } from "@app/users"
 import { Actions } from "../constants/actions";
-
-declare type Subjects = InferSubjects<typeof User> | 'all'
-declare type AppAbility = Ability<[Actions, Subjects]>;
+import { AppAbility, Subjects } from "../api";
 
 @Injectable()
 export class AbilityFactory {
