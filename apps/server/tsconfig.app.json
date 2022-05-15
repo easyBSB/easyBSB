@@ -6,7 +6,7 @@
     "module": "commonjs",
     "outDir": "../../dist/out-tsc",
     "paths": {
-      "@app/auth/*": ["./src/app/auth/*"],
+      "@app/auth": ["./src/app/auth/index.ts"],
       "@app/users": ["./src/app/users/index.ts"],
       "@app/roles": ["./src/app/roles/index.ts"],
       "@connections/*": ["./src/app/connections/*"],

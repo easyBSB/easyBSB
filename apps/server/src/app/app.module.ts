@@ -1,17 +1,15 @@
 import { Module } from '@nestjs/common'
-
-import { AppConfigModule } from './app-config.module';
-import { AppTypeormModule } from './app-typeorm.module'
-import { AuthModule } from '@app/auth/auth.module'
-import { EventsModule } from './events/events.module';
+import { APP_GUARD, Reflector } from '@nestjs/core';
 
 import { ConnectionsModule } from '@connections/connections.module'
+import { RoleGuard, RolesModule } from '@app/roles';
+import { JwtAuthGuard, AuthModule } from '@app/auth';
 
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
-import { APP_GUARD, Reflector } from '@nestjs/core';
-import { RoleGuard, RolesModule } from './roles';
-import { JwtAuthGuard } from './auth/utils/jwt-auth.guard';
+import { AppConfigModule } from './app-config.module';
+import { AppTypeormModule } from './app-typeorm.module'
+import { EventsModule } from './events/events.module';
 
 @Module({
   imports: [
