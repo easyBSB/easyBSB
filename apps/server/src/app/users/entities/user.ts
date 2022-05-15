@@ -19,13 +19,13 @@ export class User {
   @ApiProperty({ type: 'string', example: 'easybsb' })
   @IsString()
   @Column({ unique: true })
-  username: string
+  name: string
 
   @ApiProperty({ default: false, type: "boolean" })
   @IsBoolean()
   @IsOptional()
   @Column()
-  userNeedPasswordChange?: boolean
+  needPasswordChange?: boolean
 
   @IsString()
   @Column()
@@ -35,5 +35,5 @@ export class User {
   @IsEnum(UserRoles)
   @IsOptional()
   @Column({ default: UserRoles.Read, enum: UserRoles})
-  userrole?: UserRoles
+  role?: UserRoles
 }

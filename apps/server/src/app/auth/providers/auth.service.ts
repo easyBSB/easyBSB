@@ -26,14 +26,14 @@ export class AuthService {
   /**
    * @description register new user, throws 403 if username already has been taken
    */
-  async register(username: string, password: string): Promise<User> {
-    if (await this.validateParams(username, password)) {
-      const user = await this.usersService.findOne(username)
+  async register(name: string, password: string): Promise<User> {
+    if (await this.validateParams(name, password)) {
+      const user = await this.usersService.findOne(name)
       if (!user) {
-        const result = await this.usersService.save({ username, password: hashSync(password, 10) })
+        const result = await this.usersService.save({ name, password: hashSync(password, 10) })
         return this.usersService.findById(result.identifiers[0].id)
       }
-      throw new HttpException(`A user with the name ${username} already exists`, 403)
+      throw new HttpException(`A user with the name ${name} already exists`, 403)
     }
     throw new BadRequestException()
   }
@@ -59,7 +59,7 @@ export class AuthService {
    */
   async validateParams(username: string, password): Promise<boolean> {
     const user = new User()
-    user.username = username
+    user.name = username
     user.password = password
 
     let isValid = true

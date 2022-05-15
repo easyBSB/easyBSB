@@ -10,9 +10,9 @@ export class UserService {
     @InjectRepository(User) private readonly repository: Repository<User>
   ) { }
 
-  findOne(username: string): Promise<User | null> {
+  findOne(name: string): Promise<User | null> {
     return this.repository.findOne({
-      where: { username }
+      where: { name }
     })
   }
 
@@ -24,7 +24,7 @@ export class UserService {
   save(user: User): Promise<InsertResult> {
     return this.repository.insert({
       ...user,
-      userNeedPasswordChange: false
+      needPasswordChange: false
     })
   }
 }

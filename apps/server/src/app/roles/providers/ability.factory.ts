@@ -13,7 +13,7 @@ export class AbilityFactory {
     const { build, can, cannot } = new AbilityBuilder(Ability as AbilityClass<AppAbility>)
 
     // should be role instead of userrole this is a bit duplicated
-    switch (user.userrole) {
+    switch (user.role) {
       case UserRoles.Admin:
         can(Actions.Manage, 'all')
         break
