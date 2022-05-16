@@ -1,9 +1,10 @@
-import { BadRequestException, HttpException, Injectable, UnauthorizedException } from "@nestjs/common";
+import { BadRequestException, Injectable, UnauthorizedException } from "@nestjs/common";
 import { validate } from "class-validator"
-import { compareSync, hashSync } from "bcryptjs"
+import { compareSync } from "bcryptjs"
 import { JwtService } from '@nestjs/jwt'
 
-import { UserService, User } from "@app/users";
+import { User } from "@app/users/entities/user";
+import { UserService } from "@app/users/providers/users.service";
 
 @Injectable()
 export class AuthService {
@@ -21,21 +22,6 @@ export class AuthService {
     if (user) {
       return this.jwtService.sign({ ...user })
     }
-  }
-
-  /**
-   * @description register new user, throws 403 if username already has been taken
-   */
-  async register(name: string, password: string): Promise<User> {
-    if (await this.validateParams(name, password)) {
-      const user = await this.usersService.findOne(name)
-      if (!user) {
-        const result = await this.usersService.save({ name, password: hashSync(password, 10) })
-        return this.usersService.findById(result.identifiers[0].id)
-      }
-      throw new HttpException(`A user with the name ${name} already exists`, 403)
-    }
-    throw new BadRequestException()
   }
 
   /**

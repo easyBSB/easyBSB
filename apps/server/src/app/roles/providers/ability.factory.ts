@@ -1,9 +1,10 @@
 import { Ability, AbilityBuilder, AbilityClass, ExtractSubjectType } from "@casl/ability"
 import { Injectable } from "@nestjs/common"
 
-import { User, UserRoles } from "@app/users"
-import { Actions } from "../constants/actions";
-import { AppAbility, Subjects } from "../api";
+import { User, UserRoles } from "@app/users/entities/user"
+
+import { Actions } from "../constants/actions"
+import { AppAbility, Subjects } from "../api"
 
 @Injectable()
 export class AbilityFactory {
@@ -20,11 +21,12 @@ export class AbilityFactory {
 
       // can not update users
       case UserRoles.Write:
+        can(Actions.Read, User)
         can(Actions.Update, 'all')
         can(Actions.Create, 'all')
 
         cannot(Actions.Update, User)
-        cannot(Actions.Create, User)
+        cannot(Actions.Create, User).because('Forbidden: not allowed to add new users.')
         break
 
       case UserRoles.Read:

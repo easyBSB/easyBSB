@@ -1,0 +1,22 @@
+<form [formGroup]="userForm" (submit)="submit($event)" [attr.autocomplete]="'chrome-off'">
+  <label for="users_manage_name">
+    <span>Username</span>
+    <input type="text" data-e2e="easybsb-users-manage-name"  id="users_manage_name" formControlName="name" >
+  </label>
+
+  <label for="users_manage_password">
+    <span>Password</span>
+    <input data-e2e="easybsb-users-manage-password" type="password"  id="users_manage_password" formControlName="password">
+  </label>
+
+  <label for="users_manage_role">
+    <span>Role</span>
+    <select id="users_manage_role" formControlName="role" data-e2e="easybsb-users-manage-role">
+      <option value="admin">Manage</option>
+      <option value="write">Write</option>
+      <option value="read">Read</option>
+    </select>
+  </label>
+
+  <button type="submit" data-e2e="easybsb-users-manage-submit">Submit</button>
+</form>

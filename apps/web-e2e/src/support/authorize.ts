@@ -1,11 +1,11 @@
-import { Page } from "@playwright/test"
+import { APIRequestContext, Page } from "@playwright/test"
 
 /**
  * @description login and save sessionStorageDump
  */
-export async function loginAndCacheSession(page: Page, username='easybsb', password ='easybsb') {
-  if (!process.env['SESSION_STORAGE']) {
-    page.goto('http://localhost:4200/login')
+export async function loginAndCacheSession(page: Page, username='easybsb', password ='easybsb', override = false) {
+  if (override || !process.env['SESSION_STORAGE']) {
+    await page.goto('http://localhost:4200/login')
 
     const usernameControl = page.locator('[data-e2e="authorization-login-username"] input[type="text"]')
     const passwordControl = page.locator('[data-e2e="authorization-login-password"] input[type="password"]')
@@ -27,6 +27,21 @@ export async function loginAndCacheSession(page: Page, username='easybsb', passw
       window.sessionStorage.setItem(key, value)
     }
   }, process.env['SESSION_STORAGE'])
+}
+
+export async function resolveSessionToken(request: APIRequestContext, username = 'easybsb', password = 'easybsb'): Promise<string> {
+  return request.post(`http://localhost:4200/api/auth/login`, {data: { username, password }})
+    .then((response) => response.json())
+    .then((data) => data.jwt)
+}
+
+export async function writeSessionToken(page: Page, token: string) {
+  page.addInitScript((sessionStorageDump: string) => {
+    const keyValue = Object.entries<string>(JSON.parse(sessionStorageDump))
+    for (const [key, value] of keyValue) {
+      window.sessionStorage.setItem(key, value)
+    }
+  }, JSON.stringify({ Authorization: token }))
 }
 
 /**

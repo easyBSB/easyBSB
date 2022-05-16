@@ -34,6 +34,6 @@ export class User {
   @ApiProperty({ type: 'enum', enum: UserRoles, example: UserRoles.Read })
   @IsEnum(UserRoles)
   @IsOptional()
-  @Column({ default: UserRoles.Read, enum: UserRoles})
+  @Column({ type: 'varchar', default: UserRoles.Read, enum: UserRoles})
   role?: UserRoles
 }

@@ -14,6 +14,14 @@
         "generatePackageJson": true
       },
       "configurations": {
+        "e2e": {
+          "fileReplacements": [
+            {
+              "replace": "apps/server/src/environments/environment.ts",
+              "with": "apps/server/src/environments/environment.e2e.ts"
+            }
+          ]
+        },
         "production": {
           "optimization": true,
           "extractLicenses": true,
@@ -31,6 +39,11 @@
       "executor": "@nrwl/node:node",
       "options": {
         "buildTarget": "server:build"
+      },
+      "configurations": {
+        "e2e": {
+          "buildTarget": "server:build:e2e"
+        }
       }
     },
     "lint": {

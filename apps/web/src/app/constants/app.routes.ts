@@ -10,6 +10,10 @@ export const AppRoutes: Route[] = [{
       loadChildren: () => import('../pages/dashboard/dashboard.module').then((module) => module.DashboardModule)
     }, 
     {
+      path: 'users',
+      loadChildren: () => import('../pages/users/users.module').then((module) => module.UsersModule)
+    }, 
+    {
       path: '',
       redirectTo: '/dashboard',
       pathMatch: 'full'

@@ -1,4 +1,4 @@
-import { Actions, RoleRequirement } from "@app/roles";
+import { Actions, RoleRequirement } from "@app/roles/index";
 import { User } from "../entities/user";
 
 export const CreateUserAbility: RoleRequirement = {

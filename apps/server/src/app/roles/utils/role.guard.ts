@@ -2,7 +2,7 @@ import { CanActivate, ExecutionContext, ForbiddenException, Injectable, Unauthor
 import { PATH_METADATA } from "@nestjs/common/constants";
 import { Reflector } from "@nestjs/core";
 import { Observable } from "rxjs";
-import { User } from "@app/users";
+import { User } from "@app/users/entities/user";
 import { ForbiddenError } from "@casl/ability";
 
 import { AbilityFactory } from "../providers/ability.factory";

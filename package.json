@@ -12,6 +12,7 @@
     "build": "nx build",
     "test": "nx test",
     "start:all": "nx run-many --target=serve --all --parallel",
+    "start:all-e2e": "nx run-many --target=serve --configuration=e2e --all --parallel",
     "build:all": "nx run-many --target=build --configuration=production --all --parallel",
     "build:all:no-cache": "npm run build:all -- --skip-nx-cache",
     "postinstall": "npm run executors:build && ngcc --properties es2015 browser module main",
@@ -21,6 +22,7 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "13.2.4",
+    "@angular/cdk": "^13.3.7",
     "@angular/common": "13.2.4",
     "@angular/compiler": "13.2.4",
     "@angular/core": "13.2.4",
