@@ -41,7 +41,7 @@
     "@nestjs/platform-socket.io": "8.4.4",
     "@nestjs/swagger": "5.2.1",
     "@nestjs/typeorm": "9.0.0-next.2",
-    "@nestjs/websockets": "8.4.4",
+    "@nestjs/websockets": "8.4.5",
     "bcryptjs": "2.4.3",
     "class-validator": "0.13.2",
     "ngx-socket-io": "4.2.0",
