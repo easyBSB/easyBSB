@@ -2,7 +2,7 @@ import { DataSource, DataSourceOptions } from "typeorm";
 
 const config: DataSourceOptions  = { 
   type: "sqljs",
-  entities: [__dirname + '/../**/*.entity.ts'],
+  entities: [__dirname + '/../**/entities/*.ts'],
   migrationsRun: true,
   migrationsTableName: "migrations",
   migrations: [__dirname + "/**/migrations/*.js"],

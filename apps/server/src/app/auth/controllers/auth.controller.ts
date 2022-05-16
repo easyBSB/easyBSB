@@ -1,6 +1,5 @@
 import { Body, Controller, Head, Post } from "@nestjs/common";
-import { ApiHeaders, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
-import { UserDto } from "@users/dto/user.dto";
+import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { LoginDto } from "../api";
 import { LoginResponseDto } from "../api/login-response.dto";
 import { BypassAuthorization } from "../utils/bypass-authorization";
@@ -12,7 +11,9 @@ import { AuthService } from "../providers/auth.service";
 })
 export class AuthController {
 
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+  ) {}
 
   @ApiOperation({ 
     summary: 'login',
@@ -25,19 +26,6 @@ export class AuthController {
   async login(@Body() param: LoginDto) {
     const jwt = await this.authService.login(param.username, param.password)
     return { jwt }
-  }
-
-  @ApiOperation({ 
-    summary: 'register',
-    description: 'register new user by given username and password',
-    security: [{ bearer: [] }]
-  })
-  @ApiHeaders([ { name: 'Authorization', description: 'Bearer auth token' } ])
-  @Post('register')
-  @ApiResponse({ status: 201, description: 'user registered', type: UserDto })
-  @ApiResponse({ status: 403, description: 'usename allready taken' })
-  async register(@Body() param: LoginDto) {
-    return await this.authService.register(param.username, param.password)
   }
 
   @ApiOperation({ 

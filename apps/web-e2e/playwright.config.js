@@ -6,6 +6,9 @@ module.exports = {
     {
       name: 'Chrome Stable',
       use: {
+        launchOptions: {
+          slowMo: 0,
+        },
         headless: true,
         browserName: 'chromium',
         channel: 'chrome',
