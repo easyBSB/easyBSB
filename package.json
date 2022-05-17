@@ -73,7 +73,7 @@
     "@nrwl/linter": "14.1.6",
     "@nrwl/nest": "14.1.6",
     "@nrwl/node": "14.1.6",
-    "@nrwl/tao": "14.1.5",
+    "@nrwl/tao": "14.1.6",
     "@nrwl/workspace": "14.1.6",
     "@playwright/test": "1.22.0",
     "@types/bcryptjs": "2.4.2",
