@@ -18,7 +18,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
         ],
         migrationsRun: true,
         migrationsTableName: "migrations",
-        migrations: ["apps/server/src/**/migrations/*.js"],
+        migrations: [
+          ...config.get('db.migrations'),
+        ],
         autoSave: true,
         logging: true,
         synchronize: false,

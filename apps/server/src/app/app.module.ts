@@ -1,5 +1,6 @@
-import { Module } from '@nestjs/common'
+import { DynamicModule, Module } from '@nestjs/common'
 import { APP_GUARD, Reflector } from '@nestjs/core';
+import { ServeStaticModule } from '@nestjs/serve-static';
 
 import { ConnectionsModule } from '@connections/connections.module'
 import { RoleGuard, RolesModule } from '@app/roles/index';
@@ -12,6 +13,19 @@ import { AppService } from './app.service'
 import { AppConfigModule } from './app-config.module';
 import { AppTypeormModule } from './app-typeorm.module'
 
+// add serve static module only for production
+import { environment as APP_ENVIRONMENT } from '../environments/environment';
+import { join } from 'path';
+
+const extraImports: DynamicModule[] = []
+if (APP_ENVIRONMENT.production) {
+  extraImports.push(
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '../web')
+    })
+  )
+}
+
 @Module({
   imports: [
     AppConfigModule,
@@ -21,6 +35,7 @@ import { AppTypeormModule } from './app-typeorm.module'
     UsersModule,
     ConnectionsModule,
     EventsModule,
+    ...extraImports
   ],
   controllers: [AppController],
   providers: [
@@ -37,4 +52,5 @@ import { AppTypeormModule } from './app-typeorm.module'
     }
   ],
 })
-export class AppModule {}
+export class AppModule {
+}
