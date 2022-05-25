@@ -74,7 +74,7 @@
     "@nrwl/jest": "14.1.7",
     "@nrwl/linter": "14.1.9",
     "@nrwl/nest": "14.1.9",
-    "@nrwl/node": "14.1.7",
+    "@nrwl/node": "14.1.9",
     "@nrwl/tao": "14.1.9",
     "@nrwl/workspace": "14.1.7",
     "@playwright/test": "1.22.2",
