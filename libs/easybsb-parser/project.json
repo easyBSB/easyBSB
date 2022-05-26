@@ -1,5 +1,4 @@
 {
-  "root": "libs/easybsb-parser",
   "sourceRoot": "libs/easybsb-parser/src",
   "projectType": "library",
   "targets": {

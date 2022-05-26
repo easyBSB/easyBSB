@@ -1,6 +1,7 @@
 var fs = require('fs/promises')
 var path = require('path')
 var os = require('os');
+const { exec } = require('child_process');
 
 /**
  * @description copy ./dist/apps/web to ./dist/apps/server
@@ -35,6 +36,51 @@ async function copyClient() {
 }
 
 /**
+ * @description make server executable so we can run via npx for example
+ */
+async function makeExecutable() {
+  // create bin directory on server
+  fs.mkdir(path.resolve(__dirname, '../dist/apps/server/bin'), { recursive: true })
+
+  // move executable file to server dist directory
+  fs.copyFile(
+    path.resolve(__dirname, '../apps/server/src/bin/easybsb.js'),
+    path.resolve(__dirname, '../dist/apps/server/bin/easybsb.js')
+  )
+
+  // update package.json to add bin property to manifest
+  const packageJsonPath = path.resolve(__dirname, '../dist/apps/server/package.json')
+  const fileContent = JSON.parse(await fs.readFile(packageJsonPath))
+
+  const newContent = {
+    ...fileContent,
+    dependencies: {
+      ...fileContent.dependencies,
+      '@oclif/core': '1.9.0'
+    },
+    bin: { 'easybsb': './bin/easybsb.js' }
+  }
+
+  await fs.writeFile(packageJsonPath, JSON.stringify(newContent, null, 2));
+}
+
+/**
+ * @description create tar.gz file for later use
+ */
+async function createPackageFile() {
+  const sourceDir = path.resolve(__dirname, '../dist/apps/server')
+  const outDir = path.resolve(__dirname, `../dist/package`)
+  const outFile = path.resolve(outDir, 'easybsb.tar.gz')
+  
+  await fs.mkdir(outDir, { recursive: true })
+
+  await new Promise((resolve, reject) => {
+    const process = exec(`tar -C ${sourceDir} -cvf ${outFile} .`)
+    process.on('exit', () => resolve())
+  })
+}
+
+/**
  * @description copy all content from source directory to target directory same.
  * fs.cp this should copy directorys but yells EISDIR because source is a directory ...
  */
@@ -59,5 +105,20 @@ async function copyDirectory(from, to) {
   }
 }
 
+/**
+ * copy all migration files
+ */
 copyMigrations()
+
+/**
+ * copy client for serve static
+ */
 copyClient()
+/**
+ * ensure it is executable
+ */
+makeExecutable()
+/**
+ * create local package file
+ */
+createPackageFile()
