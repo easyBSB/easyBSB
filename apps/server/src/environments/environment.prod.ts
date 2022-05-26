@@ -1,8 +1,10 @@
 import { join } from 'path';
+import { homedir } from 'os';
+
+const DATABASE_FILE = process.env.DATABASE_FILE?.trim() ?? join(homedir(), 'easy-bsb.sqlite')
 
 const clientPath = join(__dirname, 'client')
 const migrationsPath = join(__dirname, './migrations/*.js')
-const databaseFile = join(__dirname, './easy-bsb.sqlite')
 
 export const environment = {
   production: true,
@@ -11,10 +13,10 @@ export const environment = {
     secret: 'secretPwd',
   },
   db: {
-    file: databaseFile,
+    file: DATABASE_FILE,
     migrations: [ migrationsPath ]
   },
   client: {
     path: clientPath
   }
-};
+}

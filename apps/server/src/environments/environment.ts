@@ -8,8 +8,5 @@ export const environment = {
     migrations: [
       'apps/server/src/**/migrations/*.js'
     ]
-  },
-  client: {
-    path: ''
   }
 };
