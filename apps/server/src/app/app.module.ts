@@ -15,13 +15,17 @@ import { AppTypeormModule } from './app-typeorm.module'
 
 // add serve static module only for production
 import { environment as APP_ENVIRONMENT } from '../environments/environment';
-import { join } from 'path';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 const extraImports: DynamicModule[] = []
 if (APP_ENVIRONMENT.production) {
   extraImports.push(
-    ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '../web')
+    ServeStaticModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ([{
+        rootPath: config.get('client.path')
+      }])
     })
   )
 }
