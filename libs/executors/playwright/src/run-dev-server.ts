@@ -2,7 +2,7 @@ import { ExecutorContext, runExecutor } from '@nrwl/devkit'
 
 export default async function* runDevServer(context: ExecutorContext) {
   const executorOptions = {
-    project: "web",
+    project: "easybsb-client",
     target: "serve",
     configuration: "development"
   }

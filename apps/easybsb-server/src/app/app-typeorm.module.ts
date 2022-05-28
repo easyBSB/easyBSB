@@ -10,7 +10,10 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (config: ConfigService) => ({
+      useFactory: (config: ConfigService) => {
+        console.log(config.get('db.file'));
+        
+        return {
         type: "sqljs",
         entities: [
           ...CONNECTION_ENTITIES,
@@ -25,7 +28,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
         logging: true,
         synchronize: false,
         location: config.get('db.file'),
-      }),
+        }
+      },
     })
   ],
   exports: [TypeOrmModule]

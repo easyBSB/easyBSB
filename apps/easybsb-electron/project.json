@@ -39,7 +39,7 @@
       "executor": "nx-electron:package",
       "options": {
         "name": "easybsb-electron",
-        "frontendProject": "web",
+        "frontendProject": "easybsb-client",
         "outputPath": "dist/packages",
         "prepackageOnly": true
       }
@@ -48,7 +48,7 @@
       "executor": "nx-electron:make",
       "options": {
         "name": "easybsb-electron",
-        "frontendProject": "web",
+        "frontendProject": "easybsb-client",
         "outputPath": "dist/executables"
       }
     },

@@ -2,7 +2,7 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "../../dist/apps/server",
+    "outDir": "../../dist/apps/easybsb-server",
     "module": "commonjs",
     "types": ["node"],
     "emitDecoratorMetadata": true,

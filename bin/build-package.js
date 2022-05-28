@@ -4,11 +4,11 @@ var os = require('os');
 const { exec } = require('child_process');
 
 /**
- * @description copy ./dist/apps/web to ./dist/apps/server
+ * @description copy ./dist/apps/easybsb-client to ./dist/apps/server
  */
 async function copyMigrations() {
-  const sourceDir = path.resolve(__dirname, '../apps/server/src/typeorm/migrations')
-  const targetDir = path.resolve(__dirname, '../dist/apps/server/migrations')
+  const sourceDir = path.resolve(__dirname, '../apps/easybsb-server/src/typeorm/migrations')
+  const targetDir = path.resolve(__dirname, '../dist/apps/easybsb-server/migrations')
 
   try {
     await copyDirectory(sourceDir, targetDir)
@@ -20,16 +20,16 @@ async function copyMigrations() {
 }
 
 /**
- * @description copy ./dist/apps/web to ./dist/apps/server
+ * @description copy ./dist/apps/easybsb-client to ./dist/apps/server
  */
 async function copyClient() {
-  const sourceDir = path.resolve(__dirname, '../dist/apps/web')
-  const targetDir = path.resolve(__dirname, '../dist/apps/server/client')
+  const sourceDir = path.resolve(__dirname, '../dist/apps/easybsb-client')
+  const targetDir = path.resolve(__dirname, '../dist/apps/easybsb-server/client')
 
   try {
     await copyDirectory(sourceDir, targetDir)
   } catch(error) {
-    process.stderr.write(`could not copy ./dist/apps/web to ./dist/apps/server/client, ensure to execute 'npm run build web' or 'npm run build:all' before ${os.EOL}`)
+    process.stderr.write(`could not copy ./dist/apps/easybsb-client to ./dist/apps/server/client, ensure to execute 'npm run build easybsb-client' or 'npm run build:all' before ${os.EOL}`)
     process.stderr.write(`${error} ${os.EOL}`)
     process.exit(1)
   }
@@ -40,20 +40,21 @@ async function copyClient() {
  */
 async function makeExecutable() {
   // create bin directory on server
-  fs.mkdir(path.resolve(__dirname, '../dist/apps/server/bin'), { recursive: true })
+  fs.mkdir(path.resolve(__dirname, '../dist/apps/easybsb-server/bin'), { recursive: true })
 
   // move executable file to server dist directory
   fs.copyFile(
-    path.resolve(__dirname, '../apps/server/src/bin/easybsb.js'),
-    path.resolve(__dirname, '../dist/apps/server/bin/easybsb.js')
+    path.resolve(__dirname, '../apps/easybsb-server/src/bin/easybsb.js'),
+    path.resolve(__dirname, '../dist/apps/easybsb-server/bin/easybsb.js')
   )
 
   // update package.json to add bin property to manifest
-  const packageJsonPath = path.resolve(__dirname, '../dist/apps/server/package.json')
+  const packageJsonPath = path.resolve(__dirname, '../dist/apps/easybsb-server/package.json')
   const fileContent = JSON.parse(await fs.readFile(packageJsonPath))
 
   const newContent = {
     ...fileContent,
+    name: 'easybsb',
     dependencies: {
       ...fileContent.dependencies,
       '@oclif/core': '1.9.0'
@@ -68,7 +69,7 @@ async function makeExecutable() {
  * @description create tar.gz file for later use
  */
 async function createPackageFile() {
-  const sourceDir = path.resolve(__dirname, '../dist/apps/server')
+  const sourceDir = path.resolve(__dirname, '../dist/apps/easybsb-server')
   const outDir = path.resolve(__dirname, `../dist/package`)
   const outFile = path.resolve(outDir, 'easybsb.tar.gz')
   

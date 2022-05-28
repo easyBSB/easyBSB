@@ -4,9 +4,9 @@ export const environment = {
     secret: 'secretPwd',
   },
   db: {
-    file: 'apps/server/src/typeorm/easy-bsb-dev.sqlite',
+    file: 'apps/easybsb-server/src/typeorm/easy-bsb-dev.e2e.sqlite',
     migrations: [
-      'apps/server/src/**/migrations/*.js'
+      'apps/easybsb-server/src/**/migrations/*.js'
     ]
   }
 };

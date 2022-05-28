@@ -16,9 +16,9 @@
     "build:all": "nx run-many --target=build --configuration=production --all --parallel",
     "build:all:no-cache": "npm run build:all -- --skip-nx-cache",
     "build:package": "node ./bin/build-package.js",
+    "build:executors": "npm run build --prefix ./libs/executors",
     "postinstall": "npm run executors:build && ngcc --properties es2015 browser module main",
-    "executors:build": "npm run build --prefix ./libs/executors",
-    "e2e": "nx run web:e2e"
+    "e2e": "nx run easybsb-client:e2e"
   },
   "private": true,
   "dependencies": {

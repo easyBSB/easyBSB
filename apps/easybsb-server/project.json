@@ -1,5 +1,6 @@
 {
-  "sourceRoot": "apps/server/src",
+  "$schema": "..\\..\\node_modules\\nx\\schemas\\project-schema.json",
+  "sourceRoot": "apps/easybsb-server/src",
   "projectType": "application",
   "targets": {
     "build": {
@@ -8,11 +9,11 @@
         "{options.outputPath}"
       ],
       "options": {
-        "outputPath": "dist/apps/server",
-        "main": "apps/server/src/main.ts",
-        "tsConfig": "apps/server/tsconfig.app.json",
+        "outputPath": "dist/apps/easybsb-server",
+        "main": "apps/easybsb-server/src/main.ts",
+        "tsConfig": "apps/easybsb-server/tsconfig.app.json",
         "assets": [
-          "apps/server/src/assets"
+          "apps/easybsb-server/src/assets"
         ],
         "generatePackageJson": true
       },
@@ -20,8 +21,8 @@
         "e2e": {
           "fileReplacements": [
             {
-              "replace": "apps/server/src/environments/environment.ts",
-              "with": "apps/server/src/environments/environment.e2e.ts"
+              "replace": "apps/easybsb-server/src/environments/environment.ts",
+              "with": "apps/easybsb-server/src/environments/environment.e2e.ts"
             }
           ]
         },
@@ -31,8 +32,8 @@
           "inspect": false,
           "fileReplacements": [
             {
-              "replace": "apps/server/src/environments/environment.ts",
-              "with": "apps/server/src/environments/environment.prod.ts"
+              "replace": "apps/easybsb-server/src/environments/environment.ts",
+              "with": "apps/easybsb-server/src/environments/environment.prod.ts"
             }
           ]
         }
@@ -41,11 +42,11 @@
     "serve": {
       "executor": "@nrwl/node:node",
       "options": {
-        "buildTarget": "server:build"
+        "buildTarget": "easybsb-server:build"
       },
       "configurations": {
         "e2e": {
-          "buildTarget": "server:build:e2e"
+          "buildTarget": "easybsb-server:build:e2e"
         }
       }
     },
@@ -56,7 +57,7 @@
       ],
       "options": {
         "lintFilePatterns": [
-          "apps/server/**/*.ts"
+          "apps/easybsb-server/**/*.ts"
         ]
       }
     },
@@ -65,8 +66,8 @@
       "outputs": [],
       "options": {
         "commands": [
-          "npm run build web -- --configuration=production",
-          "npm run build server -- --configuration=production",
+          "npm run build easybsb-client -- --configuration=production",
+          "npm run build easybsb-server -- --configuration=production",
           "npm run build:package"
         ],
         "parallel": false
@@ -75,10 +76,10 @@
     "test": {
       "executor": "@nrwl/jest:jest",
       "outputs": [
-        "coverage/apps/server"
+        "coverage/apps/easybsb-server"
       ],
       "options": {
-        "jestConfig": "apps/server/jest.config.js",
+        "jestConfig": "apps/easybsb-server/jest.config.js",
         "passWithNoTests": true
       }
     },
@@ -87,7 +88,7 @@
       "outputs": [],
       "options": {
         "command": "ts-node --project tsconfig.app.json ../../node_modules/typeorm/cli.js migration:generate -o true -d src/typeorm/datasource.ts src/typeorm/migrations/{args.name}",
-        "cwd": "apps/server"
+        "cwd": "apps/easybsb-server"
       }
     },
     "migration-run": {
@@ -95,7 +96,7 @@
       "outputs": [],
       "options": {
         "command": "ts-node --project tsconfig.app.json ../../node_modules/typeorm/cli.js migration:run -d src/typeorm/datasource.ts",
-        "cwd": "apps/server"
+        "cwd": "apps/easybsb-server"
       }
     },
     "migration-create": {
@@ -103,7 +104,7 @@
       "outputs": [],
       "options": {
         "command": "ts-node --project tsconfig.app.json ../../node_modules/typeorm/cli.js migration:create -o true src/typeorm/migrations/{args.name}",
-        "cwd": "apps/server"
+        "cwd": "apps/easybsb-server"
       }
     },
     "serve-e2e": {

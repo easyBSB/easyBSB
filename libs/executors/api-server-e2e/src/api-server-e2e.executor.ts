@@ -58,7 +58,7 @@ async function* startBuild(
   context: ExecutorContext
 ) {
   const executorOptions = {
-    project: "server",
+    project: "easybsb-server",
     target: "build",
     configuration: "development"
   }
