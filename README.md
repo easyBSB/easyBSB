@@ -58,5 +58,5 @@ npx nx run electron:package
 mac or nx on mac has some problems here and throws an error npm ERR! could not determine executable to run <br /> as workarround run:
 
 ```bash
-npm run build:all && node ./bin/build-electron.js
+npx nx run server:package && npx nx run electron:build:production && node ./bin/build-electron.js
 ```
