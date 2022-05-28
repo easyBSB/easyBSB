@@ -11,6 +11,10 @@
         "outputPath": "dist/apps/easybsb-electron",
         "main": "apps/easybsb-electron/src/main.ts",
         "tsConfig": "apps/easybsb-electron/tsconfig.app.json",
+        "generatePackageJson": true,
+        "implicitDependencies": [
+          "dist/package/easybsb.tar.gz"
+        ],
         "assets": [
           "apps/easybsb-electron/src/assets"
         ]
@@ -39,9 +43,11 @@
       "executor": "nx-electron:package",
       "options": {
         "name": "easybsb-electron",
-        "frontendProject": "easybsb-client",
+        "frontendProject": "easybsb-server",
+        "sourcePath": "dist/apps",
         "outputPath": "dist/packages",
-        "prepackageOnly": true
+        "prepackageOnly": true,
+        "packageMetadata": "dist/apps/easybsb-server/package.json"
       }
     },
     "make": {
@@ -49,7 +55,9 @@
       "options": {
         "name": "easybsb-electron",
         "frontendProject": "easybsb-client",
-        "outputPath": "dist/executables"
+        "sourcePath": "dist/apps",
+        "outputPath": "dist/executables",
+        "packageMetadata": "dist/apps/easybsb-server/package.json"
       }
     },
     "lint": {

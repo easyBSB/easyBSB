@@ -1,8 +1,7 @@
 import { BrowserWindow, screen } from 'electron';
-import { rendererAppName, rendererAppPort } from './constants';
 import { environment } from '../environments/environment';
 import { join } from 'path';
-import { format } from 'url';
+import { rendererAppPort } from './constants';
 
 export default class App {
   // Keep a global reference of the window object, if you don't, the window will
@@ -57,6 +56,7 @@ export default class App {
     App.mainWindow.setTitle('EasyBSB');
     App.mainWindow.setMenu(null);
     App.mainWindow.center();
+    App.mainWindow.webContents.openDevTools();
 
     // if main window is ready to show, close the splash window and show the main window
     App.mainWindow.once('ready-to-show', () => {
@@ -77,12 +77,8 @@ export default class App {
     if (!App.application.isPackaged) {
       App.mainWindow.loadURL(`http://localhost:${rendererAppPort}`);
     } else {
-      // load url http://localhost:3333/instead of an index.html
-      App.mainWindow.loadURL(format({
-        pathname: join(__dirname, '..', rendererAppName, 'index.html'),
-        protocol: 'file:',
-        slashes: true
-      }));
+      // spawn child process
+      App.mainWindow.loadURL(`http://localhost:3333`)
     }
   }
 

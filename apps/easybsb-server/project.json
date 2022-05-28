@@ -68,7 +68,7 @@
         "commands": [
           "npm run build easybsb-client -- --configuration=production",
           "npm run build easybsb-server -- --configuration=production",
-          "npm run build:package"
+          "node ./bin/build-package.js"
         ],
         "parallel": false
       }

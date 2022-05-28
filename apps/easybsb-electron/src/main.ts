@@ -1,8 +1,12 @@
 import SquirrelEvents from './app/events/squirrel.events';
 import ElectronEvents from './app/events/electron.events';
+import { execFile, fork } from 'child_process';
 import { app, BrowserWindow } from 'electron';
 import App from './app/app';
+import * as path from 'path';
 
+const controller = new AbortController();
+const { signal } = controller;
 
 export default class Main {
 
@@ -13,21 +17,24 @@ export default class Main {
     }
   }
 
-  static bootstrapApp() {
-    App.main(app, BrowserWindow);
-
+  static async bootstrapApp() {
+    const easybsb = path.join(__dirname, 'easy-bsb', 'main.js');
     if (!App.isDevelopmentMode()) {
-      // bootstrap child processes
+      if (process.platform === 'darwin') {
+        execFile(easybsb, { signal });
+      }
+  
+      if (process.platform === 'win32') {
+        fork(easybsb, { stdio: 'inherit', signal })
+      }
     } 
+
+    // start app
+    App.main(app, BrowserWindow);
   }
 
   static bootstrapAppEvents() {
     ElectronEvents.bootstrapElectronEvents();
-
-    // initialize auto updater service
-    if (!App.isDevelopmentMode()) {
-      // UpdateEvents.initAutoUpdateService();
-    }
   }
 }
 
