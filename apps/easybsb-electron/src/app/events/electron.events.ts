@@ -1,25 +1,25 @@
 /**
- * This module is responsible on handling all the inter process communications 
+ * This module is responsible on handling all the inter process communications
  * between the frontend to the electron backend.
  */
 
-import { app, ipcMain } from 'electron';
-import { environment } from '../../environments/environment';
+import { app, ipcMain } from "electron";
+import { environment } from "../../environments/environment";
 
 export default class ElectronEvents {
-    static bootstrapElectronEvents(): Electron.IpcMain {
-        return ipcMain;
-    }
+  static bootstrapElectronEvents(): Electron.IpcMain {
+    return ipcMain;
+  }
 }
 
 // Retrieve app version
-ipcMain.handle('get-app-version', () => {
-    console.log(`Fetching application version... [v${environment.version}]`);
+ipcMain.handle("get-app-version", () => {
+  console.log(`Fetching application version... [v${environment.version}]`);
 
-    return environment.version;
+  return environment.version;
 });
 
 // Handle App termination
-ipcMain.on('quit', (event, code) => {
-    app.exit(code);
+ipcMain.on("quit", (event, code) => {
+  app.exit(code);
 });

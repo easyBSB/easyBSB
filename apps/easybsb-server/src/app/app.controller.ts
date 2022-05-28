@@ -1,10 +1,10 @@
-import { Controller, Get } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { Controller, Get } from "@nestjs/common";
+import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 
-import { AppService } from './app.service';
+import { AppService } from "./app.service";
 
 @ApiBearerAuth()
-@ApiTags('App')
+@ApiTags("App")
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
@@ -14,15 +14,15 @@ export class AppController {
     return this.appService.getData();
   }
 
-  @Get('log')
+  @Get("log")
   getInfo() {
     return this.appService.log();
   }
 
-  @Get('ping')
+  @Get("ping")
   getPing() {
     return {
-      message: 'pong'
+      message: "pong",
     };
   }
 }

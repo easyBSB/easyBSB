@@ -6,9 +6,7 @@
   "targets": {
     "build": {
       "executor": "@angular-devkit/build-angular:browser",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/apps/easybsb-client",
         "index": "apps/easybsb-client/src/index.html",
@@ -20,9 +18,7 @@
           "apps/easybsb-client/src/favicon.ico",
           "apps/easybsb-client/src/assets"
         ],
-        "styles": [
-          "apps/easybsb-client/src/styles.scss"
-        ],
+        "styles": ["apps/easybsb-client/src/styles.scss"],
         "scripts": []
       },
       "configurations": {
@@ -91,9 +87,7 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": [
-        "coverage/apps/easybsb-client"
-      ],
+      "outputs": ["coverage/apps/easybsb-client"],
       "options": {
         "jestConfig": "apps/easybsb-client/jest.config.js",
         "passWithNoTests": true
@@ -101,9 +95,7 @@
     },
     "e2e": {
       "executor": "./libs/executors:playwright",
-      "outputs": [
-        "coverage/apps/easybsb-client"
-      ]
+      "outputs": ["coverage/apps/easybsb-client"]
     }
   },
   "tags": []

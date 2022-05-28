@@ -5,16 +5,12 @@
   "targets": {
     "build": {
       "executor": "@nrwl/node:webpack",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/apps/easybsb-server",
         "main": "apps/easybsb-server/src/main.ts",
         "tsConfig": "apps/easybsb-server/tsconfig.app.json",
-        "assets": [
-          "apps/easybsb-server/src/assets"
-        ],
+        "assets": ["apps/easybsb-server/src/assets"],
         "generatePackageJson": true,
         "dependencies": ["typeorm", "sql.js"]
       },
@@ -53,13 +49,9 @@
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
-      "outputs": [
-        "{options.outputFile}"
-      ],
+      "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": [
-          "apps/easybsb-server/**/*.ts"
-        ]
+        "lintFilePatterns": ["apps/easybsb-server/**/*.ts"]
       }
     },
     "package": {
@@ -76,9 +68,7 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": [
-        "coverage/apps/easybsb-server"
-      ],
+      "outputs": ["coverage/apps/easybsb-server"],
       "options": {
         "jestConfig": "apps/easybsb-server/jest.config.js",
         "passWithNoTests": true

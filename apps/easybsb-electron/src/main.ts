@@ -1,15 +1,14 @@
-import SquirrelEvents from './app/events/squirrel.events';
-import ElectronEvents from './app/events/electron.events';
-import { execFile, fork } from 'child_process';
-import { app, BrowserWindow } from 'electron';
-import App from './app/app';
-import * as path from 'path';
+import SquirrelEvents from "./app/events/squirrel.events";
+import ElectronEvents from "./app/events/electron.events";
+import { execFile, fork } from "child_process";
+import { app, BrowserWindow } from "electron";
+import App from "./app/app";
+import * as path from "path";
 
 const controller = new AbortController();
 const { signal } = controller;
 
 export default class Main {
-
   static initialize() {
     if (SquirrelEvents.handleEvents()) {
       // squirrel event handled (except first run event) and app will exit in 1000ms, so don't do anything else
@@ -18,16 +17,16 @@ export default class Main {
   }
 
   static async bootstrapApp() {
-    const easybsb = path.join(__dirname, 'easy-bsb', 'main.js');
+    const easybsb = path.join(__dirname, "easy-bsb", "main.js");
     if (!App.isDevelopmentMode()) {
-      if (process.platform === 'darwin') {
+      if (process.platform === "darwin") {
         execFile(easybsb, { signal });
       }
-  
-      if (process.platform === 'win32') {
-        fork(easybsb, { stdio: 'inherit', signal })
+
+      if (process.platform === "win32") {
+        fork(easybsb, { stdio: "inherit", signal });
       }
-    } 
+    }
 
     // start app
     App.main(app, BrowserWindow);

@@ -1,6 +1,6 @@
-import { ExecutorContext, logger, runExecutor } from '@nrwl/devkit'
-import { ChildProcess, fork } from 'child_process'
-import { EOL } from 'os'
+import { ExecutorContext, logger, runExecutor } from "@nrwl/devkit";
+import { ChildProcess, fork } from "child_process";
+import { EOL } from "os";
 
 export interface ExecutorEvent {
   outfile: string;
@@ -10,74 +10,75 @@ export interface ExecutorEvent {
 interface ApiServerExecutorOptions {}
 let serverProcess: ChildProcess = null;
 
-/** 
+/**
  * inside of mac it seems the server process is not killed
  * if the e2e test stops which leads to the problem we have
  * to kill the process with pkill pid inside termial
  */
 export default async function* apiServerE2Executor(
   options: [ApiServerExecutorOptions],
-  context: ExecutorContext,
+  context: ExecutorContext
 ): AsyncGenerator<ExecutorEvent> {
-
   // const watch = false;
-  let success = true
+  let success = true;
 
   // kills the node process
-  process.on('exit', () => killServerProcess())
+  process.on("exit", () => killServerProcess());
 
   // run api server
-  process.stdout.write('\x1b[32m***** Api starting *****\x1b[0m' + EOL)
+  process.stdout.write("\x1b[32m***** Api starting *****\x1b[0m" + EOL);
 
   for await (const event of startBuild(options, context)) {
     if (!event.success) {
-      logger.error('There was an error with the build. See above.')
-      logger.info(`${event.outfile} was not restarted.`)
+      logger.error("There was an error with the build. See above.");
+      logger.info(`${event.outfile} was not restarted.`);
     }
 
     if (serverProcess) {
-      await killServerProcess()
+      await killServerProcess();
     }
 
     // seems even nx does not suport hot reload
     try {
-      await runServer(event)
+      await runServer(event);
     } catch (error) {
-      logger.error('could not start dev server target')
-      throw error
+      logger.error("could not start dev server target");
+      throw error;
     }
 
-    yield event
+    yield event;
   }
 
   return { success };
 }
 
-async function* startBuild(
-  options: unknown,
-  context: ExecutorContext
-) {
+async function* startBuild(options: unknown, context: ExecutorContext) {
   const executorOptions = {
     project: "easybsb-server",
     target: "build",
-    configuration: "development"
-  }
-  yield* await runExecutor<ExecutorEvent>(executorOptions, { watch: false }, context);
+    configuration: "development",
+  };
+  yield* await runExecutor<ExecutorEvent>(
+    executorOptions,
+    { watch: false },
+    context
+  );
 }
 
 async function runServer(event: ExecutorEvent): Promise<void> {
-  serverProcess = fork(event.outfile, { env : { ...process.env }, stdio: 'inherit'})
+  serverProcess = fork(event.outfile, {
+    env: { ...process.env },
+    stdio: "inherit",
+  });
 
   return new Promise((resolve, reject) => {
-    serverProcess.on('spawn', () => {
-      serverProcess.pid ? resolve() : reject()
-    })
-  })
+    serverProcess.on("spawn", () => {
+      serverProcess.pid ? resolve() : reject();
+    });
+  });
 }
 
 function killServerProcess(): Promise<void> {
-  serverProcess.kill('SIGINT')
-  return new Promise((resolve) => 
-    serverProcess.once('exit', () => resolve())
-  )
+  serverProcess.kill("SIGINT");
+  return new Promise((resolve) => serverProcess.once("exit", () => resolve()));
 }

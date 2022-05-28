@@ -4,20 +4,14 @@
   "targets": {
     "build": {
       "executor": "nx-electron:build",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/apps/easybsb-electron",
         "main": "apps/easybsb-electron/src/main.ts",
         "tsConfig": "apps/easybsb-electron/tsconfig.app.json",
         "generatePackageJson": true,
-        "implicitDependencies": [
-          "dist/package/easybsb.tar.gz"
-        ],
-        "assets": [
-          "apps/easybsb-electron/src/assets"
-        ]
+        "implicitDependencies": ["dist/package/easybsb.tar.gz"],
+        "assets": ["apps/easybsb-electron/src/assets"]
       },
       "configurations": {
         "production": {
@@ -51,20 +45,14 @@
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
-      "outputs": [
-        "{options.outputFile}"
-      ],
+      "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": [
-          "apps/easybsb-electron/**/*.ts"
-        ]
+        "lintFilePatterns": ["apps/easybsb-electron/**/*.ts"]
       }
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": [
-        "coverage/apps/easybsb-electron"
-      ],
+      "outputs": ["coverage/apps/easybsb-electron"],
       "options": {
         "jestConfig": "apps/easybsb-electron/jest.config.js",
         "passWithNoTests": true

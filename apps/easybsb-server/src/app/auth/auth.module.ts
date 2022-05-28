@@ -1,10 +1,10 @@
 import { Module } from "@nestjs/common";
 import { PassportModule } from "@nestjs/passport";
-import { JwtModule } from "@nestjs/jwt"
-import { ConfigModule, ConfigService } from '@nestjs/config'
+import { JwtModule } from "@nestjs/jwt";
+import { ConfigModule, ConfigService } from "@nestjs/config";
 
 // app modules
-import { UsersModule } from "@app/users"
+import { UsersModule } from "@app/users";
 import { RolesModule } from "@app/roles/roles.module";
 
 import { AuthController } from "./controllers/auth.controller";
@@ -13,11 +13,7 @@ import { LocalStrategy } from "./utils/local.strategy";
 import { JwtStrategy } from "./utils/jwt-auth.strategy";
 
 @Module({
-  providers: [
-    AuthService,
-    LocalStrategy,
-    JwtStrategy
-  ],
+  providers: [AuthService, LocalStrategy, JwtStrategy],
   imports: [
     RolesModule,
     ConfigModule,
@@ -27,17 +23,15 @@ import { JwtStrategy } from "./utils/jwt-auth.strategy";
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => {
         return {
-          secret: configService.get('jwt.secret'),
+          secret: configService.get("jwt.secret"),
           signOptions: {
-            expiresIn: '60d'
-          }
-        }
+            expiresIn: "60d",
+          },
+        };
       },
-      inject: [ ConfigService ]
-    })
+      inject: [ConfigService],
+    }),
   ],
-  controllers: [
-    AuthController
-  ]
+  controllers: [AuthController],
 })
 export class AuthModule {}

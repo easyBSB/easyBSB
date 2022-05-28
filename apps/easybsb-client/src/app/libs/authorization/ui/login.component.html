@@ -1,15 +1,20 @@
-<form action="" [formGroup]="loginForm" (submit)="submit($event)" data-e2e="authorization-login">
+<form
+  action=""
+  [formGroup]="loginForm"
+  (submit)="submit($event)"
+  data-e2e="authorization-login"
+>
   <div class="form-control" data-e2e="authorization-login-username">
     <label for="">
       <span>Benutzername</span>
-      <input type="text" formControlName="username">
+      <input type="text" formControlName="username" />
     </label>
   </div>
 
   <div class="form-control" data-e2e="authorization-login-password">
     <label for="">
       <span>Password</span>
-      <input type="password" formControlName="password">
+      <input type="password" formControlName="password" />
     </label>
   </div>
 
@@ -18,6 +23,6 @@
   </div>
 
   <div *ngIf="error?.trim() !== ''" data-e2e="authorization-login-error">
-    {{error}}
+    {{ error }}
   </div>
 </form>
