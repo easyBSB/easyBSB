@@ -38,6 +38,45 @@ async function copyClient() {
 }
 
 /**
+ * merge root packageJSON data into new generated package.json file
+ * to use title, description, overrides and the electron devDependency
+ * we need to build the project otherwise installation will fail directly
+ */
+async function updatePackageJson() {
+
+  // root package.json
+  const rootPackageJsonPath = path.resolve(__dirname, '..', 'package.json')
+  const rootPackageJson = JSON.parse(await fs.readFile(rootPackageJsonPath))
+
+  // generated package.json
+  const source = path.resolve(__dirname, '../dist/apps/easybsb-server/package.json')
+  const packageJson = JSON.parse(await fs.readFile(source))
+
+  const update = Object.assign(
+    {},
+    packageJson,
+    {
+      name: rootPackageJson.name,
+      version: rootPackageJson.version,
+      description: rootPackageJson.description || "easybsb",
+      overrides: {
+        ...(rootPackageJson.overrides ?? {})
+      },
+      dependencies: {
+        ...(packageJson.dependencies),
+        'sql.js': rootPackageJson.dependencies['sql.js']
+      },
+      devDependencies: {
+        ...packageJson.devDependencies,
+        electron: rootPackageJson.devDependencies.electron
+      }
+    }
+  );
+
+  fs.writeFile(source, JSON.stringify(update, null, 2))
+}
+
+/**
  * @description make server executable so we can run via npx for example
  */
 async function makeExecutable() {
@@ -67,35 +106,7 @@ async function makeExecutable() {
   await fs.writeFile(packageJsonPath, JSON.stringify(newContent, null, 2));
 }
 
-/**
- * @description create tar.gz file for later use
- */
-async function createPackageFile() {
-  const sourceDir = path.resolve(__dirname, '../dist/apps/easybsb-server')
-  const outDir = path.resolve(__dirname, `../dist/package`)
-  const outFile = path.resolve(outDir, 'easybsb.tar.gz')
-  
-  await fs.mkdir(outDir, { recursive: true })
-
-  await new Promise((resolve, reject) => {
-    const process = exec(`tar -C ${sourceDir} -cvf ${outFile} .`)
-    process.on('exit', () => resolve())
-  })
-}
-
-/**
- * copy all migration files
- */
 copyMigrations()
-/**
- * copy client for serve static
- */
 copyClient()
-/**
- * ensure it is executable
- */
+updatePackageJson()
 makeExecutable()
-/**
- * create local package file
- */
-createPackageFile()

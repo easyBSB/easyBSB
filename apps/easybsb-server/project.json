@@ -15,7 +15,8 @@
         "assets": [
           "apps/easybsb-server/src/assets"
         ],
-        "generatePackageJson": true
+        "generatePackageJson": true,
+        "dependencies": ["typeorm", "sql.js"]
       },
       "configurations": {
         "e2e": {

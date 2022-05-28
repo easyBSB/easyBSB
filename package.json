@@ -55,6 +55,7 @@
     "sql.js": "1.6.2",
     "swagger-ui-express": "4.4.0",
     "tslib": "2.4.0",
+    "typeorm": "0.3.6",
     "zone.js": "0.11.5"
   },
   "devDependencies": {
@@ -104,6 +105,9 @@
   "overrides": {
     "@nestjs/passport": {
       "passport": "$passport"
+    },
+    "@nestjs/typeorm": {
+      "typeorm": "$typeorm"
     }
   }
 }

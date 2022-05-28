@@ -40,24 +40,13 @@
       }
     },
     "package": {
-      "executor": "nx-electron:package",
+      "executor": "@nrwl/workspace:run-commands",
       "options": {
-        "name": "easybsb-electron",
-        "frontendProject": "easybsb-server",
-        "sourcePath": "dist/apps",
-        "outputPath": "dist/packages",
-        "prepackageOnly": true,
-        "packageMetadata": "dist/apps/easybsb-server/package.json"
-      }
-    },
-    "make": {
-      "executor": "nx-electron:make",
-      "options": {
-        "name": "easybsb-electron",
-        "frontendProject": "easybsb-client",
-        "sourcePath": "dist/apps",
-        "outputPath": "dist/executables",
-        "packageMetadata": "dist/apps/easybsb-server/package.json"
+        "commands": [
+          "npm run build easybsb-electron -- --configuration=production",
+          "node ./bin/build-electron.js"
+        ],
+        "parallel": false
       }
     },
     "lint": {

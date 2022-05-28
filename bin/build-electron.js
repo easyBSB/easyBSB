@@ -8,7 +8,6 @@ async function createElectronApp() {
   const target = path.resolve(__dirname, `../dist/apps/easybsb-electron/package.json`)
 
   await fs.copyFile(source, target)
-  await updatePackageJson(target)
 
   await electronBuilder.build({
     config: {
@@ -32,34 +31,6 @@ async function createElectronApp() {
       },
     }
   })
-}
-
-/**
- * merge root packageJSON data into new generated package.json file
- * to use title, description, overrides and the electron devDependency
- * we need to build the project otherwise installation will fail directly
- */
-async function updatePackageJson(source) {
-  const rootPackageJson = path.resolve(__dirname, '..', 'package.json')
-  const packageJson = JSON.parse(await fs.readFile(source))
-
-  const {devDependencies, overrides} = JSON.parse(await fs.readFile(rootPackageJson))
-  const update = Object.assign(
-    {},
-    packageJson,
-    {
-      overrides: {
-        ...(packageJson.overrides ?? {}),
-        ...overrides
-      },
-      devDependencies: {
-        ...packageJson.devDependencies,
-        electron: devDependencies.electron ?? '19.0.1'
-      }
-    }
-  );
-
-  fs.writeFile(source, JSON.stringify(update, null, 2))
 }
 
 createElectronApp()

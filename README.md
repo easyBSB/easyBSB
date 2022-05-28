@@ -40,9 +40,11 @@ NOTE:  HowTo Exposing a tty serial device if needed
 npx nx run server:migration-generate --name <NAME> to create a new migration
 npx nx run server:migration-run to run migrations
 
-## build production
+## easybsb npm package
 create a final package in production mode run:
 
-npx nx run server:package
+npx nx run easybsb-server:package
 
-this also creates a easy-bsb.tar.gz file inside ./release/directory @TODO should use versions
+## create electron app
+
+npx nx run easybsb-electron:package
