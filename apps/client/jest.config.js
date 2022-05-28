@@ -1,5 +1,5 @@
 module.exports = {
-  displayName: "easybsb-client",
+  displayName: "client",
   preset: "../../jest.preset.js",
   setupFilesAfterEnv: ["<rootDir>/src/test-setup.ts"],
   globals: {
@@ -8,7 +8,7 @@ module.exports = {
       stringifyContentPathRegex: "\\.(html|svg)$",
     },
   },
-  coverageDirectory: "../../coverage/apps/easybsb-client",
+  coverageDirectory: "../../coverage/apps/client",
   transform: {
     "^.+\\.(ts|mjs|js|html)$": "jest-preset-angular",
   },

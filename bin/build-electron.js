@@ -6,11 +6,11 @@ var electronBuilder = require("electron-builder");
 async function createElectronApp() {
   const source = path.resolve(
     __dirname,
-    "../dist/apps/easybsb-server/package.json"
+    "../dist/apps/server/package.json"
   );
   const target = path.resolve(
     __dirname,
-    `../dist/apps/easybsb-electron/package.json`
+    `../dist/apps/electron/package.json`
   );
 
   await fs.copyFile(source, target);
@@ -20,12 +20,12 @@ async function createElectronApp() {
       removePackageScripts: true,
       files: [
         {
-          from: path.resolve(__dirname, "..", "dist/apps/easybsb-server"),
+          from: path.resolve(__dirname, "..", "dist/apps/server"),
           to: "easy-bsb",
           filter: ["!package.json"],
         },
         {
-          from: path.resolve(__dirname, "..", "dist/apps/easybsb-electron"),
+          from: path.resolve(__dirname, "..", "dist/apps/electron"),
           to: "",
           filter: [
             "!dist",
@@ -38,7 +38,7 @@ async function createElectronApp() {
       ],
       directories: {
         output: path.resolve(__dirname, "../dist/electron"),
-        app: path.resolve(__dirname, "../dist/apps/easybsb-electron"),
+        app: path.resolve(__dirname, "../dist/apps/electron"),
         buildResources: (__dirname, "../dist/tmp/electron"),
       },
     },

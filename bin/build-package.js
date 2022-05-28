@@ -6,16 +6,16 @@ var copyDirectory = require("./utils/copy");
 const { exec } = require("child_process");
 
 /**
- * @description copy ./dist/apps/easybsb-client to ./dist/apps/server
+ * @description copy ./dist/apps/client to ./dist/apps/server
  */
 async function copyMigrations() {
   const sourceDir = path.resolve(
     __dirname,
-    "../apps/easybsb-server/src/typeorm/migrations"
+    "../apps/server/src/typeorm/migrations"
   );
   const targetDir = path.resolve(
     __dirname,
-    "../dist/apps/easybsb-server/migrations"
+    "../dist/apps/server/migrations"
   );
 
   try {
@@ -28,20 +28,20 @@ async function copyMigrations() {
 }
 
 /**
- * @description copy ./dist/apps/easybsb-client to ./dist/apps/server
+ * @description copy ./dist/apps/client to ./dist/apps/server
  */
 async function copyClient() {
-  const sourceDir = path.resolve(__dirname, "../dist/apps/easybsb-client");
+  const sourceDir = path.resolve(__dirname, "../dist/apps/client");
   const targetDir = path.resolve(
     __dirname,
-    "../dist/apps/easybsb-server/client"
+    "../dist/apps/server/client"
   );
 
   try {
     await copyDirectory(sourceDir, targetDir);
   } catch (error) {
     process.stderr.write(
-      `could not copy ./dist/apps/easybsb-client to ./dist/apps/server/client, ensure to execute 'npm run build easybsb-client' or 'npm run build:all' before ${os.EOL}`
+      `could not copy ./dist/apps/client to ./dist/apps/server/client, ensure to execute 'npm run build client' or 'npm run build:all' before ${os.EOL}`
     );
     process.stderr.write(`${error} ${os.EOL}`);
     process.exit(1);
@@ -56,22 +56,17 @@ async function copyClient() {
 async function updatePackageJson() {
   // root package.json
   const rootPackageJsonPath = path.resolve(__dirname, "..", "package.json");
-  const rootPackageJson = JSON.parse(await fs.readFile(rootPackageJsonPath));
+  const rootPackageJson = require(rootPackageJsonPath);
 
   // generated package.json
-  const source = path.resolve(
-    __dirname,
-    "../dist/apps/easybsb-server/package.json"
-  );
-  const packageJson = JSON.parse(await fs.readFile(source));
+  const source = path.resolve(__dirname, "../dist/apps/server/package.json");
+  const packageJson = require(source)
 
   const update = Object.assign({}, packageJson, {
     name: rootPackageJson.name,
     version: rootPackageJson.version,
     description: rootPackageJson.description || "easybsb",
-    overrides: {
-      ...(rootPackageJson.overrides ?? {}),
-    },
+    overrides: rootPackageJson.overrides || {},
     dependencies: {
       ...packageJson.dependencies,
       "sql.js": rootPackageJson.dependencies["sql.js"],
@@ -90,20 +85,20 @@ async function updatePackageJson() {
  */
 async function makeExecutable() {
   // create bin directory on server
-  fs.mkdir(path.resolve(__dirname, "../dist/apps/easybsb-server/bin"), {
+  fs.mkdir(path.resolve(__dirname, "../dist/apps/server/bin"), {
     recursive: true,
   });
 
   // move executable file to server dist directory
   fs.copyFile(
-    path.resolve(__dirname, "../apps/easybsb-server/src/bin/easybsb.js"),
-    path.resolve(__dirname, "../dist/apps/easybsb-server/bin/easybsb.js")
+    path.resolve(__dirname, "../apps/server/src/bin/easybsb.js"),
+    path.resolve(__dirname, "../dist/apps/server/bin/easybsb.js")
   );
 
   // update package.json to add bin property to manifest
   const packageJsonPath = path.resolve(
     __dirname,
-    "../dist/apps/easybsb-server/package.json"
+    "../dist/apps/server/package.json"
   );
   const fileContent = JSON.parse(await fs.readFile(packageJsonPath));
 

@@ -1,9 +1,9 @@
 {
   "version": 2,
   "projects": {
-    "easybsb-client": "apps/easybsb-client",
-    "easybsb-electron": "apps/easybsb-electron",
+    "client": "apps/client",
     "easybsb-parser": "libs/easybsb-parser",
-    "easybsb-server": "apps/easybsb-server"
+    "electron": "apps/electron",
+    "server": "apps/server"
   }
 }

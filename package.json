@@ -108,6 +108,9 @@
     },
     "@nestjs/typeorm": {
       "typeorm": "$typeorm"
+    },
+    "@nestjs/config": {
+      "@nestjs/common": "$@nestjs/common"
     }
   }
 }

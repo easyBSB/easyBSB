@@ -45,8 +45,18 @@ npx nx run server:migration-run to run migrations
 
 create a final package in production mode run:
 
-npx nx run easybsb-server:package
+npx nx run server:package
 
 ## create electron app
 
-npx nx run easybsb-electron:package
+### Windows
+
+npx nx run electron:package
+
+### Mac
+
+mac or nx on mac has some problems here and throws an error npm ERR! could not determine executable to run <br /> as workarround run:
+
+```bash
+npm run build:all && node ./bin/build-electron.js
+```

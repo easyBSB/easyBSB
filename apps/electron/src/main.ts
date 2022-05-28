@@ -1,6 +1,6 @@
 import SquirrelEvents from "./app/events/squirrel.events";
 import ElectronEvents from "./app/events/electron.events";
-import { execFile, fork } from "child_process";
+import { fork } from "child_process";
 import { app, BrowserWindow } from "electron";
 import App from "./app/app";
 import * as path from "path";
@@ -19,13 +19,7 @@ export default class Main {
   static async bootstrapApp() {
     const easybsb = path.join(__dirname, "easy-bsb", "main.js");
     if (!App.isDevelopmentMode()) {
-      if (process.platform === "darwin") {
-        execFile(easybsb, { signal });
-      }
-
-      if (process.platform === "win32") {
-        fork(easybsb, { stdio: "inherit", signal });
-      }
+      fork(easybsb, { stdio: "inherit", signal });
     }
 
     // start app
