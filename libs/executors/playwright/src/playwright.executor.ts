@@ -18,7 +18,7 @@ export default async function playwrightExecutor(
   const devServer$ = from(runDevServer(context))
 
   if (watch) {
-    const watcher = new FileWatcherService(["apps/easybsb-client-e2e/src"]);
+    const watcher = new FileWatcherService(["apps/client-e2e/src"]);
     merge(devServer$, watcher.change())
   } else {
     of(devServer$);

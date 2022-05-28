@@ -2,7 +2,7 @@ import { ExecutorContext, runExecutor } from "@nrwl/devkit";
 
 export default async function* runApiServer(context: ExecutorContext) {
   const executorOptions = {
-    project: "easybsb-server",
+    project: "server",
     target: "serve",
     configuration: "e2e",
   };

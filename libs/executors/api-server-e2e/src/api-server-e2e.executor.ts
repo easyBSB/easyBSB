@@ -54,7 +54,7 @@ export default async function* apiServerE2Executor(
 
 async function* startBuild(options: unknown, context: ExecutorContext) {
   const executorOptions = {
-    project: "easybsb-server",
+    project: "server",
     target: "build",
     configuration: "development",
   };
