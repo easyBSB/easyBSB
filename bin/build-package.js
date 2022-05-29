@@ -2,8 +2,7 @@ var fs = require("fs/promises");
 var path = require("path");
 var os = require("os");
 var copyDirectory = require("./utils/copy");
-
-const { exec } = require("child_process");
+var loadJSON = require("./utils/load-json");
 
 /**
  * @description copy ./dist/apps/client to ./dist/apps/server
@@ -54,68 +53,63 @@ async function copyClient() {
  * we need to build the project otherwise installation will fail directly
  */
 async function updatePackageJson() {
-  // root package.json
-  const rootPackageJsonPath = path.resolve(__dirname, "..", "package.json");
-  const rootPackageJson = require(rootPackageJsonPath);
 
-  // generated package.json
-  const source = path.resolve(__dirname, "../dist/apps/server/package.json");
-  const packageJson = require(source)
+  const servPackageJsonPath = path.resolve(__dirname, "..", "dist/apps/server/package.json");
+  const {
+    dependencies,
+    devDependencies,
+    scripts,
+    private,
+    ...metaData
+  } = await loadJSON(path.resolve(__dirname, "..", "package.json"));
 
-  const update = Object.assign({}, packageJson, {
-    name: rootPackageJson.name,
-    version: rootPackageJson.version,
-    description: rootPackageJson.description || "easybsb",
-    overrides: rootPackageJson.overrides || {},
-    dependencies: {
-      ...packageJson.dependencies,
-      "sql.js": rootPackageJson.dependencies["sql.js"],
-    },
-    devDependencies: {
-      ...packageJson.devDependencies,
-      electron: rootPackageJson.devDependencies.electron,
-    },
-  });
+  const servPackageJson = await loadJSON(servPackageJsonPath);
+  const update = Object.assign(
+    {},
+    servPackageJson,
+    metaData,
+    {
+      dependencies: {
+        ...servPackageJson.dependencies,
+        "sql.js": dependencies["sql.js"],
+        "@oclif/core": "1.9.0",
+      }
+    }
+  );
 
-  fs.writeFile(source, JSON.stringify(update, null, 2));
+  fs.writeFile(servPackageJsonPath, JSON.stringify(update, null, 2));
 }
 
 /**
  * @description make server executable so we can run via npx for example
  */
 async function makeExecutable() {
-  // create bin directory on server
-  fs.mkdir(path.resolve(__dirname, "../dist/apps/server/bin"), {
-    recursive: true,
-  });
+  const binDirectory = path.resolve(__dirname, "../dist/apps/server/bin");
+  fs.mkdir( binDirectory, { recursive: true });
 
   // move executable file to server dist directory
   fs.copyFile(
     path.resolve(__dirname, "../apps/server/src/bin/easybsb.js"),
-    path.resolve(__dirname, "../dist/apps/server/bin/easybsb.js")
+    path.resolve(binDirectory, "easybsb.js")
   );
 
   // update package.json to add bin property to manifest
-  const packageJsonPath = path.resolve(
-    __dirname,
-    "../dist/apps/server/package.json"
-  );
-  const fileContent = JSON.parse(await fs.readFile(packageJsonPath));
-
+  const packageJsonPath = path.resolve(__dirname, "../dist/apps/server/package.json");
+  const content = await loadJSON(packageJsonPath);
   const newContent = {
-    ...fileContent,
-    name: "easybsb",
-    dependencies: {
-      ...fileContent.dependencies,
-      "@oclif/core": "1.9.0",
-    },
-    bin: { easybsb: "./bin/easybsb.js" },
+    ...content,
+    bin: { easybsb: "./bin/easybsb.js" }
   };
 
   await fs.writeFile(packageJsonPath, JSON.stringify(newContent, null, 2));
 }
 
-copyMigrations();
-copyClient();
-updatePackageJson();
-makeExecutable();
+// to keep this in Order
+async function run() {
+  await copyMigrations();
+  await copyClient();
+  await updatePackageJson();
+  await makeExecutable();
+}
+
+run()

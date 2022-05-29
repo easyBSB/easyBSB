@@ -42,6 +42,7 @@
     },
     "package": {
       "executor": "@nrwl/workspace:run-commands",
+      "outputs": [],
       "options": {
         "commands": [
           "npm run build electron -- --configuration=production",
