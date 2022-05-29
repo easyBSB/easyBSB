@@ -6,9 +6,7 @@
   "targets": {
     "build": {
       "executor": "@angular-devkit/build-angular:browser",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/apps/client",
         "index": "apps/client/src/index.html",
@@ -16,13 +14,8 @@
         "polyfills": "apps/client/src/polyfills.ts",
         "tsConfig": "apps/client/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
-        "assets": [
-          "apps/client/src/favicon.ico",
-          "apps/client/src/assets"
-        ],
-        "styles": [
-          "apps/client/src/styles.scss"
-        ],
+        "assets": ["apps/client/src/favicon.ico", "apps/client/src/assets"],
+        "styles": ["apps/client/src/styles.scss"],
         "scripts": []
       },
       "configurations": {
@@ -91,9 +84,7 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": [
-        "coverage/apps/client"
-      ],
+      "outputs": ["coverage/apps/client"],
       "options": {
         "jestConfig": "apps/client/jest.config.js",
         "passWithNoTests": true
@@ -101,9 +92,7 @@
     },
     "e2e": {
       "executor": "./libs/executors:playwright",
-      "outputs": [
-        "coverage/apps/client"
-      ]
+      "outputs": ["coverage/apps/client"]
     }
   },
   "tags": []

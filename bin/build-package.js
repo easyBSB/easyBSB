@@ -12,10 +12,7 @@ async function copyMigrations() {
     __dirname,
     "../apps/server/src/typeorm/migrations"
   );
-  const targetDir = path.resolve(
-    __dirname,
-    "../dist/apps/server/migrations"
-  );
+  const targetDir = path.resolve(__dirname, "../dist/apps/server/migrations");
 
   try {
     await copyDirectory(sourceDir, targetDir);
@@ -31,10 +28,7 @@ async function copyMigrations() {
  */
 async function copyClient() {
   const sourceDir = path.resolve(__dirname, "../dist/apps/client");
-  const targetDir = path.resolve(
-    __dirname,
-    "../dist/apps/server/client"
-  );
+  const targetDir = path.resolve(__dirname, "../dist/apps/server/client");
 
   try {
     await copyDirectory(sourceDir, targetDir);
@@ -53,29 +47,22 @@ async function copyClient() {
  * we need to build the project otherwise installation will fail directly
  */
 async function updatePackageJson() {
-
-  const servPackageJsonPath = path.resolve(__dirname, "..", "dist/apps/server/package.json");
-  const {
-    dependencies,
-    devDependencies,
-    scripts,
-    private,
-    ...metaData
-  } = await loadJSON(path.resolve(__dirname, "..", "package.json"));
+  const servPackageJsonPath = path.resolve(
+    __dirname,
+    "..",
+    "dist/apps/server/package.json"
+  );
+  const { dependencies, devDependencies, scripts, private, ...metaData } =
+    await loadJSON(path.resolve(__dirname, "..", "package.json"));
 
   const servPackageJson = await loadJSON(servPackageJsonPath);
-  const update = Object.assign(
-    {},
-    servPackageJson,
-    metaData,
-    {
-      dependencies: {
-        ...servPackageJson.dependencies,
-        "sql.js": dependencies["sql.js"],
-        "@oclif/core": "1.9.0",
-      }
-    }
-  );
+  const update = Object.assign({}, servPackageJson, metaData, {
+    dependencies: {
+      ...servPackageJson.dependencies,
+      "sql.js": dependencies["sql.js"],
+      "@oclif/core": "1.9.0",
+    },
+  });
 
   fs.writeFile(servPackageJsonPath, JSON.stringify(update, null, 2));
 }
@@ -85,7 +72,7 @@ async function updatePackageJson() {
  */
 async function makeExecutable() {
   const binDirectory = path.resolve(__dirname, "../dist/apps/server/bin");
-  fs.mkdir( binDirectory, { recursive: true });
+  fs.mkdir(binDirectory, { recursive: true });
 
   // move executable file to server dist directory
   fs.copyFile(
@@ -94,11 +81,14 @@ async function makeExecutable() {
   );
 
   // update package.json to add bin property to manifest
-  const packageJsonPath = path.resolve(__dirname, "../dist/apps/server/package.json");
+  const packageJsonPath = path.resolve(
+    __dirname,
+    "../dist/apps/server/package.json"
+  );
   const content = await loadJSON(packageJsonPath);
   const newContent = {
     ...content,
-    bin: { easybsb: "./bin/easybsb.js" }
+    bin: { easybsb: "./bin/easybsb.js" },
   };
 
   await fs.writeFile(packageJsonPath, JSON.stringify(newContent, null, 2));
@@ -112,4 +102,4 @@ async function run() {
   await makeExecutable();
 }
 
-run()
+run();
