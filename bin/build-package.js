@@ -4,9 +4,6 @@ var os = require("os");
 var copyDirectory = require("./utils/copy");
 var loadJSON = require("./utils/load-json");
 
-/**
- * @description copy ./dist/apps/client to ./dist/apps/server
- */
 async function copyMigrations() {
   const sourceDir = path.resolve(
     __dirname,
@@ -27,10 +24,10 @@ async function copyMigrations() {
 }
 
 /**
- * @description copy ./dist/apps/client to ./dist/apps/server
+ * @description copy ./dist/apps/web to ./dist/apps/server/client
  */
 async function copyClient() {
-  const sourceDir = path.resolve(__dirname, "../dist/apps/client");
+  const sourceDir = path.resolve(__dirname, "../dist/apps/web");
   const targetDir = path.resolve(
     __dirname,
     "../dist/apps/server/client"
@@ -40,7 +37,7 @@ async function copyClient() {
     await copyDirectory(sourceDir, targetDir);
   } catch (error) {
     process.stderr.write(
-      `could not copy ./dist/apps/client to ./dist/apps/server/client, ensure to execute 'npm run build client' or 'npm run build:all' before ${os.EOL}`
+      `could not copy ./dist/apps/web to ./dist/apps/server/client, ensure to execute 'npm run build web -- --configuration=production' or 'npm run build:all' before ${os.EOL}`
     );
     process.stderr.write(`${error} ${os.EOL}`);
     process.exit(1);

@@ -42,20 +42,24 @@ export default class App {
     // start main server
     if (!App.isDevelopmentMode()) {
 
-      // sleep for 2 seconds so we see the splash screen
-      App.sleep(2000);
-
       const { signal } = new AbortController();
       const easybsb = path.join(__dirname, "easy-bsb", "main.js");
-      // maybe we need to kill the process
-      fork(easybsb, { stdio: "inherit", signal });
+      const process = fork(easybsb, { stdio: "inherit", signal });
+
+      // sleep for 5 seconds so we see the splash screen
+      // so we stay a bit on the splash screen and after that check app is ready
+      await App.sleep(5000);
 
       // bootstrap app process
-      for (let i = 0; i < 20; i++) {
+      for (let i = 0; i < 30; i++) {
         if (await App.waitForStart()) {
           break;
         }
-        await App.sleep(100);
+
+        if (i === 30) {
+          process.kill(9);
+        }
+        await App.sleep(1000);
       }
     }
 
@@ -88,7 +92,6 @@ export default class App {
 
     App.splash.loadFile('./assets/splash.html');
     App.splash.center();
-    App.splash.webContents.openDevTools();
   }
 
   private static initMainWindow() {
@@ -145,22 +148,24 @@ export default class App {
 
   private static waitForStart(): Promise<boolean> {
     return new Promise((resolve) => {
-      const request = net.request({
-        hostname: 'http://localhost',
+      const request = net.request( {
+        hostname: 'localhost',
+        method: 'HEAD',
+        path: '/api/health',
         port: 3333,
-        path: 'api/health',
-        method: 'HEAD'
-      });
+        protocol: 'http:'
+      })
 
       request.on("response", (response) => {
-        process.stdout.write(response.statusCode.toString());
-        resolve(true);
+        console.log(response.statusCode);
+        resolve(true)
       })
 
       request.on("error", (error) => {
-        process.stdout.write(error.message);
-        resolve(false);
+        console.log(error.message, error.stack);
+        resolve(false)
       })
+
       request.end();
     })
   }

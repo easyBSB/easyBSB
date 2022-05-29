@@ -60,6 +60,18 @@
         ]
       }
     },
+    "package": {
+      "executor": "@nrwl/workspace:run-commands",
+      "outputs": [],
+      "options": {
+        "commands": [
+          "npm run build web -- --configuration=production",
+          "npm run build server -- --configuration=production",
+          "node ./bin/build-package.js"
+        ],
+        "parallel": false
+      }
+    },
     "test": {
       "executor": "@nrwl/jest:jest",
       "outputs": [
