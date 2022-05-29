@@ -1,4 +1,8 @@
 {
+  "author": {
+    "name": "easybsb"
+  },
+  "description": "easybsb app",
   "name": "easy-bsb",
   "version": "0.0.0",
   "license": "MIT",
@@ -13,12 +17,13 @@
     "test": "nx test",
     "start:all": "nx run-many --target=serve --all --parallel",
     "start:all-e2e": "nx run-many --target=serve --configuration=e2e --all --parallel",
-    "build:all": "nx run-many --target=build --configuration=production --all --parallel && npm run deploy:server",
+    "build:all": "nx run-many --target=build --configuration=production --all --parallel",
     "build:all:no-cache": "npm run build:all -- --skip-nx-cache",
-    "postinstall": "npm run executors:build && ngcc --properties es2015 browser module main",
-    "executors:build": "npm run build --prefix ./libs/executors",
-    "e2e": "nx run web:e2e",
-    "deploy:server": "node ./bin/deploy-server.js"
+    "build:executors": "npm run build --prefix ./libs/executors",
+    "package:server": "nx run server:package",
+    "package:electron": "nx run electron:package",
+    "postinstall": "npm run build:executors && ngcc --properties es2015 browser module main",
+    "e2e": "nx run web:e2e"
   },
   "private": true,
   "dependencies": {
@@ -56,6 +61,7 @@
     "sql.js": "1.6.2",
     "swagger-ui-express": "4.4.0",
     "tslib": "2.4.0",
+    "typeorm": "0.3.6",
     "zone.js": "0.11.5"
   },
   "devDependencies": {
@@ -70,13 +76,14 @@
     "@nestjs/testing": "8.4.5",
     "@nrwl/angular": "14.1.9",
     "@nrwl/cli": "14.1.9",
-    "@nrwl/eslint-plugin-nx": "13.9.7",
+    "@nrwl/eslint-plugin-nx": "14.1.9",
     "@nrwl/jest": "14.1.9",
     "@nrwl/linter": "14.1.9",
     "@nrwl/nest": "14.1.9",
     "@nrwl/node": "14.1.9",
     "@nrwl/tao": "14.1.9",
     "@nrwl/workspace": "14.1.9",
+    "@oclif/core": "1.9.0",
     "@playwright/test": "1.22.2",
     "@types/bcryptjs": "2.4.2",
     "@types/jest": "27.5.0",
@@ -84,12 +91,16 @@
     "@types/passport-jwt": "3.0.6",
     "@types/passport-local": "1.0.34",
     "@typescript-eslint/eslint-plugin": "5.26.0",
-    "@typescript-eslint/parser": "5.10.2",
+    "@typescript-eslint/parser": "5.18.0",
     "chokidar": "3.5.3",
+    "electron": "18.2.3",
+    "electron-builder": "23.0.3",
     "eslint": "8.16.0",
     "eslint-config-prettier": "8.5.0",
+    "exitzero": "1.0.1",
     "jest": "27.2.3",
     "jest-preset-angular": "11.1.2",
+    "nx-electron": "13.1.2",
     "playwright": "1.22.2",
     "prettier": "2.6.2",
     "sane": "5.0.1",
@@ -100,6 +111,16 @@
   "overrides": {
     "@nestjs/passport": {
       "passport": "$passport"
+    },
+    "@nestjs/typeorm": {
+      "typeorm": "$typeorm"
+    },
+    "@nestjs/config": {
+      "@nestjs/common": "$@nestjs/common"
+    },
+    "nx-electron": {
+      "@nrwl/devkit": "14.1.9",
+      "@nrwl/workspace": "$@nrwl/workspace"
     }
   }
 }

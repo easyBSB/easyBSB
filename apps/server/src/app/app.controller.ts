@@ -1,10 +1,11 @@
-import { Controller, Get } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { Controller, Get, Head } from "@nestjs/common";
+import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 
-import { AppService } from './app.service';
+import { AppService } from "./app.service";
+import { BypassAuthorization } from "./auth";
 
 @ApiBearerAuth()
-@ApiTags('App')
+@ApiTags("App")
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
@@ -14,15 +15,26 @@ export class AppController {
     return this.appService.getData();
   }
 
-  @Get('log')
+  @Get("log")
   getInfo() {
     return this.appService.log();
   }
 
-  @Get('ping')
+  @Get("ping")
   getPing() {
     return {
-      message: 'pong'
+      message: "pong",
     };
+  }
+
+  @ApiOperation({
+    summary: "health",
+    description: "just a ping to see we get an answer from server" 
+  })
+  @ApiResponse({ status: 200, description: "authorized" })
+  @BypassAuthorization()
+  @Head("health")
+  health() {
+    return { status: 200 };
   }
 }

@@ -40,3 +40,14 @@ NOTE:  HowTo Exposing a tty serial device if needed
 npx nx run server:migration-generate --name <NAME> to create a new migration
 npx nx run server:migration-run to run migrations
 
+## Packages
+
+### easybsb package
+
+npm run package:server
+
+### electron app
+
+npm run package:electron
+
+> ensure npm run package:server was called before
