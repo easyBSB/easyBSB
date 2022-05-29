@@ -19,8 +19,8 @@ jobs:
           node-version: 16.x
           cache: "npm"
 
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
+      # - name: Setup tmate session
+      #   uses: mxschmitt/action-tmate@v3
 
       - run: npm version
       - run: npm ci
