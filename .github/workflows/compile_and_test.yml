@@ -17,15 +17,16 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16.x
-          cache: "npm"
+      #     cache: "npm"
 
-      - name: Cache dependencies
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: npm-${{ hashFiles('package-lock.json') }}
-          restore-keys: npm-
+      # - name: Cache dependencies
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: ~/.npm
+      #     key: npm-${{ hashFiles('package-lock.json') }}
+      #     restore-keys: npm-
 
+      - run: npm version
       - run: npm ci
       - run: npm run build:all
       - run: npm run e2e
