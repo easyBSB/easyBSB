@@ -2,6 +2,7 @@
   "version": 2,
   "projects": {
     "easybsb-parser": "libs/easybsb-parser",
+    "electron": "apps/electron",
     "server": "apps/server",
     "web": "apps/web"
   }
