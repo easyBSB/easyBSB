@@ -5,8 +5,8 @@ services:
     container_name: app
     build:
       context: .
-      dockerfile: ./docker/Dockerfile.dev
+      dockerfile: ./Dockerfile
     ports:
-      - "4200:80"
+      - "3333:3333"
     volumes:
-      - ./:/usr/share/easybsb
+      - /data/:/data/
