@@ -57,6 +57,7 @@ export class Bit implements Value<number> {
     return [];
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public toString(lang = "KEY") {
     // if (this.value) {
     //     return Helper.getLanguage(this.enum, lang) ?? 'ENUM: '+this.value.toString(16).toUpperCase()

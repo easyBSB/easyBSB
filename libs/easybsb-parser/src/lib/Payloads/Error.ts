@@ -26,6 +26,7 @@ export class Error implements Value<number> {
     return [];
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public toString(lang = "KEY") {
     return this.value?.toString() ?? "0";
   }

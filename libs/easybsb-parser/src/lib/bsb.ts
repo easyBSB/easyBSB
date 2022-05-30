@@ -112,7 +112,7 @@ export class BSB {
   //#endregion
 
   //#region constructor
-  constructor(definition: Definition, device: Device, src: number = 0xc2) {
+  constructor(definition: Definition, device: Device, src = 0xc2) {
     this.definition = definition;
     this.device = device;
     this.src = src;
@@ -131,6 +131,7 @@ export class BSB {
     try {
       this.client?.off("data", (data) => this.newData(data));
       if (this.client?.toClose) this.client.destroy();
+    // eslint-disable-next-line no-empty
     } catch {}
 
     if (param1 instanceof stream.Duplex) {
@@ -155,7 +156,7 @@ export class BSB {
     // if answers from the dst are already delivered,....
     if (this.openRequest) {
       if (this.openRequest.timestamp) {
-        let timeDiff =
+        const timeDiff =
           (new Date().getTime() - this.openRequest.timestamp.getTime()) / 1000;
 
         // ToDo: make Timeout configurable now 5seconds
@@ -347,11 +348,10 @@ export class BSB {
     this.parseBuffer();
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public sentCommand(
     param: number,
     type: MSG_TYPE,
-    value?: any,
+    value?: unknown,
     dst = 0x00
   ): Promise<busRequestAnswer> {
     const command = this.definition.findParam(param, this.device);
@@ -376,7 +376,7 @@ export class BSB {
             done(null);
           });
         }
-        payload = Payloads.from(value, command).toPayload();
+        payload = Payloads.from(value as string, command).toPayload();
 
         len += payload.length;
       }
