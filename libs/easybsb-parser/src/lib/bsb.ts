@@ -131,7 +131,7 @@ export class BSB {
     try {
       this.client?.off("data", (data) => this.newData(data));
       if (this.client?.toClose) this.client.destroy();
-    // eslint-disable-next-line no-empty
+      // eslint-disable-next-line no-empty
     } catch {}
 
     if (param1 instanceof stream.Duplex) {
