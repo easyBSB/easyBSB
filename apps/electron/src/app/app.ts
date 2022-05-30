@@ -35,13 +35,11 @@ export default class App {
   // initialization and is ready to create browser windows.
   // Some APIs can only be used after this event occurs.
   private static async onReady() {
-
     App.initSplashScreen();
     App.initMainWindow();
 
     // start main server
     if (!App.isDevelopmentMode()) {
-
       const { signal } = new AbortController();
       const easybsb = path.join(__dirname, "easy-bsb", "main.js");
       const process = fork(easybsb, { stdio: "inherit", signal });
@@ -85,12 +83,12 @@ export default class App {
     App.splash = new BrowserWindow({
       width: width,
       height: height,
-      transparent: true, 
-      frame: false, 
-      alwaysOnTop: true 
+      transparent: true,
+      frame: false,
+      alwaysOnTop: true,
     });
 
-    App.splash.loadFile('./assets/splash.html');
+    App.splash.loadFile("./assets/splash.html");
     App.splash.center();
   }
 
@@ -138,36 +136,36 @@ export default class App {
       // spawn child process not the best the hardcoded url
       App.mainWindow.loadURL(`http://localhost:3333`);
     }
-  } 
+  }
 
   private static sleep(amount): Promise<void> {
     return new Promise((resolve) => {
-      setTimeout(resolve, amount)
-    })
+      setTimeout(resolve, amount);
+    });
   }
 
   private static waitForStart(): Promise<boolean> {
     return new Promise((resolve) => {
-      const request = net.request( {
-        hostname: 'localhost',
-        method: 'HEAD',
-        path: '/api/health',
+      const request = net.request({
+        hostname: "localhost",
+        method: "HEAD",
+        path: "/api/health",
         port: 3333,
-        protocol: 'http:'
-      })
+        protocol: "http:",
+      });
 
       request.on("response", (response) => {
         console.log(response.statusCode);
-        resolve(true)
-      })
+        resolve(true);
+      });
 
       request.on("error", (error) => {
         console.log(error.message, error.stack);
-        resolve(false)
-      })
+        resolve(false);
+      });
 
       request.end();
-    })
+    });
   }
 
   static main(app: Electron.App, browserWindow: typeof BrowserWindow) {

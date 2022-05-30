@@ -1,1 +1,1 @@
-export * from './lib/easybsb-parser';
+export * from "./lib/easybsb-parser";

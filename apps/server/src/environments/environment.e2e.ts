@@ -1,9 +1,9 @@
 export const environment = {
   production: false,
   jwt: {
-    secret: 'secretPwd',
+    secret: "secretPwd",
   },
   db: {
-    file: 'apps/server/src/typeorm/easy-bsb-dev.e2e.sqlite'
-  }
+    file: "apps/server/src/typeorm/easy-bsb-dev.e2e.sqlite",
+  },
 };

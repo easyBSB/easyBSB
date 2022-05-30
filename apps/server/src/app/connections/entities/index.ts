@@ -1,3 +1,3 @@
-import { EasyBsbConnection } from './connection.entity';
+import { EasyBsbConnection } from "./connection.entity";
 
-export const ENTITIES = [ EasyBsbConnection ]
+export const ENTITIES = [EasyBsbConnection];

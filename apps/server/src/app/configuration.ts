@@ -1,5 +1,5 @@
 export default () => ({
   jwt: {
-    secret: 'secret'
-  }
-})
+    secret: "secret",
+  },
+});
