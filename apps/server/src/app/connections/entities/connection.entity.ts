@@ -1,20 +1,19 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class EasyBsbConnection {
-
   @PrimaryGeneratedColumn()
-  id: number
+  id: number;
 
   @Column()
-  name: string
-  
-  @Column({ nullable: false })
-  ip: string
+  name: string;
 
   @Column({ nullable: false })
-  port: number
+  ip: string;
 
   @Column({ nullable: false })
-  hostId: number
+  port: number;
+
+  @Column({ nullable: false })
+  hostId: number;
 }

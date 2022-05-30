@@ -25,7 +25,10 @@
       "files": ["*.ts", "*.tsx"],
       "extends": ["plugin:@nrwl/nx/typescript"],
       "rules": {
-        "@typescript-eslint/no-unused-vars": ["error", { "ignoreRestSiblings": true }] 
+        "@typescript-eslint/no-unused-vars": [
+          "error",
+          { "ignoreRestSiblings": true }
+        ]
       }
     },
     {

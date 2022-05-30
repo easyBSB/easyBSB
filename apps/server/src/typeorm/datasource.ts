@@ -1,8 +1,8 @@
 import { DataSource, DataSourceOptions } from "typeorm";
 
-const config: DataSourceOptions  = { 
+const config: DataSourceOptions = {
   type: "sqljs",
-  entities: [__dirname + '/../**/entities/*.ts'],
+  entities: [__dirname + "/../**/entities/*.ts"],
   migrationsRun: true,
   migrationsTableName: "migrations",
   migrations: [__dirname + "/**/migrations/*.js"],
@@ -10,6 +10,6 @@ const config: DataSourceOptions  = {
   logging: true,
   synchronize: false,
   location: __dirname + "/easy-bsb-dev.sqlite",
-}
+};
 
 export const EasyBSBDataSource = new DataSource(config);

@@ -1,9 +1,9 @@
 export interface LoginDto {
-  username: string
+  username: string;
 
-  password: string
+  password: string;
 }
 
 export interface LoginResponseDto {
-  jwt: string
+  jwt: string;
 }

@@ -1,62 +1,71 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from "@playwright/test";
 
-test.describe.serial('Test Authorization', () => {
-
+test.describe.serial("Test Authorization", () => {
   /**
    * @description log in to app, and save the sessionStorage inside the
    * process environment variable
    */
-  test('Login success', async ({ page, context }) => {
-    await page.goto('http://localhost:4200', { waitUntil: 'networkidle'});
-    expect(page.url()).toBe('http://localhost:4200/login')
+  test("Login success", async ({ page, context }) => {
+    await page.goto("http://localhost:4200", { waitUntil: "networkidle" });
+    expect(page.url()).toBe("http://localhost:4200/login");
 
     // do login
-    const usernameControl = page.locator('[data-e2e="authorization-login-username"] input[type="text"]')
-    const passwordControl = page.locator('[data-e2e="authorization-login-password"] input[type="password"]')
-    await usernameControl.fill('easybsb')
-    await passwordControl.fill('easybsb')
+    const usernameControl = page.locator(
+      '[data-e2e="authorization-login-username"] input[type="text"]'
+    );
+    const passwordControl = page.locator(
+      '[data-e2e="authorization-login-password"] input[type="password"]'
+    );
+    await usernameControl.fill("easybsb");
+    await passwordControl.fill("easybsb");
 
     // send data and wait for response
     const [response] = await Promise.all([
-      page.waitForResponse('http://localhost:4200/api/auth/login'),
-      page.waitForNavigation({ url: 'http://localhost:4200/dashboard' }),
-      passwordControl.press('Enter')
-    ])
+      page.waitForResponse("http://localhost:4200/api/auth/login"),
+      page.waitForNavigation({ url: "http://localhost:4200/dashboard" }),
+      passwordControl.press("Enter"),
+    ]);
 
-    const body = await response.body()
-    const data = JSON.parse(body.toString('utf-8'));
+    const body = await response.body();
+    const data = JSON.parse(body.toString("utf-8"));
 
-    expect(response.status()).toBe(201)
-    expect(Object.keys(data)).toContain('jwt')
+    expect(response.status()).toBe(201);
+    expect(Object.keys(data)).toContain("jwt");
 
     // should redirect now
-    expect(page.url()).toBe('http://localhost:4200/dashboard')
-    
+    expect(page.url()).toBe("http://localhost:4200/dashboard");
+
     // save session storage values so we can use it again
-    process.env['SESSION_STORAGE'] = await page.evaluate(() => JSON.stringify(sessionStorage));
-  })
+    process.env["SESSION_STORAGE"] = await page.evaluate(() =>
+      JSON.stringify(sessionStorage)
+    );
+  });
 
   /**
    * @description as soon we have received a session token it should not be required that we have
    * to login again since we are authorized now
    */
-  test('Should stay logged in an not redirect if jwt is inside storage', async ({ context }) => {
-    const sessionStorageDump = JSON.parse(process.env['SESSION_STORAGE'] ?? '{}');
+  test("Should stay logged in an not redirect if jwt is inside storage", async ({
+    context,
+  }) => {
+    const sessionStorageDump = JSON.parse(
+      process.env["SESSION_STORAGE"] ?? "{}"
+    );
     await context.addInitScript((storage: Record<string, string>) => {
       for (const [key, value] of Object.entries(storage)) {
-        window.sessionStorage.setItem(key, value as string)
+        window.sessionStorage.setItem(key, value as string);
       }
-    }, sessionStorageDump)
+    }, sessionStorageDump);
 
     // go to page
-    const page = await context.newPage()
+    const page = await context.newPage();
     await Promise.all([
-      page.goto('http://localhost:4200'),
-      page.waitForNavigation({url: 'http://localhost:4200/dashboard'})
-    ])
+      page.goto("http://localhost:4200"),
+      page.waitForNavigation({ url: "http://localhost:4200/dashboard" }),
+    ]);
 
     // test and clean up
-    expect(page.url()).toBe('http://localhost:4200/dashboard')
-    delete process.env['SESSION_STORAGE']
-  })
-})
+    expect(page.url()).toBe("http://localhost:4200/dashboard");
+    delete process.env["SESSION_STORAGE"];
+  });
+});

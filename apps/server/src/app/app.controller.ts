@@ -1,5 +1,10 @@
 import { Controller, Get, Head } from "@nestjs/common";
-import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from "@nestjs/swagger";
 
 import { AppService } from "./app.service";
 import { BypassAuthorization } from "./auth";
@@ -29,7 +34,7 @@ export class AppController {
 
   @ApiOperation({
     summary: "health",
-    description: "just a ping to see we get an answer from server" 
+    description: "just a ping to see we get an answer from server",
   })
   @ApiResponse({ status: 200, description: "authorized" })
   @BypassAuthorization()

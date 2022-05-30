@@ -1,12 +1,10 @@
-import { NgModule } from '@angular/core'
-import { CommonModule } from '@angular/common'
-import { EasyBSBTraceComponent } from './trace.component'
+import { NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { EasyBSBTraceComponent } from "./trace.component";
 
 @NgModule({
-  declarations: [ EasyBSBTraceComponent ],
-  imports: [
-    CommonModule,
-  ],
-  exports: [ EasyBSBTraceComponent ]
+  declarations: [EasyBSBTraceComponent],
+  imports: [CommonModule],
+  exports: [EasyBSBTraceComponent],
 })
 export class EasyBsbTraceModule {}

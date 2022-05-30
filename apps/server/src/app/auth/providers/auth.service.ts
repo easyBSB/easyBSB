@@ -1,14 +1,17 @@
-import { BadRequestException, Injectable, UnauthorizedException } from "@nestjs/common";
-import { validate } from "class-validator"
-import { compareSync } from "bcryptjs"
-import { JwtService } from '@nestjs/jwt'
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from "@nestjs/common";
+import { validate } from "class-validator";
+import { compareSync } from "bcryptjs";
+import { JwtService } from "@nestjs/jwt";
 
 import { User } from "@app/users/entities/user";
 import { UserService } from "@app/users/providers/users.service";
 
 @Injectable()
 export class AuthService {
-
   constructor(
     private readonly usersService: UserService,
     private readonly jwtService: JwtService
@@ -20,21 +23,24 @@ export class AuthService {
   async login(username: string, password: string): Promise<string> {
     const user = await this.authenticateUser(username, password);
     if (user) {
-      return this.jwtService.sign({ ...user })
+      return this.jwtService.sign({ ...user });
     }
   }
 
   /**
    * @description login with given credentials
    */
-  private async authenticateUser(username: string, pwd: string): Promise<Omit<User, 'password'>> {
+  private async authenticateUser(
+    username: string,
+    pwd: string
+  ): Promise<Omit<User, "password">> {
     if (await this.validateParams(username, pwd)) {
-      const user: User | undefined = await this.usersService.findOne(username)
+      const user: User | undefined = await this.usersService.findOne(username);
       if (user && compareSync(pwd, user.password)) {
-        const {password, ...easyBsbUser} = user
-        return easyBsbUser
+        const { password, ...easyBsbUser } = user;
+        return easyBsbUser;
       }
-      throw new UnauthorizedException('invalid username or password')
+      throw new UnauthorizedException("invalid username or password");
     }
 
     throw new BadRequestException();
@@ -44,18 +50,18 @@ export class AuthService {
    * @description validate against dto
    */
   async validateParams(username: string, password): Promise<boolean> {
-    const user = new User()
-    user.name = username
-    user.password = password
+    const user = new User();
+    user.name = username;
+    user.password = password;
 
-    let isValid = true
+    let isValid = true;
 
     await validate(user).then((errors) => {
       if (errors.length > 0) {
-        isValid = false
+        isValid = false;
       }
-    })
+    });
 
-    return isValid
+    return isValid;
   }
 }
