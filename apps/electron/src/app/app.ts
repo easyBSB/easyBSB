@@ -1,7 +1,7 @@
 import { BrowserWindow, net, screen } from "electron";
 import { environment } from "../environments/environment";
 import { join } from "path";
-import { fork } from "child_process";
+import { ChildProcess, fork } from "child_process";
 import * as path from "path";
 import { rendererAppPort } from "./constants";
 
@@ -16,6 +16,7 @@ export default class App {
   static splash: Electron.BrowserWindow;
   static application: Electron.App;
   static BrowserWindow;
+  static nestjsProcess: ChildProcess;
 
   public static isDevelopmentMode() {
     const isEnvironmentSet: boolean = "ELECTRON_IS_DEV" in process.env;
@@ -40,13 +41,22 @@ export default class App {
 
     // start main server
     if (!App.isDevelopmentMode()) {
-      const { signal } = new AbortController();
-      const easybsb = path.join(__dirname, "easy-bsb", "main.js");
-      const process = fork(easybsb, { stdio: "inherit", signal });
 
-      // sleep for 5 seconds so we see the splash screen
-      // so we stay a bit on the splash screen and after that check app is ready
-      await App.sleep(5000);
+      if (!App.nestjsProcess) {
+        const { signal } = new AbortController();
+        const easybsb = path.join(__dirname, "easy-bsb", "main.js");
+        const nestjs = fork(easybsb, { stdio: "inherit", signal });
+
+        App.nestjsProcess = nestjs;
+        process.on('exit', () => {
+          nestjs.kill();
+          App.nestjsProcess = null;
+        })
+
+        // sleep for 5 seconds so we see the splash screen
+        // so we stay a bit on the splash screen and after that check app is ready
+        await App.sleep(5000);
+      }
 
       // bootstrap app process
       for (let i = 0; i < 30; i++) {
@@ -62,7 +72,6 @@ export default class App {
     }
 
     App.splash.close();
-
     App.mainWindow.show();
     App.loadMainWindow();
   }
