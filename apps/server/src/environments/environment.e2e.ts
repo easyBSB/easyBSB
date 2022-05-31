@@ -5,5 +5,6 @@ export const environment = {
   },
   db: {
     file: "apps/server/src/typeorm/easy-bsb-dev.e2e.sqlite",
+    migrations: ["apps/server/src/**/migrations/*.js"],
   },
 };

@@ -56,7 +56,7 @@ async function* startBuild(options: unknown, context: ExecutorContext) {
   const executorOptions = {
     project: "server",
     target: "build",
-    configuration: "development",
+    configuration: "e2e",
   };
   yield* await runExecutor<ExecutorEvent>(
     executorOptions,
