@@ -4,8 +4,8 @@ export const environment = {
   jwt: {
     secret: "secretPwd",
   },
-  db: {
+  database: {
     migrations: ["apps/server/src/**/migrations/*.js"],
-    file: "tmp/easybsb.e2e.sqlite",
+    file: "apps/server/src/typeorm/easy-bsb-dev.e2e.sqlite",
   },
 };
