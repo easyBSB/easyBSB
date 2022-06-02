@@ -1,10 +1,13 @@
+import { resolve } from "path";
+
 export const environment = {
   production: false,
+  envFilePath: ".env",
   jwt: {
-    secret: "secretPwd",
+    secret: 'secret'
   },
-  db: {
-    file: "apps/server/src/typeorm/easy-bsb-dev.sqlite",
+  database: {
+    file: resolve("tmp/easybsb.sqlite"),
     migrations: ["apps/server/src/**/migrations/*.js"],
   },
 };
