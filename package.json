@@ -117,6 +117,10 @@
     },
     "@nestjs/config": {
       "@nestjs/common": "$@nestjs/common"
+    },
+    "nx-electron": {
+      "@nrwl/devkit": "14.1.9",
+      "@nrwl/workspace": "$@nrwl/workspace"
     }
   }
 }
