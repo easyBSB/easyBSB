@@ -1,11 +1,24 @@
 import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
-import * as APP_ENVIRONMENT from "../environments/environment";
+import { homedir } from "os";
+import path = require("path");
+import { environment } from "src/environments/environment";
+
+const isProd = environment.production;
+
+function resolveEnvfilePath() {
+  if (!isProd) {
+    return environment.envFilePath;
+  }
+  return path.resolve(homedir(), "./easybsb/.env");
+}
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      load: [() => APP_ENVIRONMENT.environment],
+      isGlobal: true,
+      envFilePath: resolveEnvfilePath(),
+      load: [() => environment],
     }),
   ],
   exports: [ConfigModule],

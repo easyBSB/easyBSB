@@ -23,7 +23,7 @@ import { JwtStrategy } from "./utils/jwt-auth.strategy";
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => {
         return {
-          secret: configService.get("jwt.secret"),
+          secret: process.env.EASYBSB_JWT_SECRET || configService.get("jwt.secret"),
           signOptions: {
             expiresIn: "60d",
           },
