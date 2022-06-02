@@ -55,9 +55,8 @@ npm run package:electron
 
 ### Environment variables
 
-| | | |
-|-|-|-|
 |name|type|description|
+|-|-|-|
 |EASYBSB_PORT|number|port nestjs server is running|
 |EASYBSB_DATABASE_FILE|string|path where the file should be saved|
 |EASYBSB_JWT_SECRET|string|JWT Secret|
@@ -66,9 +65,8 @@ npm run package:electron
 >You can allways write down all environment variables into a file so you do not need
 >to pass them allways
 
-| | | |
-|-|-|-|
 ||path|name|
+|-|-|-|
 |development|source_root|.env|
 |end2end|source_root|.env.e2e|
 |production/electron| <HOME_DIRECTORY>/easybsb/|.env|
