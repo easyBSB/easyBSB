@@ -58,7 +58,7 @@
     "reflect-metadata": "0.1.13",
     "rxjs": "7.5.5",
     "socket.io": "4.5.1",
-    "sql.js": "1.6.2",
+    "sql.js": "1.7.0",
     "swagger-ui-express": "4.4.0",
     "tslib": "2.4.0",
     "typeorm": "0.3.6",
