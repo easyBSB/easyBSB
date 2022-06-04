@@ -3,7 +3,6 @@ import { environment } from "../environments/environment";
 import { join } from "path";
 import { ChildProcess, fork } from "child_process";
 import * as path from "path";
-import { rendererAppPort } from "./constants";
 
 // import { rendererAppPort } from "./constants";
 // import * as path from "path";
@@ -71,9 +70,9 @@ export default class App {
       }
     }
 
-    App.splash.close();
-    App.mainWindow.show();
-    App.loadMainWindow();
+    // App.splash.close();
+    // App.mainWindow.show();
+    // App.loadMainWindow();
   }
 
   private static onActivate() {
@@ -95,8 +94,14 @@ export default class App {
       transparent: true,
       frame: false,
       alwaysOnTop: true,
+      webPreferences: {
+        contextIsolation: true,
+        backgroundThrottling: true,
+        preload: join(__dirname, "main.preload.js"),
+      },
     });
 
+    App.splash.webContents.openDevTools();
     App.splash.loadFile("./assets/splash.html");
     App.splash.center();
   }
@@ -111,11 +116,6 @@ export default class App {
       width: width,
       height: height,
       show: false,
-      webPreferences: {
-        contextIsolation: true,
-        backgroundThrottling: false,
-        preload: join(__dirname, "main.preload.js"),
-      },
     });
 
     App.mainWindow.setTitle("EasyBSB");
@@ -137,15 +137,15 @@ export default class App {
     });
   }
 
-  private static loadMainWindow() {
-    // load the index.html of the app.
-    if (!App.application.isPackaged) {
-      App.mainWindow.loadURL(`http://localhost:${rendererAppPort}`);
-    } else {
-      // spawn child process not the best the hardcoded url
-      App.mainWindow.loadURL(`http://localhost:3333`);
-    }
-  }
+  // private static loadMainWindow() {
+  //   // load the index.html of the app.
+  //   if (!App.application.isPackaged) {
+  //     App.mainWindow.loadURL(`http://localhost:${rendererAppPort}`);
+  //   } else {
+  //     // spawn child process not the best the hardcoded url
+  //     App.mainWindow.loadURL(`http://localhost:3333`);
+  //   }
+  // }
 
   private static sleep(amount): Promise<void> {
     return new Promise((resolve) => {
@@ -159,7 +159,7 @@ export default class App {
         hostname: "localhost",
         method: "HEAD",
         path: "/api/health",
-        port: 3333,
+        port: parseInt(process.env.EASYBSB_PORT, 10),
         protocol: "http:",
       });
 

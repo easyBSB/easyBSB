@@ -5,6 +5,10 @@
 
 import { app, ipcMain } from "electron";
 import { environment } from "../../environments/environment";
+import { CommandManager } from "../commands/Command.registry";
+import { LoginCommand } from "../commands/login.command";
+
+// das ist ein problem das wollen wir nicht
 
 export default class ElectronEvents {
   static bootstrapElectronEvents(): Electron.IpcMain {
@@ -15,7 +19,6 @@ export default class ElectronEvents {
 // Retrieve app version
 ipcMain.handle("get-app-version", () => {
   console.log(`Fetching application version... [v${environment.version}]`);
-
   return environment.version;
 });
 
@@ -23,3 +26,5 @@ ipcMain.handle("get-app-version", () => {
 ipcMain.on("quit", (event, code) => {
   app.exit(code);
 });
+
+CommandManager.registerCommand('easybsb.login', LoginCommand);
