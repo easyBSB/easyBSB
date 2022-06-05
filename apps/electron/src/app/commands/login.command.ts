@@ -16,7 +16,6 @@ export class LoginCommand implements Command {
     })
   }
 
-
   run(username: string, password: string): Promise<unknown> {
     // wait for server before we can send the login request
     return this.serverStarted.then(

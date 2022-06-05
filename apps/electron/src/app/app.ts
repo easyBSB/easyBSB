@@ -79,7 +79,7 @@ export default class App {
       webPreferences: {
         contextIsolation: true,
         backgroundThrottling: true,
-        preload: join(__dirname, "main.preload.js"),
+        preload: join(__dirname, "splash.preload.js"),
       },
     });
 
@@ -99,7 +99,7 @@ export default class App {
       height: height,
       show: false,
       webPreferences: {
-        preload: join(__dirname, "jwt.preload.js")
+        preload: join(__dirname, "main.preload.js")
       }
     });
 

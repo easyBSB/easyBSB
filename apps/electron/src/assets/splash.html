@@ -17,18 +17,30 @@
         background-color: #fff;
         font-size: 10px;
         font-family: 'Times New Roman', Times, serif;
-        background: #FCEFF9;
-        color:#454851;
+        background: #ADD7F6;
+        color:#232323;
         box-sizing: border-box;
       }
 
-      .main {
-        display: block;
-        height: 100%;
+      main {
         display: flex;
+        flex-direction: column;
+        height: 100%;
+        font-size: 1.4rem;
+      }
+
+      main .content {
+        display: flex;
+        flex: 1;
         flex-direction: column;
         align-items: center;
         justify-content: center;
+      }
+
+      main .version {
+        padding: .8rem;
+        text-align: right;
+        font-size: 1.1rem;
       }
 
       .logo {
@@ -56,7 +68,14 @@
 
       .login-form .form-control input[type="text"],
       .login-form .form-control input[type="password"] {
-        padding: .3rem;
+        border: 1px solid #3B28CC;
+        border-radius: .4rem;
+        padding: .5rem;
+      }
+
+      .login-form .form-control input[type="text"]:focus,
+      .login-form .form-control input[type="password"]:focus {
+        outline: none;
       }
 
       .login-form .form-control:not(:first-child) {
@@ -67,38 +86,40 @@
         margin-top: 1rem;
         padding: .5rem;
         border: 0;
-        background-color: #454851;
+        background-color: #3B28CC;
         color: #FCEFF9;
       }
     </style>
   </head>
   <body>
-    <div class="main">
+    <main>
+      <div class="content">
+        <img src="./images/easybsb.svg" class="logo" alt="">
 
-      <img src="./images/easybsb.svg" class="logo" alt="">
+        <form method="post" class="login-form">
+          <div class="error"></div>
+          <label for="username" class="form-control">
+            <span>Username</span>
+            <input type="text" id="username">
+          </label>
 
-      <form method="post" class="login-form">
-        <label for="username" class="form-control">
-          <span>Username</span>
-          <input type="text" id="username">
-        </label>
+          <label for="password" class="form-control">
+            <span>Password</span>
+            <input type="password" id="password">
+          </label>
 
-        <label for="password" class="form-control">
-          <span>Password</span>
-          <input type="password" id="password">
-        </label>
-
-        <button type="submit">login</button>
-
-        <div class="error"></div>
-      </form>
-
-      <template id="errorTemplate"></template>
-    </div>
+          <button type="submit">login</button>
+        </form>
+      </div>
+      <div class="version">
+      </div>
+    </main>
     <script type="text/javascript">
       const form = document.querySelector('.login-form');
       const errorContainer = form.querySelector('.error');
+      const versionContainer = document.querySelector('main .version');
 
+      // LOGIN
       function login(event) {
         event.preventDefault();
         event.stopPropagation();
@@ -114,7 +135,6 @@
         window.easybsb.login(userCtrl.value, passwordCtrl.value)
           .then((response) => JSON.parse(response))
           .then((response) => {
-            console.log(response)
             if (response.success === false) {
               showError(response.message);
               return;
@@ -128,6 +148,11 @@
       }
 
       form.addEventListener('submit', login);
+
+      // VERSION
+      window.easybsb.getAppVersion().then((version) => {
+        versionContainer.textContent = `Version:` + version;
+      })
     </script>
   </body>
 </html>

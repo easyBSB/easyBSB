@@ -1,11 +1,12 @@
-import { contextBridge, ipcRenderer } from "electron";
-import "../commands/Login.command";
+const cookies = document.cookie.split(';');
 
-contextBridge.exposeInMainWorld("easybsb", {
-  // methods to outside
-  getAppVersion: () => ipcRenderer.invoke("get-app-version"),
-  platform: process.platform,
-  login(username: string, password: string): Promise<unknown> {
-    return ipcRenderer.invoke('easybsb.login', username, password);
+for (const cookie of cookies) {
+  if (cookie.startsWith('easybsb-jwt')) {
+    const jwt = cookie.substring('easybsb-jwt='.length);
+    window.sessionStorage.setItem('Authorization', jwt);
+
+    // delete cookie
+    document.cookie = 'easybsb-jwt=; Max-Age=0; path=/; domain=' + location.hostname;
+    break;
   }
-});
+}

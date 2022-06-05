@@ -3,7 +3,7 @@ const path = require('path');
 module.exports = (config) => {
   config.entry = {
     ...config.entry,
-    jwt: path.resolve(__dirname, 'src/app/api/jwt.preload.ts'),
+    splash: path.resolve(__dirname, 'src/app/api/splash.preload.ts'),
   };
   return config;
 };
