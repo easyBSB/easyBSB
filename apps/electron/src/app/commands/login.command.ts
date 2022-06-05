@@ -1,10 +1,23 @@
 import { net } from "electron";
-import { Command } from "./Command.registry";
+import EventBus from "../events/EventBus";
+import { Events } from "../events/Events.enum";
+import { Command } from "./CommandManager";
 
 export class LoginCommand implements Command {
 
+  private serverStarted: Promise<void>
+
+  constructor() {
+    this.serverStarted = new Promise((resolve) => {
+      EventBus.register(Events.easybsbServerStarted, resolve)
+    })
+  }
+
+
   run(username: string, password: string): Promise<unknown> {
-    return this.sendRequest({username, password});
+    // wait for server before we can send the login request
+    return this.serverStarted.then(
+      () => this.sendRequest({username, password}));
   }
 
   private sendRequest(payload) {

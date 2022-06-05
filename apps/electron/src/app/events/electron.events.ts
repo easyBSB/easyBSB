@@ -5,8 +5,10 @@
 
 import { app, ipcMain } from "electron";
 import { environment } from "../../environments/environment";
-import { CommandManager } from "../commands/Command.registry";
-import { LoginCommand } from "../commands/login.command";
+import { CommandManager } from "../commands/CommandManager";
+import { Commands } from "../commands/Commands.enum";
+import { LoginCommand } from "../commands/Login.command";
+import { StartServerCommand } from "../commands/StartServer.command";
 
 // das ist ein problem das wollen wir nicht
 
@@ -27,4 +29,5 @@ ipcMain.on("quit", (event, code) => {
   app.exit(code);
 });
 
-CommandManager.registerCommand('easybsb.login', LoginCommand);
+CommandManager.registerCommand(Commands.startServer, StartServerCommand);
+CommandManager.registerCommand(Commands.login, LoginCommand, true);

@@ -1,8 +1,9 @@
-import { BrowserWindow, net, screen } from "electron";
+import { BrowserWindow, screen } from "electron";
 import { environment } from "../environments/environment";
 import { join } from "path";
-import { ChildProcess, fork } from "child_process";
-import * as path from "path";
+import { ChildProcess } from "child_process";
+import { Commands } from "./commands/Commands.enum";
+import { CommandManager } from "./commands/CommandManager";
 
 // import { rendererAppPort } from "./constants";
 // import * as path from "path";
@@ -38,36 +39,11 @@ export default class App {
     App.initSplashScreen();
     App.initMainWindow();
 
+    CommandManager.execCommand(Commands.startServer);
+
     // start main server
     if (!App.isDevelopmentMode()) {
-
-      if (!App.nestjsProcess) {
-        const { signal } = new AbortController();
-        const easybsb = path.join(__dirname, "easy-bsb", "main.js");
-        const nestjs = fork(easybsb, { stdio: "inherit", signal });
-
-        App.nestjsProcess = nestjs;
-        process.on('exit', () => {
-          nestjs.kill();
-          App.nestjsProcess = null;
-        })
-
-        // sleep for 5 seconds so we see the splash screen
-        // so we stay a bit on the splash screen and after that check app is ready
-        await App.sleep(5000);
-      }
-
-      // bootstrap app process
-      for (let i = 0; i < 30; i++) {
-        if (await App.waitForStart()) {
-          break;
-        }
-
-        if (i === 30) {
-          process.kill(9);
-        }
-        await App.sleep(1000);
-      }
+      // emit event to start the server
     }
 
     // App.splash.close();
@@ -146,36 +122,6 @@ export default class App {
   //     App.mainWindow.loadURL(`http://localhost:3333`);
   //   }
   // }
-
-  private static sleep(amount): Promise<void> {
-    return new Promise((resolve) => {
-      setTimeout(resolve, amount);
-    });
-  }
-
-  private static waitForStart(): Promise<boolean> {
-    return new Promise((resolve) => {
-      const request = net.request({
-        hostname: "localhost",
-        method: "HEAD",
-        path: "/api/health",
-        port: parseInt(process.env.EASYBSB_PORT, 10),
-        protocol: "http:",
-      });
-
-      request.on("response", (response) => {
-        console.log(response.statusCode);
-        resolve(true);
-      });
-
-      request.on("error", (error) => {
-        console.log(error.message, error.stack);
-        resolve(false);
-      });
-
-      request.end();
-    });
-  }
 
   static main(app: Electron.App, browserWindow: typeof BrowserWindow) {
     App.BrowserWindow = browserWindow;
