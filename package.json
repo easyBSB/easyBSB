@@ -93,7 +93,7 @@
     "@typescript-eslint/eslint-plugin": "5.27.0",
     "@typescript-eslint/parser": "5.18.0",
     "chokidar": "3.5.3",
-    "electron": "19.0.2",
+    "electron": "19.0.3",
     "electron-builder": "23.0.3",
     "eslint": "8.16.0",
     "eslint-config-prettier": "8.5.0",
@@ -106,7 +106,7 @@
     "sane": "5.0.1",
     "ts-jest": "27.1.4",
     "typescript": "4.5.5",
-    "webpack": "5.72.1"
+    "webpack": "5.73.0"
   },
   "overrides": {
     "@nestjs/passport": {
