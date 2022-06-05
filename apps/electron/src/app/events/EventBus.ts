@@ -14,7 +14,7 @@ class EventBus {
     }
   }
 
-  public register(event: string, handler: () => void): { unregister: () => void } {
+  public register(event: string, handler: (...args: unknown[]) => void): { unregister: () => void } {
 
     if (!this.subscribers[event]) {
       this.subscribers[event] = [handler];

@@ -10,9 +10,9 @@
         "outputPath": "dist/apps/electron",
         "main": "apps/electron/src/main.ts",
         "tsConfig": "apps/electron/tsconfig.app.json",
-        "generatePackageJson": true,
         "implicitDependencies": ["dist/package/easybsb.tar.gz"],
-        "assets": ["apps/electron/src/assets"]
+        "assets": ["apps/electron/src/assets"],
+        "webpackConfig": "apps/electron/webpack.config.js"
       },
       "configurations": {
         "production": {

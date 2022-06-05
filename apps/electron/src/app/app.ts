@@ -1,11 +1,12 @@
-import { BrowserWindow, screen } from "electron";
+import { BrowserWindow, screen, session } from "electron";
 import { environment } from "../environments/environment";
 import { join } from "path";
 import { ChildProcess } from "child_process";
 import { Commands } from "./commands/Commands.enum";
 import { CommandManager } from "./commands/CommandManager";
+import AppState from "./AppState";
+import { rendererAppPort } from "./constants";
 
-// import { rendererAppPort } from "./constants";
 // import * as path from "path";
 // import { fork } from "child_process";
 
@@ -32,23 +33,28 @@ export default class App {
     }
   }
 
-  // This method will be called when Electron has finished
-  // initialization and is ready to create browser windows.
-  // Some APIs can only be used after this event occurs.
+  /**
+   * @description initialize all windows and start server
+   */
   private static async onReady() {
+    // start main server
+    if (!App.isDevelopmentMode()) {
+      CommandManager.execCommand(Commands.startServer);
+    }
+
     App.initSplashScreen();
     App.initMainWindow();
 
-    CommandManager.execCommand(Commands.startServer);
+    AppState.stateChanged((state) => {
+      if (state.isAuthorized) {
+        const cookie = {url: 'http://localhost', name: 'easybsb-jwt', value: state.jwt}
+        session.defaultSession.cookies.set(cookie)
 
-    // start main server
-    if (!App.isDevelopmentMode()) {
-      // emit event to start the server
-    }
-
-    // App.splash.close();
-    // App.mainWindow.show();
-    // App.loadMainWindow();
+        App.loadMainWindow();
+        App.splash.close();
+        App.mainWindow.show();
+      }
+    });
   }
 
   private static onActivate() {
@@ -77,7 +83,7 @@ export default class App {
       },
     });
 
-    App.splash.webContents.openDevTools();
+    // App.splash.webContents.openDevTools();
     App.splash.loadFile("./assets/splash.html");
     App.splash.center();
   }
@@ -92,17 +98,15 @@ export default class App {
       width: width,
       height: height,
       show: false,
+      webPreferences: {
+        preload: join(__dirname, "jwt.preload.js")
+      }
     });
 
     App.mainWindow.setTitle("EasyBSB");
     App.mainWindow.setMenu(null);
     App.mainWindow.center();
-    App.mainWindow.webContents.openDevTools();
-
-    // if main window is ready to show, close the splash window and show the main window
-    App.mainWindow.once("ready-to-show", () => {
-      App.mainWindow.show();
-    });
+    // App.mainWindow.webContents.openDevTools();
 
     // Emitted when the window is closed.
     App.mainWindow.on("closed", () => {
@@ -113,15 +117,14 @@ export default class App {
     });
   }
 
-  // private static loadMainWindow() {
-  //   // load the index.html of the app.
-  //   if (!App.application.isPackaged) {
-  //     App.mainWindow.loadURL(`http://localhost:${rendererAppPort}`);
-  //   } else {
-  //     // spawn child process not the best the hardcoded url
-  //     App.mainWindow.loadURL(`http://localhost:3333`);
-  //   }
-  // }
+  private static loadMainWindow() {
+    // load the index.html of the app.
+    if (!App.application.isPackaged) {
+      App.mainWindow.loadURL(`http://localhost:${rendererAppPort}`);
+    } else {
+      App.mainWindow.loadURL(`http://localhost:${process.env.EASYBSB_PORT ?? 3333}`);
+    }
+  }
 
   static main(app: Electron.App, browserWindow: typeof BrowserWindow) {
     App.BrowserWindow = browserWindow;

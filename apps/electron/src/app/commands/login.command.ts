@@ -1,4 +1,5 @@
 import { net } from "electron";
+import AppState from "../AppState";
 import EventBus from "../events/EventBus";
 import { Events } from "../events/Events.enum";
 import { Command } from "./CommandManager";
@@ -9,7 +10,9 @@ export class LoginCommand implements Command {
 
   constructor() {
     this.serverStarted = new Promise((resolve) => {
-      EventBus.register(Events.easybsbServerStarted, resolve)
+      AppState.stateChanged((state) => {
+        state.serverUp ? resolve() : void 0;
+      })
     })
   }
 
@@ -21,13 +24,12 @@ export class LoginCommand implements Command {
   }
 
   private sendRequest(payload) {
-
     return new Promise((resolve, reject) => {
       const request = net.request({
         hostname: "localhost",
         method: "POST",
         path: "/api/auth/login",
-        port: parseInt(process.env.EASYBSB_PORT, 10),
+        port: parseInt(process.env.EASYBSB_PORT, 10) || 3333,
         protocol: "http:",
       });
 
@@ -48,21 +50,28 @@ export class LoginCommand implements Command {
   }
 
   private handleResponse(response: Electron.IncomingMessage): Promise<unknown> {
-    return new Promise((resolve, reject) => {
-
-      if (response.statusCode !== 201) {
-        reject();
-        return;
-      }
+    return new Promise((resolve) => {
 
       response.on('data', (data: Buffer) => {
         const responseData = data.toString('utf-8');
-        const response = JSON.parse(responseData);
+        const body = JSON.parse(responseData);
+
+        // reject throws an very strange json response
+        if (response.statusCode !== 201) {
+          resolve(JSON.stringify({
+            success: false,
+            ...body
+          }));
+          return;
+        }
 
         resolve(JSON.stringify({
-          success: false,
-          data: response
+          success: true,
+          body
         }));
+
+        // emit event we are logged in now
+        EventBus.dispatch(Events.easybsbIsAuthorized, body);
       });
     });
   }

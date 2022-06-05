@@ -25,10 +25,9 @@ export class StartServerCommand implements Command {
           if (await this.pingServer()) {
             this.process = nestjs;
             process.once('exit', () => {
-              this.process = null;
               this.process.kill()
+              this.process = null;
             });
-
             break;
           }
         } catch (error) {
@@ -49,7 +48,7 @@ export class StartServerCommand implements Command {
         hostname: "localhost",
         method: "HEAD",
         path: "/api/health",
-        port: parseInt(process.env.EASYBSB_PORT, 10),
+        port: parseInt(process.env.EASYBSB_PORT, 10) || 3333,
         protocol: "http:",
       });
 

@@ -6,32 +6,128 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <style type="text/css">
+      /** https://coolors.co/add7f6-87bfff-3f8efc-2667ff-3b28cc */
+      /* CSS HEX */
+
       html,
       body {
         margin: 0;
         padding: 0;
         height: 100%;
         background-color: #fff;
+        font-size: 10px;
+        font-family: 'Times New Roman', Times, serif;
+        background: #FCEFF9;
+        color:#454851;
+        box-sizing: border-box;
       }
 
-      .loading {
+      .main {
         display: block;
         height: 100%;
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
+      }
+
+      .logo {
+        max-width: 20rem;
+        max-height: 20rem;
+      }
+
+      /** LOGIN FORM */
+      .login-form {
+        display: flex;
+        flex-direction: column;
+        font-size: 1.3rem;
+      }
+
+      .login-form .form-control {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .login-form .form-control span {
+        display: inline-block;
+        margin-bottom: .5rem;
+        font-weight: 600;
+      }
+
+      .login-form .form-control input[type="text"],
+      .login-form .form-control input[type="password"] {
+        padding: .3rem;
+      }
+
+      .login-form .form-control:not(:first-child) {
+        margin-top: .75rem;
+      }
+
+      .login-form button[type="submit"] {
+        margin-top: 1rem;
+        padding: .5rem;
+        border: 0;
+        background-color: #454851;
+        color: #FCEFF9;
       }
     </style>
   </head>
   <body>
-    <div class="loading">
-      <h1>loading app</h1>
+    <div class="main">
+
+      <img src="./images/easybsb.svg" class="logo" alt="">
+
+      <form method="post" class="login-form">
+        <label for="username" class="form-control">
+          <span>Username</span>
+          <input type="text" id="username">
+        </label>
+
+        <label for="password" class="form-control">
+          <span>Password</span>
+          <input type="password" id="password">
+        </label>
+
+        <button type="submit">login</button>
+
+        <div class="error"></div>
+      </form>
+
+      <template id="errorTemplate"></template>
     </div>
     <script type="text/javascript">
-      window.easybsb.login('easybsb', 'easybsb')
-        .then((response) => {
-          console.log(response);
-        })
+      const form = document.querySelector('.login-form');
+      const errorContainer = form.querySelector('.error');
+
+      function login(event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const userCtrl = form.querySelector('#username');
+        const passwordCtrl = form.querySelector('#password');
+
+        if (userCtrl.value.trim() === '' || passwordCtrl.value.trim() === '') {
+          showError('username and password are required');
+          return;
+        }
+
+        window.easybsb.login(userCtrl.value, passwordCtrl.value)
+          .then((response) => JSON.parse(response))
+          .then((response) => {
+            console.log(response)
+            if (response.success === false) {
+              showError(response.message);
+              return;
+            }
+          })
+          .catch((error) => void 0)
+      }
+
+      function showError(error) {
+        errorContainer.textContent = error;
+      }
+
+      form.addEventListener('submit', login);
     </script>
   </body>
 </html>
