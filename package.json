@@ -60,6 +60,7 @@
     "socket.io": "4.5.1",
     "sql.js": "1.7.0",
     "swagger-ui-express": "4.4.0",
+    "tree-kill": "^1.2.2",
     "tslib": "2.4.0",
     "typeorm": "0.3.6",
     "zone.js": "0.11.5"
@@ -124,4 +125,3 @@
     }
   }
 }
-

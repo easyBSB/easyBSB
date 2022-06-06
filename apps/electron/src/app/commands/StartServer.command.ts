@@ -1,6 +1,7 @@
 import { ChildProcess, fork } from "child_process";
 import { net } from "electron";
 import * as path from "path";
+import { AppStateData } from "../AppState";
 import EventBus from "../events/EventBus";
 import { Events } from "../events/Events.enum";
 import { Command } from "./CommandManager";
@@ -24,10 +25,6 @@ export class StartServerCommand implements Command {
         try {
           if (await this.pingServer()) {
             this.process = nestjs;
-            process.once('exit', () => {
-              this.process.kill()
-              this.process = null;
-            });
             break;
           }
         } catch (error) {
@@ -39,7 +36,11 @@ export class StartServerCommand implements Command {
       }
     }
 
-    EventBus.dispatch(Events.easybsbServerStarted);
+    const update: Partial<AppStateData> = {
+      serverUp: true,
+      nestjsProcessId: this.process.pid
+    };
+    EventBus.dispatch(Events.easybsbServerStarted, update);
   }
 
   private pingServer(): Promise<boolean> {

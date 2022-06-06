@@ -1,5 +1,5 @@
 import { net } from "electron";
-import AppState from "../AppState";
+import AppState, { AppStateData } from "../AppState";
 import EventBus from "../events/EventBus";
 import { Events } from "../events/Events.enum";
 import { Command } from "./CommandManager";
@@ -70,7 +70,8 @@ export class LoginCommand implements Command {
         }));
 
         // emit event we are logged in now
-        EventBus.dispatch(Events.easybsbIsAuthorized, body);
+        const update: Partial<AppStateData> = { jwt: body.jwt };
+        EventBus.dispatch(Events.easybsbIsAuthorized, update);
       });
     });
   }

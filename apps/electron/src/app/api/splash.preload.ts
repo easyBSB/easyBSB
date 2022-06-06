@@ -1,5 +1,4 @@
 import { contextBridge, ipcRenderer } from "electron";
-import "../commands/Login.command";
 
 contextBridge.exposeInMainWorld("easybsb", {
   // methods to outside

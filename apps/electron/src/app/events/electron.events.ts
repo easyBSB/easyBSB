@@ -9,8 +9,7 @@ import { CommandManager } from "../commands/CommandManager";
 import { Commands } from "../commands/Commands.enum";
 import { LoginCommand } from "../commands/Login.command";
 import { StartServerCommand } from "../commands/StartServer.command";
-
-// das ist ein problem das wollen wir nicht
+import { StopServerCommand } from "../commands/StopServer.command";
 
 export default class ElectronEvents {
   static bootstrapElectronEvents(): Electron.IpcMain {
@@ -30,4 +29,5 @@ ipcMain.on("quit", (event, code) => {
 });
 
 CommandManager.registerCommand(Commands.startServer, StartServerCommand);
+CommandManager.registerCommand(Commands.stopServer, StopServerCommand);
 CommandManager.registerCommand(Commands.login, LoginCommand, true);

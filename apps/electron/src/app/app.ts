@@ -42,6 +42,10 @@ export default class App {
       CommandManager.execCommand(Commands.startServer);
     }
 
+    [`exit`, `SIGINT`, `SIGUSR1`, `SIGUSR2`, `uncaughtException`, `SIGTERM`].forEach((eventType) => {
+      process.on(eventType, () => CommandManager.execCommand(Commands.stopServer));
+    });
+
     App.initSplashScreen();
     App.initMainWindow();
 
@@ -52,6 +56,7 @@ export default class App {
 
         App.loadMainWindow();
         App.splash.close();
+        App.splash = null;
         App.mainWindow.show();
       }
     });
@@ -77,8 +82,6 @@ export default class App {
       frame: false,
       alwaysOnTop: true,
       webPreferences: {
-        contextIsolation: true,
-        backgroundThrottling: true,
         preload: join(__dirname, "splash.preload.js"),
       },
     });

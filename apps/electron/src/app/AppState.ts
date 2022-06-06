@@ -1,10 +1,11 @@
 import EventBus from "./events/EventBus";
 import { Events } from "./events/Events.enum";
 
-declare type AppStateData = {
+export declare type AppStateData = {
   serverUp: boolean;
   isAuthorized: boolean;
   jwt?: string;
+  nestjsProcessId?: number;
 }
 
 class State {
@@ -49,8 +50,8 @@ class State {
   }
 
   private registerEvents() {
-    EventBus.register(Events.easybsbServerStarted, () => this.updateState({ serverUp: true }));
-    EventBus.register(Events.easybsbServerStopped, () => this.updateState({ serverUp: false }));
+    EventBus.register(Events.easybsbServerStarted, (payload) => this.updateState(payload));
+    EventBus.register(Events.easybsbServerStopped, (payload) => this.updateState(payload));
     EventBus.register(Events.easybsbIsAuthorized, ({ jwt }) => this.updateState({ isAuthorized: true, jwt }));
   }
 
@@ -59,7 +60,6 @@ class State {
       ...this.appState,
       ...state
     };
-
     this.notifyObservers();
   }
 }

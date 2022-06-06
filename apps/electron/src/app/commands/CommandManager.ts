@@ -9,16 +9,19 @@ interface CommandConstructor {
   new(): Command;
 }
 
-// for example we have ipcMain
-// or we trigger this by our own
-
 /**
- * @description command registry
+ * @description register and executes commands, every command which is registered
+ * will constructed lazy. That means only if we call the command we create 1 instance of
+ * the command if not allready exists.
  */
 class Manager {
 
   private commandMap: Map<string, { ctor: CommandConstructor, instance: Command }> = new Map();
 
+  /**
+   * @description register a command under given command key, if exposed true it will listen on
+   * ipcMain event bus for the specific event.
+   */
   registerCommand(command: Commands, constructor: CommandConstructor, exposed = false) {
     if (!this.commandMap.has(command)) {
 
@@ -33,22 +36,20 @@ class Manager {
     }
   }
 
-  execCommand<T>(command: Commands, ...args): Promise<T> | T  {
+  execCommand<T>(command: Commands, ...args: unknown[]): T  {
     if (this.commandMap.has(command)) {
-      return this.runCommand(command, ...args);
+      return this.runCommand<T>(command, ...args);
     }
   }
 
-  private runCommand<T>(action: string, ...args): Promise<T> | T {
+  private runCommand<T>(action: string, ...args: unknown[]): T {
     if (this.commandMap.has(action)) {
       const command = this.commandMap.get(action);
       let instance = command.instance;
-      // lazy construct command only if needed
       if (!instance) {
         instance = new command.ctor();
         this.commandMap.set(action, { ...command, instance })
       }
-      // run commmand
       return instance.run(...args) as T;
     }
   }
