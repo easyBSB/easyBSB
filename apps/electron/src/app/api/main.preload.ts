@@ -1,6 +1,12 @@
-import { contextBridge, ipcRenderer } from "electron";
+const cookies = document.cookie.split(';');
 
-contextBridge.exposeInMainWorld("electron", {
-  getAppVersion: () => ipcRenderer.invoke("get-app-version"),
-  platform: process.platform,
-});
+for (const cookie of cookies) {
+  if (cookie.startsWith('easybsb-jwt')) {
+    const jwt = cookie.substring('easybsb-jwt='.length);
+    window.sessionStorage.setItem('Authorization', jwt);
+
+    // delete cookie
+    document.cookie = 'easybsb-jwt=; Max-Age=0; path=/; domain=' + location.hostname;
+    break;
+  }
+}
