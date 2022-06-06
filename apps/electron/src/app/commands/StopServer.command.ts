@@ -2,7 +2,6 @@ import AppState, { AppStateData } from "../AppState";
 import EventBus from "../events/EventBus";
 import { Events } from "../events/Events.enum";
 import { Command } from "./CommandManager";
-import * as treekill from "tree-kill";
 
 export class StopServerCommand implements Command {
 
@@ -14,13 +13,13 @@ export class StopServerCommand implements Command {
 
   run(): void {
     if (this.currentAppState.nestjsProcessId) {
-      treekill(this.currentAppState.nestjsProcessId, () => {
-        const update: Partial<AppStateData> = {
-          serverUp: false,
-          nestjsProcessId: null,
-        };
-        EventBus.dispatch(Events.easybsbServerStopped, update);
-      });
+      process.stdout.write(this.currentAppState.nestjsProcessId.toString());
+      process.kill(this.currentAppState.nestjsProcessId, 'SIGTERM');
+      const update: Partial<AppStateData> = {
+        serverUp: false,
+        nestjsProcessId: null,
+      };
+      EventBus.dispatch(Events.easybsbServerStopped, update);
     }
   }
 }

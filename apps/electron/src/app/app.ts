@@ -4,7 +4,7 @@ import { join } from "path";
 import { ChildProcess } from "child_process";
 import { Commands } from "./commands/Commands.enum";
 import { CommandManager } from "./commands/CommandManager";
-import AppState from "./AppState";
+import AppState, { AppStateData } from "./AppState";
 import { rendererAppPort } from "./constants";
 
 
@@ -16,6 +16,7 @@ export default class App {
   static application: Electron.App;
   static BrowserWindow;
   static nestjsProcess: ChildProcess;
+  static state?: AppStateData | undefined;
 
   public static isDevelopmentMode() {
     const isEnvironmentSet: boolean = "ELECTRON_IS_DEV" in process.env;
@@ -35,30 +36,63 @@ export default class App {
    * @description initialize all windows and start server
    */
   private static async onReady() {
-    // start main server
+
+    // for mac it can happens we join this again ...
+    if (App.state?.isAuthorized && App.state?.serverUp) {
+      App.showMainWindow();
+      return;
+    }
+
+    /**
+     * problem is very simple, we get initial state and if the state changes
+     * 
+     * first run serverUP: false, authorized: false
+     * second run: serverUp: true, authorized: false
+     * third run: serverUp: true, authorized: true -> close splash screen, show main window
+     * 
+     * close app call stop server
+     * 
+     * fourth run: serverUp: false, authorized: true
+     * 
+     * by default i think we need this currently only once so unsubscribe if 
+     * we are authorized and show main window.
+     * 
+     * @TODO find better solution this becomes a bit hacky now
+     */
+    const subscription = AppState.stateChanged((state) => {
+      App.state = state;
+      if (state.isAuthorized && state.serverUp === true) {
+        App.splash.close();
+        App.showMainWindow();
+
+        subscription.unsubscribe();
+      }
+    });
+
+    /**
+     * start main server, this will change state to serverUp: true
+     */
     if (!App.isDevelopmentMode()) {
       CommandManager.execCommand(Commands.startServer);
     }
 
-    // stop server if this happens
+    /**
+     * stop server, this will change state to serverUp: false
+     */
     [`exit`, `SIGINT`, `SIGUSR1`, `SIGUSR2`, `uncaughtException`, `SIGTERM`].forEach((eventType) => {
       process.on(eventType, () => CommandManager.execCommand(Commands.stopServer));
     });
 
-    AppState.stateChanged((state) => {
-      if (state.isAuthorized) {
-        const cookie = {url: 'http://localhost', name: 'easybsb-jwt', value: state.jwt}
-        session.defaultSession.cookies.set(cookie)
-
-        App.initMainWindow();
-        App.loadMainWindow();
-
-        App.splash.close();
-        App.mainWindow.show();
-      }
-    });
-
     App.initSplashScreen();
+  }
+
+  private static showMainWindow() {
+    const cookie = {url: 'http://localhost', name: 'easybsb-jwt', value: App.state.jwt}
+    session.defaultSession.cookies.set(cookie)
+
+    App.initMainWindow();
+    App.mainWindow.show();
+    App.loadMainWindow();
   }
 
   private static onActivate() {

@@ -33,6 +33,7 @@ export class StartServerCommand implements Command {
             process.kill(9);
           }
         }
+        await this.sleep(1000);
       }
     }
 
@@ -44,6 +45,9 @@ export class StartServerCommand implements Command {
   }
 
   private pingServer(): Promise<boolean> {
+
+    // wait some time
+
     return new Promise((resolve, reject) => {
       const request = net.request({
         hostname: "localhost",
@@ -66,6 +70,12 @@ export class StartServerCommand implements Command {
       });
 
       request.end();
+    });
+  }
+
+  private sleep(ms): Promise<void> {
+    return new Promise((resolve) => {
+      setTimeout(resolve, ms);
     });
   }
 }
