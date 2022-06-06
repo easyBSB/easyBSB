@@ -19,6 +19,10 @@ async function prepareElectronBuild() {
   const packageJson = await loadJSON(target);
   const update = {
     ...packageJson,
+    dependencies: {
+      ...(electronPackageJson.dependencies || {}),
+      ['tree-kill']: rootPackageJson.dependencies['tree-kill'],
+    },
     devDependencies: {
       ...(electronPackageJson.devDependencies || {}),
       electron: rootPackageJson.devDependencies.electron,

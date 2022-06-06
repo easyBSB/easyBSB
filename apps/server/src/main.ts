@@ -7,14 +7,9 @@ import { Logger } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { NestFactory } from "@nestjs/core";
 import { SwaggerModule, DocumentBuilder } from "@nestjs/swagger";
-import * as dotenv from "dotenv";
-import { resolve } from "path";
-
 import { AppModule } from "./app/app.module";
 
 async function bootstrap() {
-  dotenv.config({ path: resolve(process.cwd(), '.env') })
-
   const app = await NestFactory.create(AppModule);
   await ConfigModule.envVariablesLoaded;
 

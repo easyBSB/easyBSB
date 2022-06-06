@@ -6,26 +6,153 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <style type="text/css">
+      /** https://coolors.co/add7f6-87bfff-3f8efc-2667ff-3b28cc */
+      /* CSS HEX */
+
       html,
       body {
         margin: 0;
         padding: 0;
         height: 100%;
         background-color: #fff;
+        font-size: 10px;
+        font-family: 'Times New Roman', Times, serif;
+        background: #ADD7F6;
+        color:#232323;
+        box-sizing: border-box;
       }
 
-      .loading {
-        display: block;
-        height: 100%;
+      main {
         display: flex;
+        flex-direction: column;
+        height: 100%;
+        font-size: 1.4rem;
+      }
+
+      main .content {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
+      }
+
+      main .version {
+        padding: .8rem;
+        text-align: right;
+        font-size: 1.1rem;
+      }
+
+      .logo {
+        max-width: 20rem;
+        max-height: 20rem;
+      }
+
+      /** LOGIN FORM */
+      .login-form {
+        display: flex;
+        flex-direction: column;
+        font-size: 1.3rem;
+      }
+
+      .login-form .form-control {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .login-form .form-control span {
+        display: inline-block;
+        margin-bottom: .5rem;
+        font-weight: 600;
+      }
+
+      .login-form .form-control input[type="text"],
+      .login-form .form-control input[type="password"] {
+        border: 1px solid #3B28CC;
+        border-radius: .4rem;
+        padding: .5rem;
+      }
+
+      .login-form .form-control input[type="text"]:focus,
+      .login-form .form-control input[type="password"]:focus {
+        outline: none;
+      }
+
+      .login-form .form-control:not(:first-child) {
+        margin-top: .75rem;
+      }
+
+      .login-form button[type="submit"] {
+        margin-top: 1rem;
+        padding: .5rem;
+        border: 0;
+        background-color: #3B28CC;
+        color: #FCEFF9;
       }
     </style>
   </head>
   <body>
-    <div class="loading">
-      <h1>loading app</h1>
-    </div>
+    <main>
+      <div class="content">
+        <img src="./images/easybsb.svg" class="logo" alt="">
+
+        <form method="post" class="login-form">
+          <div class="error"></div>
+          <label for="username" class="form-control">
+            <span>Username</span>
+            <input type="text" id="username">
+          </label>
+
+          <label for="password" class="form-control">
+            <span>Password</span>
+            <input type="password" id="password">
+          </label>
+
+          <button type="submit">login</button>
+        </form>
+      </div>
+      <div class="version">
+      </div>
+    </main>
+    <script type="text/javascript">
+      const form = document.querySelector('.login-form');
+      const errorContainer = form.querySelector('.error');
+      const versionContainer = document.querySelector('main .version');
+
+      // LOGIN
+      function login(event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const userCtrl = form.querySelector('#username');
+        const passwordCtrl = form.querySelector('#password');
+
+        if (userCtrl.value.trim() === '' || passwordCtrl.value.trim() === '') {
+          showError('username and password are required');
+          return;
+        }
+
+        window.easybsb.login(userCtrl.value, passwordCtrl.value)
+          .then((response) => JSON.parse(response))
+          .then((response) => {
+            if (response.success === false) {
+              showError(response.message);
+              return;
+            }
+          })
+          .catch((error) => void 0)
+      }
+
+      function showError(error) {
+        errorContainer.textContent = error;
+      }
+
+      form.addEventListener('submit', login);
+
+      // VERSION
+      window.easybsb.getAppVersion().then((version) => {
+        versionContainer.textContent = `Version:` + version;
+      })
+    </script>
   </body>
 </html>

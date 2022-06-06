@@ -1,13 +1,12 @@
-import { BrowserWindow, net, screen } from "electron";
+import { BrowserWindow, screen, session } from "electron";
 import { environment } from "../environments/environment";
 import { join } from "path";
-import { ChildProcess, fork } from "child_process";
-import * as path from "path";
+import { ChildProcess } from "child_process";
+import { Commands } from "./commands/Commands.enum";
+import { CommandManager } from "./commands/CommandManager";
+import AppState, { AppStateData } from "./AppState";
 import { rendererAppPort } from "./constants";
 
-// import { rendererAppPort } from "./constants";
-// import * as path from "path";
-// import { fork } from "child_process";
 
 export default class App {
   // Keep a global reference of the window object, if you don't, the window will
@@ -17,6 +16,7 @@ export default class App {
   static application: Electron.App;
   static BrowserWindow;
   static nestjsProcess: ChildProcess;
+  static state?: AppStateData | undefined;
 
   public static isDevelopmentMode() {
     const isEnvironmentSet: boolean = "ELECTRON_IS_DEV" in process.env;
@@ -32,46 +32,65 @@ export default class App {
     }
   }
 
-  // This method will be called when Electron has finished
-  // initialization and is ready to create browser windows.
-  // Some APIs can only be used after this event occurs.
+  /**
+   * @description initialize all windows and start server
+   */
   private static async onReady() {
-    App.initSplashScreen();
-    App.initMainWindow();
 
-    // start main server
-    if (!App.isDevelopmentMode()) {
-
-      if (!App.nestjsProcess) {
-        const { signal } = new AbortController();
-        const easybsb = path.join(__dirname, "easy-bsb", "main.js");
-        const nestjs = fork(easybsb, { stdio: "inherit", signal });
-
-        App.nestjsProcess = nestjs;
-        process.on('exit', () => {
-          nestjs.kill();
-          App.nestjsProcess = null;
-        })
-
-        // sleep for 5 seconds so we see the splash screen
-        // so we stay a bit on the splash screen and after that check app is ready
-        await App.sleep(5000);
-      }
-
-      // bootstrap app process
-      for (let i = 0; i < 30; i++) {
-        if (await App.waitForStart()) {
-          break;
-        }
-
-        if (i === 30) {
-          process.kill(9);
-        }
-        await App.sleep(1000);
-      }
+    // for mac it can happens we join this again ...
+    if (App.state?.isAuthorized && App.state?.serverUp) {
+      App.showMainWindow();
+      return;
     }
 
-    App.splash.close();
+    /**
+     * problem is very simple, we get initial state and if the state changes
+     * 
+     * first run serverUP: false, authorized: false
+     * second run: serverUp: true, authorized: false
+     * third run: serverUp: true, authorized: true -> close splash screen, show main window
+     * 
+     * close app call stop server
+     * 
+     * fourth run: serverUp: false, authorized: true
+     * 
+     * by default i think we need this currently only once so unsubscribe if 
+     * we are authorized and show main window.
+     * 
+     * @TODO find better solution this becomes a bit hacky now
+     */
+    const subscription = AppState.stateChanged((state) => {
+      App.state = state;
+      if (state.isAuthorized && state.serverUp === true) {
+        App.splash.close();
+        App.showMainWindow();
+
+        subscription.unsubscribe();
+      }
+    });
+
+    /**
+     * start main server, this will change state to serverUp: true
+     */
+    if (!App.isDevelopmentMode()) {
+      CommandManager.execCommand(Commands.startServer);
+    }
+
+    /**
+     * stop server, this will change state to serverUp: false
+     */
+    [`exit`, `SIGINT`, `SIGUSR1`, `SIGUSR2`, `uncaughtException`, `SIGTERM`].forEach((eventType) => {
+      process.on(eventType, () => CommandManager.execCommand(Commands.stopServer));
+    });
+
+    App.initSplashScreen();
+  }
+
+  private static showMainWindow() {
+    const cookie = {url: 'http://localhost', name: 'easybsb-jwt', value: App.state.jwt}
+    session.defaultSession.cookies.set(cookie)
+
+    App.initMainWindow();
     App.mainWindow.show();
     App.loadMainWindow();
   }
@@ -94,11 +113,16 @@ export default class App {
       height: height,
       transparent: true,
       frame: false,
-      alwaysOnTop: true,
+      webPreferences: {
+        preload: join(__dirname, "splash.preload.js"),
+      },
     });
 
+    // App.splash.webContents.openDevTools();
     App.splash.loadFile("./assets/splash.html");
     App.splash.center();
+
+    App.splash.on("closed", () => App.splash = null);
   }
 
   private static initMainWindow() {
@@ -110,23 +134,15 @@ export default class App {
     App.mainWindow = new BrowserWindow({
       width: width,
       height: height,
-      show: false,
       webPreferences: {
-        contextIsolation: true,
-        backgroundThrottling: false,
-        preload: join(__dirname, "main.preload.js"),
-      },
+        preload: join(__dirname, "main.preload.js")
+      }
     });
 
     App.mainWindow.setTitle("EasyBSB");
     App.mainWindow.setMenu(null);
     App.mainWindow.center();
-    App.mainWindow.webContents.openDevTools();
-
-    // if main window is ready to show, close the splash window and show the main window
-    App.mainWindow.once("ready-to-show", () => {
-      App.mainWindow.show();
-    });
+    // App.mainWindow.webContents.openDevTools();
 
     // Emitted when the window is closed.
     App.mainWindow.on("closed", () => {
@@ -142,39 +158,8 @@ export default class App {
     if (!App.application.isPackaged) {
       App.mainWindow.loadURL(`http://localhost:${rendererAppPort}`);
     } else {
-      // spawn child process not the best the hardcoded url
-      App.mainWindow.loadURL(`http://localhost:3333`);
+      App.mainWindow.loadURL(`http://localhost:${process.env.EASYBSB_PORT ?? 3333}`);
     }
-  }
-
-  private static sleep(amount): Promise<void> {
-    return new Promise((resolve) => {
-      setTimeout(resolve, amount);
-    });
-  }
-
-  private static waitForStart(): Promise<boolean> {
-    return new Promise((resolve) => {
-      const request = net.request({
-        hostname: "localhost",
-        method: "HEAD",
-        path: "/api/health",
-        port: 3333,
-        protocol: "http:",
-      });
-
-      request.on("response", (response) => {
-        console.log(response.statusCode);
-        resolve(true);
-      });
-
-      request.on("error", (error) => {
-        console.log(error.message, error.stack);
-        resolve(false);
-      });
-
-      request.end();
-    });
   }
 
   static main(app: Electron.App, browserWindow: typeof BrowserWindow) {
