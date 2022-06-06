@@ -7,8 +7,6 @@ import { CommandManager } from "./commands/CommandManager";
 import AppState from "./AppState";
 import { rendererAppPort } from "./constants";
 
-// import * as path from "path";
-// import { fork } from "child_process";
 
 export default class App {
   // Keep a global reference of the window object, if you don't, the window will
@@ -42,24 +40,25 @@ export default class App {
       CommandManager.execCommand(Commands.startServer);
     }
 
+    // stop server if this happens
     [`exit`, `SIGINT`, `SIGUSR1`, `SIGUSR2`, `uncaughtException`, `SIGTERM`].forEach((eventType) => {
       process.on(eventType, () => CommandManager.execCommand(Commands.stopServer));
     });
-
-    App.initSplashScreen();
-    App.initMainWindow();
 
     AppState.stateChanged((state) => {
       if (state.isAuthorized) {
         const cookie = {url: 'http://localhost', name: 'easybsb-jwt', value: state.jwt}
         session.defaultSession.cookies.set(cookie)
 
+        App.initMainWindow();
         App.loadMainWindow();
+
         App.splash.close();
-        App.splash = null;
         App.mainWindow.show();
       }
     });
+
+    App.initSplashScreen();
   }
 
   private static onActivate() {
@@ -80,7 +79,6 @@ export default class App {
       height: height,
       transparent: true,
       frame: false,
-      alwaysOnTop: true,
       webPreferences: {
         preload: join(__dirname, "splash.preload.js"),
       },
@@ -89,6 +87,8 @@ export default class App {
     // App.splash.webContents.openDevTools();
     App.splash.loadFile("./assets/splash.html");
     App.splash.center();
+
+    App.splash.on("closed", () => App.splash = null);
   }
 
   private static initMainWindow() {
@@ -100,7 +100,6 @@ export default class App {
     App.mainWindow = new BrowserWindow({
       width: width,
       height: height,
-      show: false,
       webPreferences: {
         preload: join(__dirname, "main.preload.js")
       }

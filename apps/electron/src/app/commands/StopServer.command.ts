@@ -13,11 +13,8 @@ export class StopServerCommand implements Command {
   }
 
   run(): void {
-
     if (this.currentAppState.nestjsProcessId) {
-      treekill(this.currentAppState.nestjsProcessId, (error) => {
-        process.stdout.write(error.message);
-        process.stdout.write(this.currentAppState.nestjsProcessId.toString());
+      treekill(this.currentAppState.nestjsProcessId, () => {
         const update: Partial<AppStateData> = {
           serverUp: false,
           nestjsProcessId: null,
