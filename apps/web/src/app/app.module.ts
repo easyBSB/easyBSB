@@ -3,7 +3,6 @@ import { BrowserModule } from "@angular/platform-browser";
 import { MatIconModule } from "@angular/material/icon";
 
 import { HttpClientModule } from "@angular/common/http";
-import { EasyBsbTraceModule } from "./libs/trace/trace.module";
 import { AuthorizationModule } from "./libs/authorization";
 
 import { AppComponent } from "./app.component";
