@@ -1,0 +1,17 @@
+@import "variables";
+
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+@import "~bootstrap/scss/root";
+@import "~bootstrap/scss/reboot";
+
+// bootstrap grid
+@import "~bootstrap/scss/containers"; // Add .container and .container-fluid classes
+@import "~bootstrap/scss/grid"; // Add the grid system
+
+// utils
+@import "~bootstrap/scss/utilities"; // Configures the utility classes that should be generated
+@import "~bootstrap/scss/utilities/api"; // Generates the actual utility classes
+
+@import "bootstrap.reset";
