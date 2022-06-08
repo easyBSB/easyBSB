@@ -22,7 +22,7 @@
     "build:executors": "npm run build --prefix ./libs/executors",
     "package:server": "nx run server:package",
     "package:electron": "nx run electron:package",
-    "postinstall": "npm run build:executors && ngcc --properties es2015 browser module main",
+    "postinstall": "npm run build:executors && ngcc --properties es2020 browser module main",
     "e2e": "nx run web:e2e"
   },
   "private": true,
