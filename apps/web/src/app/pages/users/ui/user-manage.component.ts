@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Component, OnInit } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { take } from "rxjs";
 
@@ -10,10 +10,10 @@ import { take } from "rxjs";
   styleUrls: ["./user-manage.component.scss"],
 })
 export class UserManageComponent implements OnInit {
-  userForm!: FormGroup;
+  userForm!: UntypedFormGroup;
 
   constructor(
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly httpClient: HttpClient,
     private readonly router: Router,
     private readonly activatedRoute: ActivatedRoute
