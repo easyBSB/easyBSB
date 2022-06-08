@@ -12,13 +12,6 @@ export const AppRoutes: Route[] = [
           ),
       },
       {
-        path: "users",
-        loadChildren: () =>
-          import("../pages/users/users.module").then(
-            (module) => module.UsersModule
-          ),
-      },
-      {
         path: "settings",
         loadChildren: () =>
           import("../pages/settings/settings.module").then(
