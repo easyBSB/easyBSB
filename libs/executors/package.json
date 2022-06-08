@@ -1,5 +1,4 @@
 {
-  "name": "./libs/executors",
   "executors": "./executor.json",
   "scripts": {
     "build": "tsc --build"
