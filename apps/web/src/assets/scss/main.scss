@@ -1,0 +1,23 @@
+@use '@angular/material' as mat;
+
+@import "bootstrap";
+
+
+/** 
+ * @see https://material.io/archive/guidelines/style/color.html#color-color-palette
+ * full list of palettes
+ */
+$blue-palette: (
+  100: #ADD7F6,
+  200: #87BFFF,
+  300: #3F8EFC,
+  400: #2667FF,
+  500: #3B28CC,
+);
+
+@include mat.core();
+
+html, body {
+  min-height: 100%;
+  height: 100%;
+}

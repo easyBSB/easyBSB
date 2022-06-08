@@ -1,10 +1,8 @@
 import { Route } from "@angular/router";
-import { AuthorizationGuard } from "../libs/authorization";
 
 export const AppRoutes: Route[] = [
   {
     path: "",
-    canActivateChild: [AuthorizationGuard],
     children: [
       {
         path: "dashboard",
@@ -18,6 +16,13 @@ export const AppRoutes: Route[] = [
         loadChildren: () =>
           import("../pages/users/users.module").then(
             (module) => module.UsersModule
+          ),
+      },
+      {
+        path: "settings",
+        loadChildren: () =>
+          import("../pages/settings/settings.module").then(
+            (module) => module.SettingsModule
           ),
       },
       {
