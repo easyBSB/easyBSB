@@ -53,7 +53,6 @@
     "bcryptjs": "2.4.3",
     "class-validator": "0.13.2",
     "material-icons": "^1.11.1",
-    "ngx-socket-io": "4.2.0",
     "passport": "0.6.0",
     "passport-jwt": "4.0.0",
     "passport-local": "1.0.0",
