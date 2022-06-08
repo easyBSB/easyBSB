@@ -75,15 +75,15 @@
     "@angular/language-service": "14.0.0",
     "@nestjs/schematics": "8.0.11",
     "@nestjs/testing": "8.4.6",
-    "@nrwl/angular": "14.2.1",
-    "@nrwl/cli": "14.2.1",
-    "@nrwl/eslint-plugin-nx": "14.2.1",
-    "@nrwl/jest": "14.2.1",
-    "@nrwl/linter": "14.2.1",
-    "@nrwl/nest": "14.2.1",
-    "@nrwl/node": "14.2.1",
-    "@nrwl/tao": "14.2.1",
-    "@nrwl/workspace": "14.2.1",
+    "@nrwl/angular": "14.2.2",
+    "@nrwl/cli": "14.2.2",
+    "@nrwl/eslint-plugin-nx": "14.2.2",
+    "@nrwl/jest": "14.2.2",
+    "@nrwl/linter": "14.2.2",
+    "@nrwl/nest": "14.2.2",
+    "@nrwl/node": "14.2.2",
+    "@nrwl/tao": "14.2.2",
+    "@nrwl/workspace": "14.2.2",
     "@oclif/core": "1.9.0",
     "@playwright/test": "1.22.2",
     "@types/bcryptjs": "2.4.2",
@@ -126,3 +126,4 @@
     }
   }
 }
+
