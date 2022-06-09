@@ -3,7 +3,7 @@ import { CommonModule } from "@angular/common";
 import { MatTabsModule } from "@angular/material/tabs";
 import { SettingsComponent } from "./ui/settings.component";
 import { SettingsRoutingModule } from "./settings.routing.module";
-import { UsersComponent } from "../../components/users/users.component";
+import { UsersModule } from "../../libs/users/users.module";
 
 @NgModule({
   declarations: [SettingsComponent],
@@ -11,7 +11,7 @@ import { UsersComponent } from "../../components/users/users.component";
     CommonModule,
     SettingsRoutingModule,
     MatTabsModule,
-    UsersComponent
+    UsersModule
   ],
   providers: [],
 })
