@@ -69,6 +69,11 @@ export class UserService {
     }
   }
 
+  async delete(id: User['id']): Promise<void> {
+    const result = await this.repository.delete(id);
+    console.log(result);
+  }
+
   private async validateParams(values: Partial<User>): Promise<boolean> {
     const user = new User();
     Object.entries(values).forEach(([key, value]) => {

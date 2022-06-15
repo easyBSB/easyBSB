@@ -7,7 +7,7 @@ import { MatSelectModule } from '@angular/material/select';
 
 import { UsersComponent } from './users.component';
 import { MatIconModule } from '@angular/material/icon';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MessageModule } from '../message/message.module';
 
 @NgModule({
   declarations: [
@@ -19,15 +19,13 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatInputModule,
     MatSelectModule,
     MatIconModule,
-    MatSnackBarModule,
+    MessageModule,
     FormsModule,
     ReactiveFormsModule,
     ReactiveFormsModule,
     FormsModule
   ],
-  exports: [
-    UsersComponent
-  ],
+  exports: [UsersComponent],
   providers: [],
 })
 export class UsersModule {}

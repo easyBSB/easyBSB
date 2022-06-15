@@ -53,6 +53,6 @@ export class UsersController {
   @CheckAbility({ action: Actions.Manage, subject: User })
   @Delete(":id")
   async deleteUser(@Param("id") userId: number): Promise<void> {
-    console.log(userId);
+    return this.usersService.delete(userId);
   }
 }
