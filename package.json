@@ -79,7 +79,7 @@
     "@nrwl/cli": "14.3.1",
     "@nrwl/eslint-plugin-nx": "14.3.1",
     "@nrwl/jest": "14.3.1",
-    "@nrwl/linter": "14.3.1",
+    "@nrwl/linter": "14.3.2",
     "@nrwl/nest": "14.3.1",
     "@nrwl/node": "14.3.1",
     "@nrwl/tao": "14.3.1",
