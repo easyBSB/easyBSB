@@ -81,7 +81,7 @@
     "@nrwl/jest": "14.3.1",
     "@nrwl/linter": "14.3.1",
     "@nrwl/nest": "14.3.1",
-    "@nrwl/node": "14.3.1",
+    "@nrwl/node": "14.3.2",
     "@nrwl/tao": "14.3.1",
     "@nrwl/workspace": "14.3.1",
     "@oclif/core": "1.9.0",
