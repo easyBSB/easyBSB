@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject, animationFrameScheduler, of } from 'rxjs';
 import { debounceTime, map, take } from 'rxjs/operators';
@@ -122,11 +122,17 @@ export class UserListDatasource {
             );
 
             this.notify();
+          },
+          error: (response: HttpErrorResponse) => {
+            this.messageService.error(response.error.message);
           }
         });
     }
 
+    // reset data
+    item.raw.password = '';
     item.mode = "read";
+
     this.userState = undefined;
     this.currentEditUser = undefined;
   }
@@ -144,7 +150,9 @@ export class UserListDatasource {
           this.userStorage = this.userStorage.filter((user) => user !== item);
           this.notify();
         },
-        error: () => void 0
+        error: (response: HttpErrorResponse) => {
+          this.messageService.error(response.error.message);
+        }
       });
   }
 
