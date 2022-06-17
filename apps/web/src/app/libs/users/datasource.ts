@@ -108,18 +108,20 @@ export class UserListDatasource {
     if (isDirty) {
       const data$ = !item.isPhantom
         ? this.updateUser(item)
-        : this.createUser(item.raw);
+        : this.createUser(item);
 
       data$
         .pipe(take(1))
         .subscribe({
           next: (response) => {
-            const index = this.userStorage.findIndex((user) => user.raw.id === item.raw.id);
-            this.userStorage.splice(index, 1, this.mapUser(response as User));
-            this.notify();
+            const newUser = this.mapUser(response as User);
+            this.userStorage = this.userStorage.map((user) => user === item ? newUser : user);
+
             this.messageService.success(
               item.isPhantom ? `User ${item.raw.name} added.` : `User ${item.raw.name} updated.`
             );
+
+            this.notify();
           }
         });
     }
@@ -179,9 +181,9 @@ export class UserListDatasource {
   /**
    * @description save user on server
    */
-  private createUser(user: User): Observable<User> {
-    const {id, ...payload} = user;
-    return this.httpClient.post<User>("/api/users", payload);
+  private createUser(user: UserListItem): Observable<User> {
+    const {id, ...payload} = user.raw;
+    return this.httpClient.put<User>("/api/users", payload);
   }
 
   private deleteUser(user: UserListItem): Observable<unknown> {

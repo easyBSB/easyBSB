@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, OnInit } from "@angular/core";
-import { Observable } from "rxjs";
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
+import { Observable, skip, Subject, takeUntil } from "rxjs";
 import { UserListDatasource } from "./datasource";
 import { UserListItem, UserRoles } from "./api";
 
@@ -10,14 +10,17 @@ import { UserListItem, UserRoles } from "./api";
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [UserListDatasource]
 })
-export class UsersComponent implements OnInit {
+export class UsersComponent implements OnInit, OnDestroy {
 
   columns = ['name', 'password', 'role', 'actions'];
   userData$: Observable<UserListItem[]>;
   userRoleOptions: [keyof typeof UserRoles, UserRoles][] = [];
 
+  private readonly destroy$ = new Subject<void>();
+
   constructor(
     private readonly datasource: UserListDatasource,
+    private cdRef: ChangeDetectorRef
   ) {
     this.userData$ = this.datasource.connect();
   }
@@ -26,7 +29,17 @@ export class UsersComponent implements OnInit {
     for (const [key, value] of Object.entries(UserRoles) ) {
       this.userRoleOptions.push([key, value] as [keyof typeof UserRoles, UserRoles])
     }
+
+    this.userData$
+      .pipe(skip(1), takeUntil(this.destroy$))
+      .subscribe(() => this.cdRef.markForCheck());
+
     this.datasource.load();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   /**
@@ -37,7 +50,7 @@ export class UsersComponent implements OnInit {
   }
 
   /**
-   * @description sed mode to write for an user and store the data 
+   * @description set mode to write for an user and store the data 
    * inside a user state so we can fallback to initial value.
    */
   editUser(item: UserListItem) {

@@ -2,6 +2,7 @@ import {
   BadRequestException,
   ForbiddenException,
   Injectable,
+  NotFoundException,
 } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { hashSync } from "bcryptjs";
@@ -39,7 +40,7 @@ export class UserService {
     return [];
   }
 
-  async save(payload: Partial<User>): Promise<User> {
+  async insert(payload: Partial<User>): Promise<User> {
     const isValid = await this.validateParams(payload);
 
     if (!isValid) {
@@ -70,8 +71,35 @@ export class UserService {
   }
 
   async delete(id: User['id']): Promise<void> {
-    const result = await this.repository.delete(id);
-    console.log(result);
+    const user: User = await this.findById(id);
+
+    if (!user) {
+      throw new NotFoundException(`User with Id: ${id} was not found`);
+    }
+
+    await this.repository.delete(id);
+  }
+
+  /**
+   * update a user
+   */
+  async update(id: number, payload: Partial<User>): Promise<User> {
+    const user: User = await this.findById(id);
+
+    if (!user) {
+      throw new NotFoundException(`User with Id: ${id} was not found`);
+    }
+
+    if (!await this.validateParams(payload)) {
+      throw new BadRequestException();
+    }
+
+    if (payload.password && payload.password.trim() !== "") {
+      payload.password = hashSync(payload.password);
+    }
+
+    await this.repository.update(id, payload);
+    return this.findById(id);
   }
 
   private async validateParams(values: Partial<User>): Promise<boolean> {
