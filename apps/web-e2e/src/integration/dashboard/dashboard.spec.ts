@@ -17,4 +17,12 @@ test.describe("Dashboard", () => {
     expect(page.url()).toContain("/dashboard");
     await expect(page.locator("h1")).toHaveText("Dashboard");
   });
+
+  test("should contain sidebar with settings icon", async ({ page }) => {
+    await page.goto("http://localhost:4200/dashboard", {
+      waitUntil: "networkidle",
+    });
+    expect(page.url()).toContain("/dashboard");
+    await expect(page.locator("h1")).toHaveText("Dashboard");
+  });
 });

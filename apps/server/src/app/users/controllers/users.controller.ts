@@ -7,11 +7,13 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Post,
   Put,
 } from "@nestjs/common";
 import { ApiOperation, ApiHeaders, ApiResponse, ApiBody, ApiTags } from "@nestjs/swagger";
 import { CreateUserAbility } from "../constants/abilities";
+import { GetUser } from "../constants/get-user.decorator";
 import { User } from "../entities/user";
 import { UserService } from "../providers/users.service";
 
@@ -77,7 +79,13 @@ export class UsersController {
   @ApiResponse({ status: 404, description: "user not found" })
   @CheckAbility({ action: Actions.Manage, subject: User })
   @Delete(":id")
-  async deleteUser(@Param("id") userId: number): Promise<void> {
+  async deleteUser(
+    @Param("id", ParseIntPipe) userId: number,
+    @GetUser() user: User,
+  ): Promise<void> {
+    if (user.id === userId) {
+      throw new BadRequestException(`Not allowed to remove yourself`);
+    }
     return this.usersService.delete(userId);
   }
 }

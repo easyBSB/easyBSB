@@ -1,17 +1,14 @@
 <!-- only show if route is not login -->
-<div class="h-100 sidebar" *ngIf="isNotLoginRoute$ | async">
+<div class="h-100 sidebar" *ngIf="isNotLoginRoute$ | async" data-e2e="app-menu">
 
   <div class="top d-flex flex-column">
-    <a [routerLink]="['dashboard']">
+    <a [routerLink]="['dashboard']" data-e2e="app-menu--dashboard">
       <mat-icon aria-label="dashboard">home</mat-icon>
-    </a>
-    <a [routerLink]="['users']">
-      <mat-icon aria-label="users">people</mat-icon>
     </a>
   </div>
 
   <div class="bottom">
-    <a [routerLink]="['settings']">
+    <a [routerLink]="['settings']" data-e2e="app-menu--settings">
       <mat-icon  aria-label="settings">settings</mat-icon>
     </a>
   </div>

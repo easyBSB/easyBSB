@@ -8,12 +8,23 @@ interface ExecutorResult {
   success: boolean;
 }
 
-interface PlaywrightExecutorOptions {}
+interface PlaywrightExecutorOptions {
+  app: {
+    start: boolean;
+    port: number;
+  };
+
+  server: {
+    start: boolean;
+    port: number;
+  };
+}
 
 export default async function playwrightExecutor(
-  options: [PlaywrightExecutorOptions],
+  options: PlaywrightExecutorOptions,
   context: ExecutorContext
 ): Promise<ExecutorResult> {
+
   /*
   const devServer$ = from(runDevServer(context))
 
@@ -30,10 +41,14 @@ export default async function playwrightExecutor(
   let success = true;
 
   // run all servers
-  await runApiServer(context).next();
+  if (options.server.start) {
+    await runApiServer(context).next();
+  }
 
-  process.stdout.write("\x1b[32m***** Web starting ******\x1b[0m" + EOL);
-  await runDevServer(context).next();
+  if (options.app.start) {
+    process.stdout.write("\x1b[32m***** Web starting ******\x1b[0m" + EOL);
+    await runDevServer(context).next();
+  }
 
   try {
     success = await (await runPlaywright()).success;

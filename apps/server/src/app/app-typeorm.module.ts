@@ -5,7 +5,8 @@ import { ENTITIES as CONNECTION_ENTITIES } from "@connections/entities";
 import { User } from "@app/users/entities/user";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { homedir } from "os";
-import { join } from "path";
+import { dirname, join } from "path";
+import { mkdirSync } from "fs";
 
 @Module({
   imports: [
@@ -19,6 +20,9 @@ import { join } from "path";
           database = join(homedir(), "easybsb/easy-bsb.sqlite");
         }
 
+        database = process.env.EASYBSB_DATABASE_FILE ?? database;
+        mkdirSync(dirname(database), { recursive: true })
+
         return {
           type: "sqljs",
           entities: [...CONNECTION_ENTITIES, User],
@@ -28,7 +32,7 @@ import { join } from "path";
           autoSave: true,
           logging: true,
           synchronize: false,
-          location: process.env.EASYBSB_DATABASE_FILE ?? database,
+          location: database
       }},
     }),
   ],
