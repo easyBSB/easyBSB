@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from "@angular/core";
-import { Observable, Subject } from "rxjs";
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
+import { Observable, skip, Subject, takeUntil } from "rxjs";
 import { UserListDatasource } from "./datasource";
 import { UserListItem, UserRoles } from "./api";
 
@@ -20,6 +20,7 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly datasource: UserListDatasource,
+    private readonly cdRef: ChangeDetectorRef
   ) {
     this.userData$ = this.datasource.connect();
   }
@@ -28,6 +29,10 @@ export class UsersComponent implements OnInit, OnDestroy {
     for (const [key, value] of Object.entries(UserRoles) ) {
       this.userRoleOptions.push([key, value] as [keyof typeof UserRoles, UserRoles])
     }
+
+    this.userData$
+      .pipe(skip(1), takeUntil(this.destroy$))
+      .subscribe(() => this.cdRef.markForCheck());
 
     this.datasource.load();
   }

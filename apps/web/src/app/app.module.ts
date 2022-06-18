@@ -8,16 +8,18 @@ import { AuthorizationModule } from "./libs/authorization";
 
 import { AppComponent } from "./app.component";
 import { AppRoutingModule } from "./app-routing.module";
+import { ErrorHandlerModule } from "./libs/error-handler/error-handler.module";
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
     AppRoutingModule,
     AuthorizationModule,
+    BrowserAnimationsModule,
+    ErrorHandlerModule,
     BrowserModule,
     HttpClientModule,
     MatIconModule,
-    BrowserAnimationsModule
   ],
   bootstrap: [AppComponent],
 })

@@ -9,7 +9,7 @@ module.exports = {
         launchOptions: {
           slowMo: 0,
         },
-        headless: false,
+        headless: true,
         browserName: "chromium",
         channel: "chrome",
       },

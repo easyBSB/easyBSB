@@ -1,3 +1,5 @@
+import { HttpContextToken } from "@angular/common/http";
+
 export interface User {
   id: number | string;
   name: string;
@@ -16,3 +18,5 @@ export enum UserRoles {
   write = "Write",
   admin = "Admin"
 }
+
+export const HTTP_CONTEXT_USER = new HttpContextToken<User | undefined>(() => void 0);

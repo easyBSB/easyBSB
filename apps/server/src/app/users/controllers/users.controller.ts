@@ -62,9 +62,13 @@ export class UsersController {
   @CheckAbility({ action: Actions.Manage, subject: User })
   @Post(":id")
   async updateUser(
-    @Param("id") userId: number,
-    @Body() payload: User
+    @Param("id", ParseIntPipe) userId: number,
+    @Body() payload: User,
+    @GetUser() user: User,
   ): Promise<User> {
+    if (user.id === userId && user.role !== payload.role) {
+      throw new BadRequestException(`Not allowed to change own role`);
+    }
     return this.usersService.update(userId, payload);
   }
 

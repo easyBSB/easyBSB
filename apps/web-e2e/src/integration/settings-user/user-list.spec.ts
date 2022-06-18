@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, Locator, test } from "@playwright/test";
 import { SettingsPageObject } from "../../page-objects/settings-user-page-object";
 
 test.describe("App: sidebar", () => {
@@ -10,13 +10,20 @@ test.describe("App: sidebar", () => {
     await settingsPage.bootstrap();
   });
 
-  test.only("should contain sidebar with settings icon", async () => {
+  test.only("should contain default easybsb user", async () => {
     const users = await settingsPage.getUsers();
     expect(await users.count()).toBe(1);
 
-    const cols = users.locator('[data-e2e="users-list--control"]');
-    expect(await cols.nth(0).locator('input').inputValue()).toBe('easybsb');
-    expect(await cols.nth(1).innerText()).toBe('*****');
-    expect(await cols.nth(2).innerText()).toBe('Admin');
+    const user: Locator = settingsPage.getUserCol(0);
+    const data = await Promise.all([
+      settingsPage.getUserName(user),
+      settingsPage.getUserRole(user)
+    ]);
+
+    expect(data).toStrictEqual(['easybsb', 'Admin']);
+  });
+
+  test.only("Logged in admin user is not allowed to change own role", async () => {
+    await settingsPage.editAndSaveUser(0, void 0, void 0, 'Read');
   });
 });

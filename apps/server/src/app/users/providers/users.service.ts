@@ -95,6 +95,8 @@ export class UserService {
 
     if (payload.password && payload.password.trim() !== "") {
       payload.password = hashSync(payload.password);
+    } else {
+      delete payload.password;
     }
 
     await this.repository.update(id, payload);

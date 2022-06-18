@@ -1,7 +1,9 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpContext } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject, animationFrameScheduler, of } from 'rxjs';
 import { debounceTime, map, take } from 'rxjs/operators';
+import { RequestContextToken } from '../../constants/api';
+import { EasyBSBHttpErrorResponse, RequestContext } from '../error-handler/error.interceptor';
 import { MessageService } from '../message/message.service';
 import { User, UserListItem } from './api';
 
@@ -70,7 +72,6 @@ export class UserListDatasource {
       if (!this.validate(this.currentEditUser)) {
         return;
       }
-
       this.write(this.currentEditUser);
     }
 
@@ -107,7 +108,7 @@ export class UserListDatasource {
     const isDirty = JSON.stringify(item.raw) !== JSON.stringify(this.userState?.raw);
     if (isDirty) {
       const data$ = !item.isPhantom
-        ? this.updateUser(item)
+        ? this.updateUser(item, new RequestContext(this.userState?.raw))
         : this.createUser(item);
 
       data$
@@ -116,27 +117,28 @@ export class UserListDatasource {
           next: (response) => {
             const newUser = this.mapUser(response as User);
             this.userStorage = this.userStorage.map((user) => user === item ? newUser : user);
-
             this.messageService.success(
               item.isPhantom ? `User ${item.raw.name} added.` : `User ${item.raw.name} updated.`
             );
-
-            this.notify();
           },
-          error: (response: HttpErrorResponse) => {
-            this.messageService.error(response.error.message);
-          }
+          error: (response: EasyBSBHttpErrorResponse) => {
+            const state = response.httpContext.get() as User;
+            this.userStorage = this.userStorage.map(
+              (user) => user.raw.id === state.id ? this.mapUser(state) : user
+            );
+          },
+          complete: () => this.notify()
         });
     }
-
-    // reset data
-    item.raw.password = '';
-    item.mode = "read";
 
     this.userState = undefined;
     this.currentEditUser = undefined;
   }
 
+  /**
+   * @description remote item from storage and send request if
+   * item is not a phantom
+   */
   remove(item: UserListItem) {
     const delete$ = item.isPhantom
       ? of(true)
@@ -144,15 +146,10 @@ export class UserListDatasource {
 
     delete$
       .pipe(take(1))
-      .subscribe({
-        next: () => {
-          this.messageService.success(`User ${item.raw.name} removed`);
-          this.userStorage = this.userStorage.filter((user) => user !== item);
-          this.notify();
-        },
-        error: (response: HttpErrorResponse) => {
-          this.messageService.error(response.error.message);
-        }
+      .subscribe(() => {
+        this.messageService.success(`User ${item.raw.name} removed`);
+        this.userStorage = this.userStorage.filter((user) => user !== item);
+        this.notify();
       });
   }
 
@@ -194,16 +191,27 @@ export class UserListDatasource {
     return this.httpClient.put<User>("/api/users", payload);
   }
 
+  /**
+   * @description delete existing user
+   */
   private deleteUser(user: UserListItem): Observable<unknown> {
     const { id } = user.raw;
     return this.httpClient.delete("/api/users/" + id);
   }
 
-  private updateUser(user: UserListItem): Observable<unknown> {
+  /**
+   * @description update existing user
+   */
+  private updateUser(user: UserListItem, reqContext: RequestContext): Observable<User> {
     const {id, ...payload} = user.raw;
-    return this.httpClient.post("/api/users/" + id, payload);
+    const context = new HttpContext();
+    context.set(RequestContextToken, reqContext);
+    return this.httpClient.post<User>("/api/users/" + id, payload, { context });
   }
 
+  /**
+   * @description map User to UserListItem
+   */
   private mapUser(user: User): UserListItem {
     return {
       mode: "read",
