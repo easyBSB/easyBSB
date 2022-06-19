@@ -17,7 +17,7 @@ import { mkdirSync } from "fs";
         let database = config.get('database.file');
 
         if (config.get('production') && !process.env.EASYBSB_DATABASE_FILE) {
-          database = join(homedir(), "easybsb/easy-bsb.sqlite");
+          database = join(homedir(), ".easybsb/easy-bsb.sqlite");
         }
 
         database = process.env.EASYBSB_DATABASE_FILE ?? database;
@@ -30,7 +30,7 @@ import { mkdirSync } from "fs";
           migrationsTableName: "migrations",
           migrations: [...config.get("database.migrations")],
           autoSave: true,
-          logging: true,
+          logging: config.get('production') ? false : true,
           synchronize: false,
           location: database
       }},
