@@ -17,19 +17,20 @@ test("Login Error", async ({ page }) => {
     "SuperSecretUnknownPasswordButNobodyCaresBecauseNobodyKnows"
   );
 
+  const snackbar = page.locator('snack-bar-container');
   const [response] = await Promise.all([
     page.waitForResponse("http://localhost:4200/api/auth/login"),
+    snackbar.waitFor({ state: 'visible'}),
     passwordControl.press("Enter"),
   ]);
-
-  // check response data
+  expect(await snackbar.count()).toBe(1);
   expect(response.status()).toBe(401);
 
-  // we should have been redirected to dashboard now
-  expect(page.url()).toBe("http://localhost:4200/login");
-  const error = page.locator('[data-e2e="authorization-login-error"]');
+  const [message, type] = await Promise.all([
+    snackbar.locator('.mat-simple-snack-bar-content').innerText(),
+    snackbar.locator('.mat-simple-snackbar-action').innerText()
+  ]);
 
-  expect((await error.textContent())?.trim()).toContain(
-    "invalid username or password"
-  );
+  expect(message).toBe("invalid username or password");
+  expect(type).toBe("Error");
 });

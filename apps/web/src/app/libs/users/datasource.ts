@@ -120,17 +120,19 @@ export class UserListDatasource {
             this.messageService.success(
               item.isPhantom ? `User ${item.raw.name} added.` : `User ${item.raw.name} updated.`
             );
+            this.notify();
           },
           error: (response: EasyBSBHttpErrorResponse) => {
             const state = response.httpContext.get() as User;
             this.userStorage = this.userStorage.map(
               (user) => user.raw.id === state.id ? this.mapUser(state) : user
             );
+            this.notify();
           },
-          complete: () => this.notify()
         });
     }
 
+    item.mode = 'read'
     this.userState = undefined;
     this.currentEditUser = undefined;
   }

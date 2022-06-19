@@ -17,7 +17,6 @@ export abstract class AbstractPageObject {
 
   private async login() {
     const token = await resolveSessionToken(this.request);
-    console.log(token);
     await writeSessionToken(this.page, token);
   }
 }

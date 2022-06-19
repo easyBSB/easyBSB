@@ -38,8 +38,8 @@
 
   <ng-container matColumnDef="actions">
     <th mat-header-cell *matHeaderCellDef>
-      <div class="d-inline-flex flex-row align-items-center" (click)="addUser()" data-e2e="users-list-add">
-        <mat-icon class="me-2">person_add</mat-icon>
+      <div class="d-inline-flex flex-row align-items-center" (click)="addUser()">
+        <mat-icon class="me-2" data-e2e="users-list-actions-create">person_add</mat-icon>
         Neuer Benutzer
       </div>
     </th>
@@ -60,5 +60,5 @@
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="columns"></tr>
-  <tr mat-row *matRowDef="let row; columns: columns" data-e2e="users-list-row"></tr>
+  <tr mat-row *matRowDef="let row; columns: columns" data-e2e="users-list-row" [attr.data-phantom]="row.isPhantom"></tr>
 </table>

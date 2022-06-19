@@ -26,98 +26,92 @@ export class SettingsPageObject extends AbstractPageObject {
     return this.userList.locator('[data-e2e="users-list-row"]');
   }
 
-  /**
-   * @description get col of user 
-   */
+  async findUser(name: string): Promise<Locator> {
+    const rows = this.getUsers();
+    const count = await rows.count()
+
+    for (let i = 0; i < count; i++) {
+      const row = rows.nth(i);
+      const ctrl = await row.locator('[data-e2e="users-list-name"] input');
+
+      expect(await ctrl.count()).toBe(1);
+      const value = await ctrl.inputValue();
+      if (value === name) {
+        return row;
+      }
+    }
+
+    throw `not found`;
+  }
+
   getUserCol(row: number, locator?: Locator): Locator {
     return this.getUsers().nth(row).locator('td');
   }
 
-  async getUserName(cols: Locator): Promise<string> {
-    return cols.nth(0).locator('input').inputValue();
+  async getUserName(row: Locator): Promise<string> {
+    const ctrl = row.locator('[data-e2e="users-list-name"] input');
+    expect(await ctrl.count()).toBe(1);
+    return ctrl.inputValue();
   }
 
-  async getUserRole(cols: Locator): Promise<string> {
-    return await cols.nth(2).textContent() ?? '';
-  }
-
-  writeUserName(index: number, value: string) {
+  async getUserRole(row: Locator): Promise<string> {
+    const ctrl = row.locator('[data-e2e="users-list-role"] .mat-select-value-text');
+    expect(await ctrl.count()).toBe(1);
+    return ctrl.innerText();
   }
 
   cancelEditUser(row: number) {}
 
-  deleteUser(row: number) {}
+  async createUser(username: string, password: string, role: string): Promise<void> {
+    const create = this.page.locator('[data-e2e="users-list-actions-create"]');
+    expect(await create.count()).toBe(1);
+    await create.click();
 
-  async editAndSaveUser(index: number, username?: string, password?: string, role?: string): Promise<void> {
-    const userCols = this.getUserCol(index);
-    const actions = await this.findInLocatorResult(userCols, 'data-e2e', 'users-list-actions');
-    expect(await actions.count()).toBe(1);
-
-    const editBtn = actions.locator('[data-e2e="users-list-actions-edit"]');
-    expect(await editBtn.count()).toBe(1);
-    await editBtn.click()
-
-    await this.fillUser(userCols, username, password, role);
-
-    const accept = actions.locator('[data-e2e="users-list-actions-accept"]');
-    expect(await accept.count()).toBe(1);
-    await accept.click()
+    // should have a new row
+    const editRow = this.page.locator('table tr[data-phantom="true"]');
+    await editRow.waitFor({ state: "attached" });
+    await this.updateUser(editRow, username, password, role);
+    await this.writeUser(editRow);
   }
 
-  writeUser(row: number) {}
+  async deleteUser(row: Locator): Promise<void> {
+    const deleteAction = row.locator('[data-e2e="users-list-actions-delete"]');
+    expect(await deleteAction.count()).toBe(1);
+    await deleteAction.click()
+  }
+
+  async updateAndSaveUser(row: Locator, username?: string, password?: string, role?: string): Promise<void> {
+    const edit = row.locator('[data-e2e="users-list-actions-edit"]');
+    expect(await edit.count()).toBe(1);
+    await edit.click();
+
+    await this.updateUser(row, username, password, role);
+    await this.writeUser(row);
+  }
+
+  async writeUser(row: Locator) {
+    const accept = row.locator('[data-e2e="users-list-actions-accept"]');
+    expect(await accept.count()).toBe(1);
+    await accept.click();
+  }
 
   /**
    * @description fill user data
    */
-  private async fillUser(cols: Locator, username?: string, password?: string, role?: string): Promise<void> {
+  async updateUser(row: Locator, username?: string, password?: string, role?: string): Promise<void> {
     if (username) {
-      const control = await this.getUserControl(cols, 'users-list-name', 'input')
-      await control.fill(username);
+      const ctrl = row.locator('[data-e2e="users-list-name"] input');
+      await ctrl.fill(username)
     }
 
     if (password) {
-      const control = await this.getUserControl(cols, 'users-list-password', 'input')
-      await control.fill(password);
+      const ctrl = row.locator('[data-e2e="users-list-password"] input');
+      await ctrl.fill(password);
     }
 
     if (role) {
-      const control = await this.getUserControl(cols, 'users-list-role', 'mat-select')
-      await matSelectValue(this.page, control, role)
+      const ctrl = row.locator('[data-e2e="users-list-role"] mat-select');
+      await matSelectValue(this.page, ctrl, role)
     }
-  }
-
-  /**
-   * @description get specific control from user table
-   * @param cols page locator object all [row > td] elements
-   * @param colSelector every col has a data-e2e attribute with specific name like users-list-{role,name,password}
-   */
-  private async getUserControl(cols: Locator, colSelector: string, ctrlSelector: string): Promise<Locator> {
-      const userCtrl = await this.findInLocatorResult(cols, 'data-e2e', colSelector);
-
-      expect(await userCtrl.count()).toBe(1);
-      const ctrl = userCtrl.locator(ctrlSelector)
-      expect(await ctrl.count()).toBe(1);
-      return ctrl;
-  }
-
-  /**
-   * @description every locator can contain multiple, this works like a filter we search 
-   * for something specific
-   */
-  private async findInLocatorResult(locator: Locator, attribute: string, needle: string): Promise<Locator> {
-    const count = await locator.count();
-    let match: Locator | undefined = void 0;
-    for (let i = 0; i < count; i++) {
-      const found = await locator.nth(i).getAttribute(attribute);
-      if (found !== void 0 && found === needle) {
-        match = locator.nth(i);
-        break;
-      }
-    }
-
-    if (match === undefined) {
-      throw `no Locator found for attribute ${attribute} with ${needle}`;
-    }
-    return match as Locator;
   }
 }
