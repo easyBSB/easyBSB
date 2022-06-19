@@ -13,7 +13,7 @@ export interface Message {
 }
 
 export const messageConfig: MatSnackBarConfig = {
-  duration: void 0,
+  duration: 3000,
   verticalPosition: 'bottom',
   horizontalPosition: 'right'
 }

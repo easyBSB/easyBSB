@@ -1,9 +1,16 @@
-import { NgModule } from '@angular/core';
+import { ModuleWithProviders, NgModule } from '@angular/core';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MessageService } from './message.service';
 
 @NgModule({
-  imports: [ MatSnackBarModule ],
-  providers: [ MessageService ],
+  imports: [ MatSnackBarModule ]
 })
-export class MessageModule {}
+export class MessageModule {
+
+  public static forRoot(): ModuleWithProviders<MessageModule> {
+    return {
+      ngModule: MessageModule,
+      providers: [MessageService]
+    }
+  }
+}

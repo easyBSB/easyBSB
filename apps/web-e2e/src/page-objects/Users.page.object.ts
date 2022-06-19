@@ -1,8 +1,8 @@
 import { expect, Locator } from "@playwright/test";
 import { matSelectValue } from "../support/mat-select";
-import { AbstractPageObject } from "./abstract-page-object";
+import { AbstractPageObject } from "./Abstract.page.object";
 
-export class SettingsPageObject extends AbstractPageObject {
+export class UsersPageObject extends AbstractPageObject {
 
   get userList(): Locator {
     const table = this.page.locator('[data-e2e="users-list"]');
@@ -10,6 +10,14 @@ export class SettingsPageObject extends AbstractPageObject {
   }
 
   protected async initialize(): Promise<void> {
+    await this.navigate();
+  }
+
+  async reload(): Promise<void> {
+    await this.navigate();
+  }
+
+  private async navigate(): Promise<void> {
     await this.page.goto('http://localhost:4200/settings', { waitUntil: 'networkidle' });
     expect(this.page.url()).toContain('/settings');
 
@@ -75,6 +83,7 @@ export class SettingsPageObject extends AbstractPageObject {
   }
 
   async deleteUser(row: Locator): Promise<void> {
+
     const deleteAction = row.locator('[data-e2e="users-list-actions-delete"]');
     expect(await deleteAction.count()).toBe(1);
     await deleteAction.click()

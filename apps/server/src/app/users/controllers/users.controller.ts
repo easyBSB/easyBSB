@@ -59,7 +59,7 @@ export class UsersController {
   @ApiResponse({ status: 201, description: "user updated", type: User })
   @ApiResponse({ status: 403, description: "not allowed to update a user" })
   @ApiResponse({ status: 404, description: "user not for update not found" })
-  @CheckAbility({ action: Actions.Manage, subject: User })
+  @CheckAbility({ action: Actions.Update, subject: User })
   @Post(":id")
   async updateUser(
     @Param("id", ParseIntPipe) userId: number,
@@ -81,7 +81,7 @@ export class UsersController {
   @ApiResponse({ status: 200, description: "user deleted"})
   @ApiResponse({ status: 403, description: "not allowed to delete a user" })
   @ApiResponse({ status: 404, description: "user not found" })
-  @CheckAbility({ action: Actions.Manage, subject: User })
+  @CheckAbility({ action: Actions.Delete, subject: User })
   @Delete(":id")
   async deleteUser(
     @Param("id", ParseIntPipe) userId: number,

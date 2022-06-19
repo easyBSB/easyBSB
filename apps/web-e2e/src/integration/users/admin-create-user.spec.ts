@@ -1,14 +1,20 @@
 import { expect, test } from "@playwright/test";
-import { SettingsPageObject } from "../../page-objects/settings-user-page-object";
+import { UsersPageObject } from "../../page-objects/Users.page.object";
 
 test.describe("Create new user", () => {
 
-  let usersPage: SettingsPageObject;
+  let usersPage: UsersPageObject;
 
   test.beforeEach(async ({ page, request }) => {
-    usersPage = new SettingsPageObject(page, request);
+    usersPage = new UsersPageObject(page, request);
     await usersPage.bootstrap();
   });
+
+  test.afterAll(async () => {
+    const testUser = await usersPage.findUser('TestUser');
+    expect(await testUser.count()).toBe(1);
+    await usersPage.deleteUser(testUser);
+  })
 
   test("can create new user", async ({page}) => {
 

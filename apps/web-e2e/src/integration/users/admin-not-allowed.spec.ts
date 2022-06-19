@@ -1,13 +1,13 @@
 import { expect, Locator, test } from "@playwright/test";
-import { SettingsPageObject } from "../../page-objects/settings-user-page-object";
+import { UsersPageObject } from "../../page-objects/Users.page.object";
 
 test.describe("Admin is not allowed", () => {
 
-  let settingsPage: SettingsPageObject;
+  let settingsPage: UsersPageObject;
   let admin: Locator;
 
   test.beforeEach(async ({ page, request }) => {
-    settingsPage = new SettingsPageObject(page, request);
+    settingsPage = new UsersPageObject(page, request);
     await settingsPage.bootstrap();
   });
 
@@ -17,7 +17,6 @@ test.describe("Admin is not allowed", () => {
   });
 
   test("to change own role", async ({page}) => {
-
     const snackbar = page.locator('snack-bar-container');
     await Promise.all([
       snackbar.waitFor({ state: 'visible'}),

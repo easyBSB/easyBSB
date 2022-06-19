@@ -1,13 +1,13 @@
 import { expect, Locator, test } from "@playwright/test";
-import { SettingsPageObject } from "../../page-objects/settings-user-page-object";
+import { UsersPageObject } from "../../page-objects/Users.page.object";
 
 test.describe("Users list", () => {
 
-  let settingsPage: SettingsPageObject;
+  let settingsPage: UsersPageObject;
   let admin: Locator;
 
   test.beforeEach(async ({ page, request }) => {
-    settingsPage = new SettingsPageObject(page, request);
+    settingsPage = new UsersPageObject(page, request);
     await settingsPage.bootstrap();
   });
 

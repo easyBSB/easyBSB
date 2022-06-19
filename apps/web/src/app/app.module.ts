@@ -9,6 +9,7 @@ import { AuthorizationModule } from "./libs/authorization";
 import { AppComponent } from "./app.component";
 import { AppRoutingModule } from "./app-routing.module";
 import { ErrorHandlerModule } from "./libs/error-handler/error-handler.module";
+import { MessageModule } from "./libs/message/message.module";
 
 @NgModule({
   declarations: [AppComponent],
@@ -20,6 +21,7 @@ import { ErrorHandlerModule } from "./libs/error-handler/error-handler.module";
     BrowserModule,
     HttpClientModule,
     MatIconModule,
+    MessageModule.forRoot()
   ],
   bootstrap: [AppComponent],
 })
