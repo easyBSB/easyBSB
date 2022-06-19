@@ -80,7 +80,7 @@
     "@nrwl/cli": "14.3.5",
     "@nrwl/eslint-plugin-nx": "14.3.5",
     "@nrwl/jest": "14.3.5",
-    "@nrwl/linter": "14.3.5",
+    "@nrwl/linter": "14.3.6",
     "@nrwl/nest": "14.3.5",
     "@nrwl/node": "14.3.5",
     "@nrwl/tao": "14.3.5",
