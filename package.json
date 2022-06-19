@@ -83,7 +83,7 @@
     "@nrwl/linter": "14.3.5",
     "@nrwl/nest": "14.3.5",
     "@nrwl/node": "14.3.5",
-    "@nrwl/tao": "14.3.5",
+    "@nrwl/tao": "14.3.6",
     "@nrwl/workspace": "14.3.5",
     "@oclif/core": "1.9.2",
     "@playwright/test": "1.22.2",
