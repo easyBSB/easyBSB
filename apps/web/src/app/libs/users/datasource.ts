@@ -107,9 +107,10 @@ export class UserListDatasource {
 
     const isDirty = JSON.stringify(item.raw) !== JSON.stringify(this.userState?.raw);
     if (isDirty) {
+      const requestContext = new RequestContext(this.userState?.raw);
       const data$ = !item.isPhantom
-        ? this.updateUser(item, new RequestContext(this.userState?.raw))
-        : this.createUser(item);
+        ? this.updateUser(item, requestContext)
+        : this.createUser(item, requestContext);
 
       data$
         .pipe(take(1))
@@ -123,10 +124,7 @@ export class UserListDatasource {
             this.notify();
           },
           error: (response: EasyBSBHttpErrorResponse) => {
-            const state = response.httpContext.get() as User;
-            this.userStorage = this.userStorage.map(
-              (user) => user.raw.id === state.id ? this.mapUser(state) : user
-            );
+            this.handleWriteError(response.httpContext.get() as User);
             this.notify();
           },
         });
@@ -179,6 +177,22 @@ export class UserListDatasource {
   }
 
   /**
+   * @description handle error if write failed, if create we remove item from list
+   * otherweise we replace item in list
+   */
+  private handleWriteError(state: User): void {
+    const item = this.userStorage.find((user) => user.raw.id === state.id);
+
+    if (!item) {
+      return;
+    }
+
+    this.userStorage = item.isPhantom
+      ? this.userStorage.filter((user) => user !== item)
+      : this.userStorage.map((user) => user === item ? this.mapUser(state) : user);
+  }
+
+  /**
    * @description emit list changes
    */
   private notify() {
@@ -188,9 +202,11 @@ export class UserListDatasource {
   /**
    * @description save user on server
    */
-  private createUser(user: UserListItem): Observable<User> {
+  private createUser(user: UserListItem, reqContext: RequestContext): Observable<User> {
     const {id, ...payload} = user.raw;
-    return this.httpClient.put<User>("/api/users", payload);
+    const context = new HttpContext();
+    context.set(RequestContextToken, reqContext);
+    return this.httpClient.put<User>("/api/users", payload , { context });
   }
 
   /**
