@@ -110,6 +110,20 @@
       "outputs": [
         "coverage/apps/web"
       ]
+    },
+    "e2e-dev": {
+      "executor": "./libs/executors:playwright",
+      "outputs": [
+        "coverage/apps/web"
+      ],
+      "options": {
+        "app": {
+          "start": false
+        },
+        "server": {
+          "start": false
+        }
+      }
     }
   },
   "tags": []

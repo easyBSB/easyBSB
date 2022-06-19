@@ -27,17 +27,16 @@ export class AbilityFactory {
       // can not update users
       case UserRoles.Write:
         can(Actions.Read, User);
-        can(Actions.Update, "all");
-        can(Actions.Create, "all");
-
-        cannot(Actions.Update, User);
-        cannot(Actions.Create, User).because(
-          "Forbidden: not allowed to add new users."
-        );
+        cannot(Actions.Create, User).because("Forbidden");
+        cannot(Actions.Delete, User).because('Forbidden');
+        cannot(Actions.Update, User).because('Forbidden');
         break;
 
       case UserRoles.Read:
-        can(Actions.Read, "all");
+        can(Actions.Read, 'all');
+        cannot(Actions.Create, User).because("Forbidden");
+        cannot(Actions.Delete, User).because('Forbidden');
+        cannot(Actions.Update, User).because("Forbidden");
         break;
     }
 

@@ -23,7 +23,8 @@
     "package:server": "nx run server:package",
     "package:electron": "nx run electron:package",
     "postinstall": "npm run build:executors && ngcc --properties es2020 browser module main",
-    "e2e": "nx run web:e2e"
+    "e2e": "nx run web:e2e",
+    "e2e:dev": "nx run web:e2e-dev"
   },
   "private": true,
   "dependencies": {

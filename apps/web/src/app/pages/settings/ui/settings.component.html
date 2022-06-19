@@ -1,13 +1,14 @@
 <div class="container-fluid h-100">
-
   <div class="row">
-    <div class="col">
-      <h1>Settings goes here</h1>
+    <div class="col-12">
+      <mat-tab-group mat-align-tabs="start" data-e2e="settings-tab--devices">
+        <mat-tab label="Geraete">
+        </mat-tab>
+
+        <mat-tab label="Benutzer" [attr.data-e2e]="'settings-tab--users'">
+          <easy-bsb-users></easy-bsb-users>
+        </mat-tab>
+      </mat-tab-group>
     </div>
   </div>
-
-  <div class="row">
-    <div class="col">Body</div>
-  </div>
-
 </div>
