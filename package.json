@@ -62,7 +62,7 @@
     "sql.js": "1.7.0",
     "swagger-ui-express": "4.4.0",
     "tslib": "2.4.0",
-    "typeorm": "0.3.6",
+    "typeorm": "0.3.7",
     "zone.js": "0.11.6"
   },
   "devDependencies": {
