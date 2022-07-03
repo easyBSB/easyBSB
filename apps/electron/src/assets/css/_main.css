@@ -25,7 +25,8 @@ main .content {
   flex: 1;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  margin: 10vh auto 0;
+  width: 25rem;
 }
 
 main .version {
@@ -34,16 +35,19 @@ main .version {
   font-size: 1.1rem;
 }
 
-.logo {
-  max-width: 20rem;
-  max-height: 20rem;
-}
-
 /** LOGIN FORM */
 .login-form {
   display: flex;
   flex-direction: column;
   font-size: 1.3rem;
+  align-items: center;
+  width: 100%;
+}
+
+.logo,
+.login-form .form-control,
+.login-form button[type="submit"] {
+  width: 18rem;
 }
 
 .login-form .form-control {
@@ -83,6 +87,17 @@ main .version {
 
 .ms-auto {
   margin-left: auto;
+}
+
+.error {
+  font-weight: 600;
+  color: var(--easybsb-error);
+}
+
+.error:not(:empty):before {
+  content: "*";
+  display: inline-block;
+  margin-right: .5rem;
 }
     
 .page-header.navbar {
