@@ -1,2 +1,7 @@
-@import url("./_icon.css");
-@import url("./_main.css");
+@import "./_icon.css";
+@import "./_main.css";
+
+:root {
+  --easybsb-error: #C73E1D; 
+}
+
