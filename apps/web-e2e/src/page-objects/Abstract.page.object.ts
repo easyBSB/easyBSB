@@ -10,9 +10,8 @@ export abstract class AbstractPageObject {
     protected readonly request: APIRequestContext
   ) {}
 
-  async bootstrap() {
-    this.sessionToken = await resolveSessionToken(this.request, 'easybsb', 'easybsb');
-    await this.login();
+  async bootstrap(name = 'easybsb', password = 'easybsb') {
+    await this.login(name, password);
     await this.initialize();
   }
 

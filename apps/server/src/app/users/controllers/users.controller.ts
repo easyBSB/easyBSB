@@ -12,9 +12,10 @@ import {
   Put,
 } from "@nestjs/common";
 import { ApiOperation, ApiHeaders, ApiResponse, ApiBody, ApiTags } from "@nestjs/swagger";
+import { FindManyOptions } from "typeorm";
 import { CreateUserAbility } from "../constants/abilities";
 import { GetUser } from "../constants/get-user.decorator";
-import { User } from "../entities/user";
+import { User, UserRoles } from "../entities/user";
 import { UserService } from "../providers/users.service";
 
 @ApiTags("users")
@@ -24,10 +25,26 @@ import { UserService } from "../providers/users.service";
 export class UsersController {
   constructor(private readonly usersService: UserService) {}
 
+  @ApiOperation({
+    summary: "get list of users",
+    description: "get list of users",
+    security: [{ bearer: [] }],
+  })
+  @ApiHeaders([{ name: "Authorization", description: "Bearer auth token" }])
+  @ApiResponse({ status: 200, description: "users list", type: Array<User> })
+  @ApiResponse({ status: 401, description: "not authorized" })
   @CheckAbility({ action: Actions.Read, subject: User })
   @Get()
-  getUsers(): Promise<User[]> {
-    return this.usersService.list();
+  getUsers(
+    @GetUser() user: User,
+  ): Promise<User[]> {
+    let filter: FindManyOptions<User> = {};
+    if (user.role !== UserRoles.Admin) {
+      filter = {
+        where: { id: user.id }
+      };
+    }
+    return this.usersService.list(filter);
   }
 
   @ApiOperation({
@@ -37,7 +54,7 @@ export class UsersController {
   })
   @ApiHeaders([{ name: "Authorization", description: "Bearer auth token" }])
   @ApiBody({ required: true, type: User })
-  @ApiResponse({ status: 201, description: "user registered", type: User })
+  @ApiResponse({ status: 200, description: "user registered", type: User })
   @ApiResponse({ status: 403, description: "usename allready taken" })
   @ApiResponse({ status: 403, description: "not allowed to create a new user" })
   @CheckAbility(CreateUserAbility)
