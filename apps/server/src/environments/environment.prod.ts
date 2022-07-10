@@ -12,6 +12,7 @@ export const environment = {
   database: {
     file: 'easy-bsb.sqlite',
     migrations: [migrationsPath],
+    logging: false,
   },
   client: {
     path: clientPath,

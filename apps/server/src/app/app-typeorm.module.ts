@@ -30,7 +30,7 @@ import { mkdirSync } from "fs";
           migrationsTableName: "migrations",
           migrations: [...config.get("database.migrations")],
           autoSave: true,
-          logging: config.get('production') ? false : true,
+          logging: config.get('database.logging'),
           synchronize: false,
           location: database
       }},

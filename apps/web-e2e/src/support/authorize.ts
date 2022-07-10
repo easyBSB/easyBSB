@@ -46,7 +46,7 @@ export async function resolveSessionToken(
   password = "easybsb"
 ): Promise<string> {
   return request
-    .post(`http://localhost:4200/api/auth/login`, {
+    .post(`http://localhost:3333/api/auth/login`, {
       data: { username, password },
     })
     .then((response) => response.json())

@@ -7,7 +7,7 @@ import {
 import { InjectRepository } from "@nestjs/typeorm";
 import { hashSync } from "bcryptjs";
 import { validate } from "class-validator";
-import { Repository } from "typeorm";
+import { FindManyOptions, Repository } from "typeorm";
 import { User } from "../entities/user";
 
 @Injectable()
@@ -29,8 +29,8 @@ export class UserService {
     return null;
   }
 
-  async list(): Promise<User[]> {
-    const users = await this.repository.find();
+  async list(options: FindManyOptions<User> = {}): Promise<User[]> {
+    const users = await this.repository.find(options);
     if (users.length > 0) {
       return users.map((user) => {
         const { password, ...data } = user;
