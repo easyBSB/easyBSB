@@ -73,7 +73,7 @@
     "@angular/cli": "14.0.5",
     "@angular/common": "14.0.4",
     "@angular/compiler-cli": "14.0.4",
-    "@angular/language-service": "14.0.4",
+    "@angular/language-service": "14.0.5",
     "@nestjs/schematics": "8.0.11",
     "@nestjs/testing": "8.4.7",
     "@nrwl/angular": "14.4.2",
