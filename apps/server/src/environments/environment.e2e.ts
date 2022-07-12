@@ -7,5 +7,6 @@ export const environment = {
   database: {
     migrations: ["apps/server/src/**/migrations/*.js"],
     file: "dist/tmp/easy-bsb-dev.e2e.sqlite",
+    logging: false,
   },
 };

@@ -9,5 +9,6 @@ export const environment = {
   database: {
     file: resolve("tmp/easybsb.sqlite"),
     migrations: ["apps/server/src/**/migrations/*.js"],
+    logging: true
   },
 };

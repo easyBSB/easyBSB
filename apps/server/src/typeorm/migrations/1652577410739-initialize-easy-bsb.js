@@ -1,4 +1,3 @@
-const { MigrationInterface, QueryRunner } = require("typeorm");
 const { hashSync } = require("bcryptjs");
 
 module.exports = class initializeEasyBsb1652577410739 {
