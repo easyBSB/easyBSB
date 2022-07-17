@@ -1,5 +1,4 @@
 import { APIRequestContext, APIResponse } from "@playwright/test";
-import { resolve } from "path";
 import { User } from "../fixtures/User";
 
 interface CreateUser {
