@@ -25,19 +25,14 @@ export class AbilityFactory {
         break;
 
       // can not update users
+      case UserRoles.Read:
       case UserRoles.Write:
         can(Actions.Read, User);
+        can(Actions.Update, User, { id: user.id });
         cannot(Actions.Create, User).because("Forbidden");
         cannot(Actions.Delete, User).because('Forbidden');
-        cannot(Actions.Update, User).because('Forbidden');
         break;
 
-      case UserRoles.Read:
-        can(Actions.Read, 'all');
-        cannot(Actions.Create, User).because("Forbidden");
-        cannot(Actions.Delete, User).because('Forbidden');
-        cannot(Actions.Update, User).because("Forbidden");
-        break;
     }
 
     return build({

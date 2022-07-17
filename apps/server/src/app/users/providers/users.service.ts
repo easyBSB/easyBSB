@@ -21,23 +21,11 @@ export class UserService {
   }
 
   async findById(id: number): Promise<User | null> {
-    const user = await this.repository.findOneBy({ id });
-    if (user) {
-      const { password, ...data } = user;
-      return data;
-    }
-    return null;
+    return await this.repository.findOneBy({ id });
   }
 
   async list(options: FindManyOptions<User> = {}): Promise<User[]> {
-    const users = await this.repository.find(options);
-    if (users.length > 0) {
-      return users.map((user) => {
-        const { password, ...data } = user;
-        return data;
-      });
-    }
-    return [];
+    return await this.repository.find(options);
   }
 
   async insert(payload: Partial<User>): Promise<User> {
@@ -89,7 +77,7 @@ export class UserService {
       throw new NotFoundException(`User with Id: ${id} was not found`);
     }
 
-    if (!await this.validateParams(payload)) {
+    if (!await this.validateParams({ name: 'easybsb', ...payload })) {
       throw new BadRequestException();
     }
 
