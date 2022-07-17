@@ -1,10 +1,11 @@
-import { Actions } from "@app/roles/constants/actions";
-import { CheckAbility } from "@app/roles/utils/check-ability.decorator";
+import { AbilityFactory, Actions, CheckAbility } from "@app/roles";
+import { ForbiddenError } from "@casl/ability";
 import {
   BadRequestException,
   Body,
   Controller,
   Delete,
+  ForbiddenException,
   Get,
   Param,
   ParseIntPipe,
@@ -23,7 +24,10 @@ import { UserService } from "../providers/users.service";
   path: "users",
 })
 export class UsersController {
-  constructor(private readonly usersService: UserService) {}
+  constructor(
+    private readonly usersService: UserService,
+    private readonly abilityFactory: AbilityFactory
+  ) {}
 
   @ApiOperation({
     summary: "get list of users",
@@ -35,16 +39,18 @@ export class UsersController {
   @ApiResponse({ status: 401, description: "not authorized" })
   @CheckAbility({ action: Actions.Read, subject: User })
   @Get()
-  getUsers(
+  async getUsers(
     @GetUser() user: User,
-  ): Promise<User[]> {
+  ): Promise<Omit<User, 'password'>[]> {
     let filter: FindManyOptions<User> = {};
     if (user.role !== UserRoles.Admin) {
       filter = {
         where: { id: user.id }
       };
     }
-    return this.usersService.list(filter);
+
+    const list = await this.usersService.list(filter);
+    return this.sanitizeResponse(list);
   }
 
   @ApiOperation({
@@ -59,11 +65,12 @@ export class UsersController {
   @ApiResponse({ status: 403, description: "not allowed to create a new user" })
   @CheckAbility(CreateUserAbility)
   @Put()
-  async newUser(@Body() payload: User): Promise<unknown> {
+  async newUser(@Body() payload: User): Promise<User> {
     if (!payload.password) {
       throw new BadRequestException("password missing");
     }
-    return this.usersService.insert(payload);
+    const insertedUser = await this.usersService.insert(payload);
+    return this.sanitizeResponse(insertedUser)[0];
   }
 
   @ApiOperation({
@@ -76,17 +83,30 @@ export class UsersController {
   @ApiResponse({ status: 201, description: "user updated", type: User })
   @ApiResponse({ status: 403, description: "not allowed to update a user" })
   @ApiResponse({ status: 404, description: "user not for update not found" })
-  @CheckAbility({ action: Actions.Update, subject: User })
   @Post(":id")
   async updateUser(
     @Param("id", ParseIntPipe) userId: number,
-    @Body() payload: User,
+    @Body() payload: Partial<User>,
     @GetUser() user: User,
   ): Promise<User> {
-    if (user.id === userId && user.role !== payload.role) {
-      throw new BadRequestException(`Not allowed to change own role`);
+    if (user.id === userId && payload.role && user.role !== payload.role) {
+      throw new ForbiddenException(`Not allowed to change own role.`);
     }
-    return this.usersService.update(userId, payload);
+
+    if (user.id === userId && payload.name && user.name !== payload.name) {
+      throw new ForbiddenException(`Not allowed to change own name.`);
+    }
+
+    try {
+      const userToUpdate = await this.usersService.findById(userId);
+      const ability = this.abilityFactory.defineAbility(user);
+      ForbiddenError.from(ability).throwUnlessCan(Actions.Update, userToUpdate);
+
+      const updatedUser = await this.usersService.update(userId, payload);
+      return this.sanitizeResponse(updatedUser)[0];
+    } catch (error) {
+      throw new ForbiddenException(`Forbidden.`);
+    }
   }
 
   @ApiOperation({
@@ -108,5 +128,14 @@ export class UsersController {
       throw new BadRequestException(`Not allowed to remove yourself`);
     }
     return this.usersService.delete(userId);
+  }
+
+  private sanitizeResponse(user: User | User[]): User[] {
+    const users = Array.isArray(user) ? user : [user];
+    const response = users.map((user: User) => {
+      const { password, ...rest } = user;
+      return rest;
+    })
+    return response;
   }
 }

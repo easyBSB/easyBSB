@@ -3,7 +3,7 @@ import { expect, test } from "@playwright/test";
 import { User } from "../../fixtures/User";
 import { UsersPageObject } from "../../page-objects/Users.page.object";
 import { resolveSessionToken } from "../../support/authorize";
-import { createUser, removeUser } from "../../support/user.support";
+import { createUser, removeUser, updateUser } from "../../support/user.support";
 
 test.describe("Create new user", () => {
 
@@ -93,13 +93,12 @@ test.describe("Create new user", () => {
       snackbar.locator('.mat-simple-snackbar-action').innerText()
     ]);
 
-    expect(message).toBe('Forbidden');
+    expect(message).toBe('Not allowed to change own role.');
     expect(type).toBe('Error');
   })
 
   test(`shoud not be allowed to change username`, async ({page}) => {
-    const user = await usersPage.findUser(username);
-    await usersPage.updateAndSaveUser(user, 'klaus')
+    const user = await usersPage.findUser(username); await usersPage.updateAndSaveUser(user, 'klaus')
 
     const snackbar = page.locator('snack-bar-container');
     snackbar.waitFor({ state: 'visible'});
@@ -110,7 +109,19 @@ test.describe("Create new user", () => {
       snackbar.locator('.mat-simple-snackbar-action').innerText()
     ]);
 
-    expect(message).toBe('Forbidden');
+    expect(message).toBe('Not allowed to change own name.');
     expect(type).toBe('Error');
+  })
+
+  test(`should be not allowed to update custom user`, async ({page, request}) => {
+    const sessionToken = await resolveSessionToken(request, username, password);
+    const victim = await createUser(request, adminToken, {
+      name: `AdminUser-` + Math.random().toString(32),
+      password: `Testuser2Password`,
+      role: `admin`
+    });
+
+    const result = await updateUser(request, sessionToken, victim.id, { password: 'hack3d' });
+    expect(result).toBe('error');
   })
 });

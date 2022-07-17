@@ -1,5 +1,6 @@
 export interface User {
   id: number;
   name: string;
-  role: 'read' | 'write' | 'admin'
+  role: 'read' | 'write' | 'admin';
+  password?: string;
 }

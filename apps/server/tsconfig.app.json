@@ -13,6 +13,7 @@
       "@app/users/providers/*": ["./src/app/users/providers/*"],
       "@app/users/constants/*": ["./src/app/users/constants/*"],
       "@app/roles/*": ["./src/app/roles/*"],
+      "@app/roles": ["./src/app/roles/index.ts"],
       "@connections/*": ["./src/app/connections/*"],
       "@easybsb/parser": ["../../libs/easybsb-parser/src"]
     },

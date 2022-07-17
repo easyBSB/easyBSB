@@ -30,7 +30,7 @@ test.describe("Admin is not allowed", () => {
       snackbar.locator('.mat-simple-snackbar-action').innerText()
     ]);
 
-    expect(message).toBe('Not allowed to change own role');
+    expect(message).toBe('Not allowed to change own role.');
     expect(type).toBe('Error');
     expect(await settingsPage.getUserRole(admin)).toBe('Admin')
   });
