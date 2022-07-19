@@ -45,7 +45,7 @@
     "@nestjs/jwt": "9.0.0",
     "@nestjs/passport": "9.0.0",
     "@nestjs/platform-express": "9.0.3",
-    "@nestjs/platform-socket.io": "9.0.3",
+    "@nestjs/platform-socket.io": "9.0.4",
     "@nestjs/serve-static": "3.0.0",
     "@nestjs/swagger": "6.0.4",
     "@nestjs/typeorm": "9.0.0",
