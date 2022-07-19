@@ -89,7 +89,7 @@
     "@playwright/test": "1.23.4",
     "@types/bcryptjs": "2.4.2",
     "@types/jest": "27.5.0",
-    "@types/node": "18.0.4",
+    "@types/node": "18.0.6",
     "@types/passport-jwt": "3.0.6",
     "@types/passport-local": "1.0.34",
     "@typescript-eslint/eslint-plugin": "5.30.7",
