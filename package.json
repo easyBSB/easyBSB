@@ -76,15 +76,15 @@
     "@angular/language-service": "14.0.6",
     "@nestjs/schematics": "9.0.1",
     "@nestjs/testing": "9.0.3",
-    "@nrwl/angular": "14.4.2",
-    "@nrwl/cli": "14.4.2",
-    "@nrwl/eslint-plugin-nx": "14.4.2",
-    "@nrwl/jest": "14.4.2",
-    "@nrwl/linter": "14.4.2",
-    "@nrwl/nest": "14.4.2",
-    "@nrwl/node": "14.4.2",
-    "@nrwl/tao": "14.4.2",
-    "@nrwl/workspace": "14.4.2",
+    "@nrwl/angular": "14.4.3",
+    "@nrwl/cli": "14.4.3",
+    "@nrwl/eslint-plugin-nx": "14.4.3",
+    "@nrwl/jest": "14.4.3",
+    "@nrwl/linter": "14.4.3",
+    "@nrwl/nest": "14.4.3",
+    "@nrwl/node": "14.4.3",
+    "@nrwl/tao": "14.4.3",
+    "@nrwl/workspace": "14.4.3",
     "@oclif/core": "1.9.5",
     "@playwright/test": "1.23.3",
     "@types/bcryptjs": "2.4.2",
@@ -122,7 +122,7 @@
       "@nestjs/common": "$@nestjs/common"
     },
     "nx-electron": {
-      "@nrwl/devkit": "14.4.0",
+      "@nrwl/devkit": "14.4.3",
       "@nrwl/workspace": "$@nrwl/workspace"
     }
   }
