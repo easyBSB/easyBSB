@@ -104,7 +104,7 @@
     "jest": "27.2.3",
     "jest-preset-angular": "11.1.2",
     "nx-electron": "13.2.1",
-    "playwright": "1.23.3",
+    "playwright": "1.23.4",
     "prettier": "2.7.1",
     "sane": "5.0.1",
     "ts-jest": "27.1.4",
