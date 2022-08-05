@@ -9,6 +9,7 @@ import { JwtService } from "@nestjs/jwt";
 
 import { User } from "@app/users/entities/user";
 import { UserService } from "@app/users/providers/users.service";
+import { LoginResponseDto } from "../api";
 
 @Injectable()
 export class AuthService {
@@ -20,11 +21,10 @@ export class AuthService {
   /**
    * @description login with given credentials
    */
-  async login(username: string, password: string): Promise<string> {
+  async login(username: string, password: string): Promise<LoginResponseDto> {
     const user = await this.authenticateUser(username, password);
-    if (user) {
-      return this.jwtService.sign({ ...user });
-    }
+    const token = this.jwtService.sign({ ...user });
+    return { jwt: token, user };
   }
 
   /**

@@ -17,4 +17,5 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
     }
   ],
 })
-export class ErrorHandlerModule {}
+export class ErrorHandlerModule {
+}

@@ -1,0 +1,50 @@
+@use '@angular/material' as mat;
+
+:host {
+  $blues: mat.$blue-palette;
+  $gap: .5rem;
+  $iconWidth: 24px;
+
+  position: relative;
+  white-space: nowrap;
+
+  width: calc(24px + #{$gap} * 2);
+
+  .menu {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    overflow: hidden;
+    padding: 0 $gap;
+    box-sizing: content-box;
+    z-index: 1000;
+    background: map-get($map: $blues, $key: 300);
+    border-right: 1px solid map-get($map: $blues, $key: 500);
+  }
+
+  .menu-entry {
+
+    color: darken(map-get($blues, 500), 25);
+    padding: $gap/2 0;
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    mat-icon {
+      margin-right: $gap;
+      flex-shrink: 0;
+      color: inherit;
+    }
+
+    &-label {
+      text-overflow: ellipsis;
+      overflow: hidden;
+      color: inherit;
+    }
+  }
+}

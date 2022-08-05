@@ -1,27 +1,24 @@
 import { NgModule } from "@angular/core";
-import { BrowserModule } from "@angular/platform-browser";
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { MatIconModule } from "@angular/material/icon";
-
 import { HttpClientModule } from "@angular/common/http";
 import { AuthorizationModule } from "./libs/authorization";
 
 import { AppComponent } from "./app.component";
 import { AppRoutingModule } from "./app-routing.module";
-import { ErrorHandlerModule } from "./libs/error-handler/error-handler.module";
 import { MessageModule } from "./libs/message/message.module";
+import { ErrorHandlerModule } from "./libs/error-handler/error-handler.module";
+import { SidebarModule } from "./libs/sidebar/sidebar.module";
+import { CommonModule } from "@angular/common";
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
+    CommonModule,
     AppRoutingModule,
-    AuthorizationModule,
-    BrowserAnimationsModule,
+    AuthorizationModule.forRoot(),
     ErrorHandlerModule,
-    BrowserModule,
     HttpClientModule,
-    MatIconModule,
-    MessageModule.forRoot()
+    MessageModule.forRoot(),
+    SidebarModule
   ],
   bootstrap: [AppComponent],
 })

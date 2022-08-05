@@ -1,10 +1,11 @@
-import { Body, Controller, Head, Post } from "@nestjs/common";
+import { Body, Controller, Get, Head, Post } from "@nestjs/common";
 import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { LoginDto } from "../api";
 import { LoginResponseDto } from "../api/login-response.dto";
 import { BypassAuthorization } from "../utils/bypass-authorization";
 import { AuthService } from "../providers/auth.service";
-
+import { User } from "@app/users";
+import { LoggedInUser } from "@app/core/decorators";
 @ApiTags("auth")
 @Controller({
   path: "auth",
@@ -25,8 +26,22 @@ export class AuthController {
   })
   @ApiResponse({ status: 401, description: "authorization failed" })
   async login(@Body() param: LoginDto) {
-    const jwt = await this.authService.login(param.username, param.password);
-    return { jwt };
+    return await this.authService.login(param.username, param.password);
+  }
+
+  @ApiOperation({
+    summary: "authorized user",
+    description: "current authorized user",
+  })
+  @Get("user")
+  @ApiResponse({
+    status: 200,
+    description: "current authorized user",
+    type: User,
+  })
+  @ApiResponse({ status: 401, description: "not authorized" })
+  async user(@LoggedInUser() user: User) {
+    return user;
   }
 
   @ApiOperation({

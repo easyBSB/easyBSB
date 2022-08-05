@@ -4,6 +4,10 @@ import { SettingsComponent } from "../ui/settings.component";
 export const SettingRoutes: Route[] = [
   {
     path: "",
-    component: SettingsComponent
+    component: SettingsComponent,
+  },
+  {
+    path: ":section",
+    component: SettingsComponent,
   },
 ];

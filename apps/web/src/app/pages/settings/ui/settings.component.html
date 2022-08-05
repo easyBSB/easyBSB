@@ -1,11 +1,17 @@
 <div class="container-fluid h-100">
   <div class="row">
     <div class="col-12">
-      <mat-tab-group mat-align-tabs="start" data-e2e="settings-tab--devices">
-        <mat-tab label="Geraete">
+      <mat-tab-group
+        mat-align-tabs="start"
+        data-e2e="settings-tab--devices"
+        #tabgroup
+        [selectedIndex]="selectedIndex$ | async"
+      >
+        <mat-tab label="Geraete" [aria-label]="'devices'">
+          Devices
         </mat-tab>
 
-        <mat-tab label="Benutzer" [attr.data-e2e]="'settings-tab--users'">
+        <mat-tab label="Benutzer" [attr.data-e2e]="'settings-tab--users'" [aria-label]="'users'" >
           <easy-bsb-users></easy-bsb-users>
         </mat-tab>
       </mat-tab-group>

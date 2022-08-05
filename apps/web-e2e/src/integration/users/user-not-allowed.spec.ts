@@ -56,12 +56,16 @@ test.describe("Create new user", () => {
   })
 
   test(`should be see only himself`, async ({page}) => {
-    const usersLocator = await usersPage.getUsers();
-    expect(await usersLocator.count()).toBe(1);
     const user = await usersPage.findUser(username);
     expect(await user.count()).toBe(1);
-    expect(await usersPage.getUserName(user)).toEqual(username);
-    expect(await usersPage.getUserRole(user)).toEqual('Read');
+
+    const [name, role] = await Promise.all([
+      usersPage.getUserName(user),
+      usersPage.getUserRole(user)
+    ])
+
+    expect(name).toEqual(username);
+    expect(role).toEqual('Read');
   })
 
   test(`shoud not be allowed to delete himself`, async ({page}) => {
@@ -85,9 +89,6 @@ test.describe("Create new user", () => {
     await usersPage.updateAndSaveUser(user, void 0, void 0, 'admin')
 
     const snackbar = page.locator('snack-bar-container');
-    snackbar.waitFor({ state: 'visible'});
-    expect(await snackbar.count()).toBe(1);
-
     const [message, type] = await Promise.all([
       snackbar.locator('.mat-simple-snack-bar-content').innerText(),
       snackbar.locator('.mat-simple-snackbar-action').innerText()
@@ -98,16 +99,11 @@ test.describe("Create new user", () => {
   })
 
   test(`shoud not be allowed to change username`, async ({page}) => {
-    const user = await usersPage.findUser(username); await usersPage.updateAndSaveUser(user, 'klaus')
-
+    const user = await usersPage.findUser(username);
     const snackbar = page.locator('snack-bar-container');
-    snackbar.waitFor({ state: 'visible'});
-    expect(await snackbar.count()).toBe(1);
-
-    const [message, type] = await Promise.all([
-      snackbar.locator('.mat-simple-snack-bar-content').innerText(),
-      snackbar.locator('.mat-simple-snackbar-action').innerText()
-    ]);
+    await usersPage.updateAndSaveUser(user, 'klaus');
+    const message = await snackbar.locator('.mat-simple-snack-bar-content').innerText();
+    const type = await snackbar.locator('.mat-simple-snackbar-action').innerText();
 
     expect(message).toBe('Not allowed to change own name.');
     expect(type).toBe('Error');

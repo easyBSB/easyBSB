@@ -41,6 +41,7 @@ export class ErrorInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<unknown>, next: HttpHandler) {
     const context = req.context.get(RequestContextToken);
+
     return next.handle(req).pipe(
       catchError((response: HttpErrorResponse) => {
         this.messageService.error(response.error.message);

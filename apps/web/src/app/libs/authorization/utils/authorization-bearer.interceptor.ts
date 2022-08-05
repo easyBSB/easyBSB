@@ -10,6 +10,7 @@ import { STORAGE_KEY_JWT } from "../constants";
   providedIn: "root",
 })
 export class AuthorizationBearerInterceptor implements HttpInterceptor {
+
   intercept(req: HttpRequest<unknown>, next: HttpHandler) {
     const bearerToken = sessionStorage.getItem(STORAGE_KEY_JWT);
     if (bearerToken) {
@@ -20,6 +21,7 @@ export class AuthorizationBearerInterceptor implements HttpInterceptor {
         setHeaders: authorizationHeaders,
       });
     }
+
     return next.handle(req);
   }
 }

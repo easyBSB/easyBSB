@@ -1,3 +1,5 @@
+import { User } from "../../users/api";
+
 export interface LoginDto {
   username: string;
 
@@ -6,4 +8,5 @@ export interface LoginDto {
 
 export interface LoginResponseDto {
   jwt: string;
+  user: User
 }
