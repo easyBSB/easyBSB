@@ -63,7 +63,7 @@
     "swagger-ui-express": "4.5.0",
     "tslib": "2.4.0",
     "typeorm": "0.3.7",
-    "zone.js": "0.11.6"
+    "zone.js": "0.11.7"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "14.1.0",
