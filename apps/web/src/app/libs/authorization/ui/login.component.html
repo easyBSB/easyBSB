@@ -4,25 +4,20 @@
   (submit)="submit($event)"
   data-e2e="authorization-login"
 >
-  <div class="form-control" data-e2e="authorization-login-username">
-    <label for="">
-      <span>Benutzername</span>
-      <input type="text" formControlName="username" />
-    </label>
-  </div>
 
-  <div class="form-control" data-e2e="authorization-login-password">
-    <label for="">
-      <span>Password</span>
-      <input type="password" formControlName="password" />
-    </label>
-  </div>
+  <img src="./assets/images/easybsb.svg">
 
-  <div data-e2e="authorization-login-submit">
-    <button type="submit">Login</button>
-  </div>
+  <mat-form-field class="form-ctrl" data-e2e="authorization-login-username">
+    <input type="text" matInput formControlName="username" placeholder="Benutzername" />
+  </mat-form-field>
 
-  <div *ngIf="error?.trim() !== ''" data-e2e="authorization-login-error">
+  <mat-form-field class="form-ctrl" data-e2e="authorization-login-password">
+    <input type="text" matInput formControlName="password" placeholder="Passwort" />
+  </mat-form-field>
+
+  <button mat-flat-button color="primary" type="submit" data-e2e="authorization-login-submit">Login</button>
+
+  <mat-error *ngIf="error?.trim() !== ''" data-e2e="authorization-login-error">
     {{ error }}
-  </div>
+  </mat-error>
 </form>

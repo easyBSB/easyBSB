@@ -8,10 +8,18 @@ import { AuthorizationBearerInterceptor } from "./utils/authorization-bearer.int
 import { applicationBootstrap } from "./utils/authorization.app-initializer";
 import { LoginComponent } from "./ui/login.component";
 import { AuthorizationService } from "./utils/authorization.service";
+import { MatInputModule } from "@angular/material/input";
+import { MatButtonModule } from "@angular/material/button";
 
 @NgModule({
   declarations: [LoginComponent],
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    MatInputModule,
+    MatButtonModule,
+    FormsModule,
+    ReactiveFormsModule
+  ],
 })
 export class AuthorizationModule {
 

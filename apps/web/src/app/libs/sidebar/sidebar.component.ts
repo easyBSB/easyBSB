@@ -18,7 +18,7 @@ import { MenuEntries, MENU_MAX_WIDTH, MENU_MIN_WIDTH } from './constants';
       state('closed', style({ width: MENU_MIN_WIDTH })),
 
       transition('open => closed', [animate('100ms ease-in')]),
-      transition('closed => open', [animate('300ms ease-out')])
+      transition('closed => open', [animate('200ms ease-out')])
     ])
   ]
 })
