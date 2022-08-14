@@ -1,3 +1,4 @@
+/* eslint-disable */
 module.exports = {
   displayName: "easybsb-parser",
   preset: "../../jest.preset.js",
