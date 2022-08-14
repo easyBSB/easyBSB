@@ -20,7 +20,7 @@
         "coverage/libs/easybsb-parser"
       ],
       "options": {
-        "jestConfig": "libs/easybsb-parser/jest.config.js",
+        "jestConfig": "libs/easybsb-parser/jest.config.ts",
         "passWithNoTests": true
       }
     },

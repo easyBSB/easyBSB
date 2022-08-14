@@ -79,7 +79,7 @@
         "coverage/apps/server"
       ],
       "options": {
-        "jestConfig": "apps/server/jest.config.js",
+        "jestConfig": "apps/server/jest.config.ts",
         "passWithNoTests": true
       }
     },

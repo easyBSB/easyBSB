@@ -68,7 +68,7 @@
         "coverage/apps/electron"
       ],
       "options": {
-        "jestConfig": "apps/electron/jest.config.js",
+        "jestConfig": "apps/electron/jest.config.ts",
         "passWithNoTests": true
       }
     }
