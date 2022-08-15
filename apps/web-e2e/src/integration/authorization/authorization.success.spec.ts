@@ -16,6 +16,10 @@ test.describe.serial("Test Authorization", () => {
     const passwordControl = page.locator(
       '[data-e2e="authorization-login-password"] input[type="password"]'
     );
+
+    expect(await usernameControl.count()).toBe(1);
+    expect(await passwordControl.count()).toBe(1);
+
     await usernameControl.fill("easybsb");
     await passwordControl.fill("easybsb");
 

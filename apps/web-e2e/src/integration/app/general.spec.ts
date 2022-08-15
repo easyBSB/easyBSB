@@ -11,7 +11,10 @@ test.describe("App: sidebar", () => {
     await clearSession();
   });
 
-  test("should contain sidebar with settings icon", async ({ page }) => {
+  /**
+   * @todo rework test for sidebar
+   */
+  test.skip("should contain sidebar with settings icon", async ({ page }) => {
     const appPage = new AppMainPage(page);
     await Promise.all([
       page.goto("http://localhost:4200"),
