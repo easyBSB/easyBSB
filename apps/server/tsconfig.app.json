@@ -6,36 +6,17 @@
     "module": "commonjs",
     "outDir": "../../dist/out-tsc",
     "paths": {
-      "@app/auth": [
-        "./src/app/auth/index.ts"
-      ],
-      "@app/users": [
-        "./src/app/users/users.module.ts"
-      ],
-      "@app/users/entities/*": [
-        "./src/app/users/entities/*"
-      ],
-      "@app/users/utils/*": [
-        "./src/app/users/utils/*"
-      ],
-      "@app/users/providers/*": [
-        "./src/app/users/providers/*"
-      ],
-      "@app/users/constants/*": [
-        "./src/app/users/constants/*"
-      ],
-      "@app/roles/*": [
-        "./src/app/roles/*"
-      ],
-      "@app/roles": [
-        "./src/app/roles/index.ts"
-      ],
-      "@connections/*": [
-        "./src/app/connections/*"
-      ],
-      "@easybsb/parser": [
-        "../../libs/easybsb-parser/src"
-      ]
+      "@app/auth": ["./src/app/auth/index.ts"],
+      "@app/users": ["./src/app/users/index.ts"],
+      "@app/users/entities/*": ["./src/app/users/entities/*"],
+      "@app/users/utils/*": ["./src/app/users/utils/*"],
+      "@app/users/providers/*": ["./src/app/users/providers/*"],
+      "@app/users/constants/*": ["./src/app/users/constants/*"],
+      "@app/roles/*": ["./src/app/roles/*"],
+      "@app/roles": ["./src/app/roles/index.ts"],
+      "@connections/*": ["./src/app/connections/*"],
+      "@easybsb/parser": ["../../libs/easybsb-parser/src"],
+      "@app/core/*": ["./src/app/core/*/index.ts"]
     },
     "target": "es2015",
     "types": [

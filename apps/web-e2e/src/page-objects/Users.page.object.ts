@@ -64,7 +64,7 @@ export class UsersPageObject extends AbstractPageObject {
 
   async getUserRole(row: Locator): Promise<string> {
     const ctrl = row.locator('[data-e2e="users-list-role"] .mat-select-value-text');
-    expect(await ctrl.count()).toBe(1);
+    await ctrl.waitFor({ state: "visible" })
     return ctrl.innerText();
   }
 

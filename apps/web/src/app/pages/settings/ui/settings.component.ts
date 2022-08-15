@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, OnInit } from "@angular/core";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from "@angular/core";
+import { MatTabChangeEvent, MatTabGroup } from "@angular/material/tabs";
+import { ActivatedRoute, Params, Router } from "@angular/router";
+import { filter, map, Observable } from "rxjs";
+import { SettingsSections } from "../constants/settings-sections";
 
 @Component({
   selector: "easy-bsb-settings",
@@ -7,8 +12,53 @@ import { ChangeDetectionStrategy, Component, OnInit } from "@angular/core";
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SettingsComponent implements OnInit {
+  selectedIndex$: Observable<number>;
+
+  @ViewChild('tabgroup', { read: MatTabGroup, static: true })
+  private readonly tabs!: MatTabGroup
+
+  private triggeredManually = false;
+
+  private sections = SettingsSections;
+
+  constructor(
+    private readonly activatedRoute: ActivatedRoute,
+    private readonly router: Router
+  ) {
+    this.selectedIndex$ = this.registerRouteParamsChange();
+  }
 
   ngOnInit(): void {
-    console.log('settings and not empty');
+    this.tabs.disablePagination = true;
+    this.tabs.selectedTabChange.subscribe(
+      (event: MatTabChangeEvent) => {
+        this.router.navigate(['..', event.tab.ariaLabel], { relativeTo: this.activatedRoute });
+      });
+  }
+
+  /**
+   * @description triggered
+   */
+  handleClick() {
+    this.triggeredManually = true;
+  }
+
+  /**
+   * @description listen to route params changes so we know if we should
+   * change tab view
+   */
+  private registerRouteParamsChange(): Observable<number> {
+    return this.activatedRoute.params
+      .pipe(
+        filter(() => {
+          const passed = this.triggeredManually === false;
+          this.triggeredManually = false;
+          return passed;
+        }),
+        map((params: Params) => {
+          const section = params['section'];
+          return Object.keys(this.sections).indexOf(section) ?? 0;
+        }),
+      );
   }
 }
