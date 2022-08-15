@@ -52,7 +52,7 @@
     "@nestjs/websockets": "9.0.9",
     "bcryptjs": "2.4.3",
     "class-validator": "0.13.2",
-    "material-icons": "1.11.6",
+    "material-icons": "1.11.10",
     "passport": "0.6.0",
     "passport-jwt": "4.0.0",
     "passport-local": "1.0.0",
