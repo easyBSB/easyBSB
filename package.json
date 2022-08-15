@@ -97,7 +97,7 @@
     "bootstrap": "5.2.0",
     "chokidar": "3.5.3",
     "electron": "20.0.1",
-    "electron-builder": "23.1.0",
+    "electron-builder": "23.3.3",
     "eslint": "8.21.0",
     "eslint-config-prettier": "8.5.0",
     "exitzero": "1.0.1",
