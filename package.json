@@ -92,7 +92,7 @@
     "@types/node": "18.7.4",
     "@types/passport-jwt": "3.0.6",
     "@types/passport-local": "1.0.34",
-    "@typescript-eslint/eslint-plugin": "5.30.7",
+    "@typescript-eslint/eslint-plugin": "5.33.1",
     "@typescript-eslint/parser": "5.33.1",
     "bootstrap": "5.2.0",
     "chokidar": "3.5.3",
