@@ -49,7 +49,7 @@
     "@nestjs/serve-static": "3.0.0",
     "@nestjs/swagger": "6.0.5",
     "@nestjs/typeorm": "9.0.1",
-    "@nestjs/websockets": "9.0.9",
+    "@nestjs/websockets": "9.0.11",
     "bcryptjs": "2.4.3",
     "class-validator": "0.13.2",
     "material-icons": "1.11.10",
