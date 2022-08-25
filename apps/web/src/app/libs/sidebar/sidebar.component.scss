@@ -1,4 +1,5 @@
-@use '@angular/material' as mat;
+@use "sass:math";
+@use "@angular/material" as mat;
 
 :host {
   $blues: mat.$blue-palette;
@@ -28,7 +29,7 @@
   .menu-entry {
 
     color: darken(map-get($blues, 500), 25);
-    padding: $gap/2 0;
+    padding: #{math.div($gap, 2)}rem 0;
 
     a {
       color: inherit;

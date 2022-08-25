@@ -5,13 +5,13 @@ import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
 import { MatSelectModule } from '@angular/material/select';
 
-import { UsersComponent } from './users.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MessageModule } from '../message/message.module';
+import { BusComponent } from './bus.component';
 
 @NgModule({
   declarations: [
-    UsersComponent
+    BusComponent
   ],
   imports: [ 
     CommonModule,
@@ -25,7 +25,7 @@ import { MessageModule } from '../message/message.module';
     ReactiveFormsModule,
     FormsModule
   ],
-  exports: [UsersComponent],
+  exports: [],
   providers: [],
 })
-export class UsersModule {}
+export class BusModule {}
