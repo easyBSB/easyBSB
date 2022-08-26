@@ -1,6 +1,8 @@
 
+import { HttpContext } from '@angular/common/http';
 import { Observable, Subject, animationFrameScheduler, of } from 'rxjs';
 import { debounceTime, map, take } from 'rxjs/operators';
+import { RequestContextToken } from '../constants/api';
 import { EasyBSBHttpErrorResponse, RequestContext } from '../libs/error-handler/error.interceptor';
 
 export interface ListItem<T> {
@@ -9,41 +11,41 @@ export interface ListItem<T> {
   raw: T;
 }
 
-export abstract class ListDatasource<T extends { id: number }> {
+export abstract class ListDatasource<T extends { id: number | string }> {
 
   /**
    * @description called to load all items from server
    */
-  protected abstract fetchItems(): Observable<T[]>;
+  protected abstract fetch(): Observable<T[]>;
 
   /**
    * @description called if an phantom item should be created which is added to list
    */
-  protected abstract createItem(): T;
+  protected abstract createPhantom(): T;
 
   /**
    * @description called if a new item should created on server
    */
-  protected abstract writeItem(item: T, reqContext: RequestContext): Observable<T>;
+  protected abstract writeEntity(entity: T, options: Record<string, unknown>): Observable<T>;
 
   /**
    * @description called if an item should removed from server
    */
-  protected abstract removeItem(item: T): Observable<unknown>;
+  protected abstract removeEntity(entity: T): Observable<unknown>;
 
   /**
    * @description called if an item should updated to server
    */
-  protected abstract updateItem(item: T, reqContext: RequestContext): Observable<T>;
+  protected abstract updateEntity(entity: T, options: Record<string, unknown>): Observable<T>;
 
   /**
    * @description validate an item
    */
   protected abstract validate(item: T): boolean;
 
-  private readonly userChange$: Subject<ListItem<T>[]> = new Subject();
+  protected storage: ListItem<T>[] = [];
 
-  private itemStorage: ListItem<T>[] = [];
+  private readonly userChange$: Subject<ListItem<T>[]> = new Subject();
 
   /**
    * @description persist current bus we edit so we have access
@@ -58,13 +60,13 @@ export abstract class ListDatasource<T extends { id: number }> {
 
   load(): void {
     // should happen in child class
-    this.fetchItems()
+    this.fetch()
       .pipe(
         take(1),
         map((items) => items.map((item) => this.mapToListItem(item)))
       )
       .subscribe((items) => {
-        this.itemStorage = [...items];
+        this.storage = [...items];
         this.notify();
       });
   }
@@ -80,10 +82,10 @@ export abstract class ListDatasource<T extends { id: number }> {
     const newBus: ListItem<T> = {
       isPhantom: true,
       mode: 'read',
-      raw: this.createItem()
+      raw: this.createPhantom()
     };
 
-    this.itemStorage.push(newBus);
+    this.storage.push(newBus);
     this.edit(newBus);
   }
 
@@ -112,7 +114,7 @@ export abstract class ListDatasource<T extends { id: number }> {
   cancelEdit(item: ListItem<T>): void {
     item.mode = "read";
     if (item.isPhantom) {
-      this.itemStorage = this.itemStorage.filter((bus) => bus !== item);
+      this.storage = this.storage.filter((bus) => bus !== item);
     }
 
     if (!item.isPhantom && this.itemState) {
@@ -132,17 +134,19 @@ export abstract class ListDatasource<T extends { id: number }> {
     const isDirty = JSON.stringify(item.raw) !== JSON.stringify(this.itemState?.raw);
     if (isDirty) {
       const requestContext = new RequestContext(this.itemState?.raw);
+      const context = new HttpContext();
+      context.set(RequestContextToken, requestContext);
 
       const data$ = !item.isPhantom
-        ? this.updateItem(item.raw, requestContext)
-        : this.writeItem(item.raw, requestContext);
+        ? this.updateEntity(item.raw, { context })
+        : this.writeEntity(item.raw, { context });
 
       data$
         .pipe(take(1))
         .subscribe({
           next: (response) => {
             const newUser = this.mapToListItem(response as T);
-            this.itemStorage = this.itemStorage.map((bus) => bus === item ? newUser : bus);
+            this.storage = this.storage.map((bus) => bus === item ? newUser : bus);
             this.notify();
           },
           error: (response: EasyBSBHttpErrorResponse) => {
@@ -164,12 +168,12 @@ export abstract class ListDatasource<T extends { id: number }> {
   remove(item: ListItem<T>) {
     const delete$ = item.isPhantom
       ? of(true)
-      : this.removeItem(item.raw)
+      : this.removeEntity(item.raw)
 
     delete$
       .pipe(take(1))
       .subscribe(() => {
-        this.itemStorage = this.itemStorage.filter((bus) => bus !== item);
+        this.storage = this.storage.filter((bus) => bus !== item);
         this.notify();
       });
   }
@@ -179,28 +183,28 @@ export abstract class ListDatasource<T extends { id: number }> {
    * otherweise we replace item in list
    */
   private handleWriteError(state: T): void {
-    const item = this.itemStorage.find((item) => item.raw.id === state.id);
+    const item = this.storage.find((item) => item.raw.id === state.id);
 
     if (!item) {
       return;
     }
 
-    this.itemStorage = item.isPhantom
-      ? this.itemStorage.filter((bus) => bus !== item)
-      : this.itemStorage.map((bus) => bus === item ? this.mapToListItem(state) : bus);
+    this.storage = item.isPhantom
+      ? this.storage.filter((bus) => bus !== item)
+      : this.storage.map((bus) => bus === item ? this.mapToListItem(state) : bus);
   }
 
   /**
    * @description emit list changes
    */
   private notify() {
-    this.userChange$.next(this.itemStorage);
+    this.userChange$.next(this.storage);
   }
 
   /**
    * @description map User to ListItem<T>
    */
-  private mapToListItem(item: T): ListItem<T> {
+  protected mapToListItem(item: T): ListItem<T> {
     return {
       mode: "read",
       isPhantom: false,

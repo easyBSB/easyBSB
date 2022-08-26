@@ -4,7 +4,7 @@ export enum BusType {
 }
 
 export interface Bus {
-  id: number;
+  id: number | string;
   address: number;
   name: string;
   type: 'serial' | 'tcpip';

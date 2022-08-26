@@ -1,48 +1,55 @@
-import { HttpClient, HttpContext } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { RequestContextToken } from '../../constants/api';
+import { tap } from 'rxjs/operators';
 import { ListDatasource } from '@app/core';
-import { RequestContext } from '../error-handler/error.interceptor';
 import { Bus } from './api';
+import { MessageService } from '../message/message.service';
 
 @Injectable()
 export class BusListDatasource extends ListDatasource<Bus> {
 
-  constructor(
-    private readonly httpClient: HttpClient
+  public constructor(
+    private readonly httpClient: HttpClient,
+    private readonly messageService: MessageService
   ) {
-    super()
+    super();
   }
 
-  protected createItem(): Bus {
-    throw new Error('Method not implemented.');
+  protected fetch(): Observable<Bus[]> {
+    return this.httpClient.get<Bus[]>("/api/bus");
   }
 
-  protected fetchItems(): Observable<Bus[]> {
-    throw new Error('Method not implemented.');
+  protected createPhantom(): Bus {
+    return {
+      address: -1,
+      id: Math.random().toString(32),
+      name: 'Phantom Bus',
+      port: 1234,
+      type: 'tcpip'
+    }
   }
 
-  protected removeItem(item: Bus): Observable<unknown> {
-    const { id } = item;
-    return this.httpClient.delete("/api/users/" + id);
+  protected writeEntity(entity: Bus, options: Record<string, unknown>): Observable<Bus> {
+    const {id, ...payload} = entity;
+    return this.httpClient.put<Bus>("/api/bus", payload , options);
   }
 
-  protected updateItem(item: Bus, reqContext: RequestContext<unknown>): Observable<Bus> {
-    const {id, ...payload} = item;
-    const context = new HttpContext();
-    context.set(RequestContextToken, reqContext);
-    return this.httpClient.post<Bus>("/api/users/" + id, payload, { context });
+  protected removeEntity(entity: Bus): Observable<unknown> {
+    const { id } = entity;
+    return this.httpClient.delete("/api/bus/" + id);
+  }
+
+  protected updateEntity(entity: Bus, options: Record<string, unknown>): Observable<Bus> {
+    const {id, ...payload} = entity;
+    return this.httpClient
+      .post<Bus>("/api/bus/" + id, payload, options)
+      .pipe(
+        tap(() => this.messageService.success(`User ${entity.name} saved`))
+      );
   }
 
   protected validate(): boolean {
     return true;
-  }
-
-  protected writeItem(item: Bus, reqContext: RequestContext<unknown>): Observable<Bus> {
-    const {id, ...payload} = item;
-    const context = new HttpContext();
-    context.set(RequestContextToken, reqContext);
-    return this.httpClient.put<Bus>("/api/bus", payload , { context });
   }
 }
