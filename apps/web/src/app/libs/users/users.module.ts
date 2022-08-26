@@ -21,9 +21,7 @@ import { MessageModule } from '../message/message.module';
     MatIconModule,
     MessageModule,
     FormsModule,
-    ReactiveFormsModule,
-    ReactiveFormsModule,
-    FormsModule
+    ReactiveFormsModule
   ],
   exports: [UsersComponent],
   providers: [],

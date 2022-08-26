@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subject, skip, takeUntil } from 'rxjs';
-import { UserRoles, UserListItem } from '../users/api';
 import { BusListItem } from './api';
+import { BusListDatasource } from './bus.datasource';
 
 @Component({
   selector: 'easy-bsb-bus',
@@ -10,24 +10,24 @@ import { BusListItem } from './api';
 })
 export class BusComponent implements OnInit, OnDestroy {
 
-  columns = ['name', 'password', 'role', 'actions'];
+  columns = ['name', 'address', 'type', 'port', 'actions'];
   busData$: Observable<BusListItem[]>;
-  userRoleOptions: [keyof typeof UserRoles, UserRoles][] = [];
+  busTypeOtions: ['tcpip' | 'serial' , 'TCP/IP' | 'Serial'][] = [
+    ['tcpip', 'TCP/IP'],
+    ['serial', 'Serial']
+  ];
 
   private readonly destroy$ = new Subject<void>();
 
   constructor(
+    private readonly datasource: BusListDatasource,
     private readonly cdRef: ChangeDetectorRef
   ) {
     this.busData$ = this.datasource.connect();
   }
 
   ngOnInit(): void {
-    for (const [key, value] of Object.entries(UserRoles) ) {
-      this.userRoleOptions.push([key, value] as [keyof typeof UserRoles, UserRoles])
-    }
-
-    this.userData$
+    this.busData$
       .pipe(skip(1), takeUntil(this.destroy$))
       .subscribe(() => this.cdRef.markForCheck());
 
@@ -42,46 +42,27 @@ export class BusComponent implements OnInit, OnDestroy {
   /**
    * @description performance booster for mat-table
    */
-  trackByItem(_index: number, user: BusListItem) {
+  trackById(_index: number, user: BusListItem) {
     return user.raw.id;
   }
 
-  /**
-   * @description set mode to write for an user and store the data 
-   * inside a user state so we can fallback to initial value.
-   */
-  editUser(item: UserListItem) {
-    this.datasource.edit(item);
-  }
-
-  /**
-   * @description delete user
-   */
-  deleteUser(item: UserListItem) {
-    this.datasource.remove(item);
-  }
-
-  /**
-   * @description persist user in database, if user allready exists he 
-   * will updated otherwise (phantom) created.
-   */
-  writeUser(item: UserListItem) {
-    this.datasource.write(item);
-  }
-
-  /**
-   * @description create new phantom user to list and set edit mode for him
-   */
-  addUser() {
+  addBus() {
     this.datasource.create();
   }
 
-  /**
-   * @description cancel edit mode for user, this will reset to initial value
-   * if user allready exists in database and if the user is a phantom he will
-   * removed from list again.
-   */
-  cancelEdit(item: UserListItem) {
+  remove(item: BusListItem) {
+    this.datasource.remove(item);
+  }
+
+  edit(item: BusListItem) {
+    this.datasource.edit(item);
+  }
+
+  write(item: BusListItem) {
+    this.datasource.write(item);
+  }
+
+  cancelEdit(item: BusListItem) {
     this.datasource.cancelEdit(item);
   }
 }

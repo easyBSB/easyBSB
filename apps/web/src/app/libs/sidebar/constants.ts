@@ -12,15 +12,15 @@ export const MenuEntries: MenuEntry[] = [
     icon: 'home'
   },
   {
+    label: 'Devices',
+    route: ['./settings', 'devices'],
+    icon: 'devices'
+  },
+  {
     label: 'Users',
     route: ['./settings', 'users'],
     icon: 'people'
   },
-  {
-    label: 'Devices',
-    route: ['./settings', 'devices'],
-    icon: 'devices'
-  }
 ];
 
 export const MENU_MIN_WIDTH = '24px';

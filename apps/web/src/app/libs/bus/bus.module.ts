@@ -8,6 +8,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { MessageModule } from '../message/message.module';
 import { BusComponent } from './bus.component';
+import { BusListDatasource } from './bus.datasource';
 
 @NgModule({
   declarations: [
@@ -20,12 +21,14 @@ import { BusComponent } from './bus.component';
     MatSelectModule,
     MatIconModule,
     MessageModule,
-    FormsModule,
-    ReactiveFormsModule,
     ReactiveFormsModule,
     FormsModule
   ],
-  exports: [],
-  providers: [],
+  exports: [
+    BusComponent
+  ],
+  providers: [
+    BusListDatasource
+  ],
 })
 export class BusModule {}
