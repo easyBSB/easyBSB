@@ -1,8 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Type } from "class-transformer";
-import { IsIn, IsNumber, IsOptional, IsString, Validate } from "class-validator";
+import { IsIn, IsNumber, IsOptional, IsString, Max, Min } from "class-validator";
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
-import { IsNetworkAddress } from "@app/core/validators";
 
 @Entity()
 export class Bus {
@@ -16,20 +15,17 @@ export class Bus {
    */
   @ApiProperty({ type: "number" })
   @Column({ type: 'numeric' })
-  @Validate(IsNetworkAddress)
+  @Type(() => Number) 
+  @IsNumber({ allowNaN: false }, {
+    message: `Address must be a numberic value 0 - 255, 0x00 - 0xFF`
+  })
+  @Min(0, {
+    message: 'Address must be greater then 0'
+  })
+  @Max(255, {
+    message: 'Address must be smaller then 255'
+  })
   address: number;
-
-  /**
-   * @description if set to true address will converted from hex to integer
-   *
-  @ApiProperty({ type: "boolean" })
-  @IsBoolean()
-  @IsOptional()
-  @Column({ type: 'boolean', default: false })
-  @ApiProperty({ type: "boolean" })
-  @Transform(({ value }) => value === 'true')
-  address_is_hex: boolean;
-  */
 
   /**
    * @description name of the bus

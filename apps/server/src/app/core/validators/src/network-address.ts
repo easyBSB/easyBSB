@@ -4,7 +4,7 @@ import { ValidatorConstraint, ValidatorConstraintInterface } from 'class-validat
 export class IsNetworkAddress implements ValidatorConstraintInterface {
 
   private readonly hexValue = new RegExp('^0x[0-9, A-F]{1,2}$');
-  private readonly numberValue = new RegExp('^[0-9]{1,3}^$');
+  private readonly numberValue = new RegExp('^[0-9]{1,3}$');
 
   validate(value: string): boolean {
     // this becomes allways invalid if value is not a hex oder numeric

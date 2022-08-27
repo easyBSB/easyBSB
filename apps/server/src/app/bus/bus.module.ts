@@ -8,7 +8,9 @@ import { BusService } from "./bus.service";
 @Module({
   imports: [TypeOrmModule.forFeature([Bus]), RolesModule],
   controllers: [BusController],
-  providers: [BusService],
+  providers: [
+    BusService,
+  ],
   exports: [TypeOrmModule],
 })
 export class BusModule {}

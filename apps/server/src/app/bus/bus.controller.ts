@@ -54,7 +54,6 @@ export class BusController {
   @Put()
   async create(@Body() payload: Bus): Promise<unknown> {
     const bus = plainToClass(Bus, payload);
-    /** convert payload to bus */
     return this.busService.insert(bus)
   }
 
