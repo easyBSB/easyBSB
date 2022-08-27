@@ -1,5 +1,6 @@
-import { BadRequestException, Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
+import { plainToClassFromExist } from "class-transformer";
 import { Repository } from "typeorm";
 import { Bus } from "./bus.entity";
 import { BusValidation } from "./bus.validators";
@@ -19,8 +20,16 @@ export class BusService {
     return this.repository.find();
   }
 
-  async findById(id: number): Promise<Bus | null> {
+  async findById(id: Bus['id']): Promise<Bus | null> {
     return await this.repository.findOneBy({ id });
+  }
+
+  async delete(id: Bus['id']) {
+    const bus: Bus = await this.findById(id);
+    if (!bus) {
+      throw new NotFoundException(`Bus with id: ${id} was not found`);
+    }
+    await this.repository.delete(id);
   }
 
   /**
@@ -28,7 +37,7 @@ export class BusService {
    * @throws BadRequestExecption if validation failed
    */
   async insert(payload: Bus): Promise<Bus> {
-    const validationResult = await this.validationHelper.valid(payload);
+    const validationResult = await this.validationHelper.isValid(payload);
 
     // should invert this one so we returns an validation message or NULL
     if (validationResult !== null) {
@@ -48,5 +57,29 @@ export class BusService {
     } catch (error) {
       throw new BadRequestException(error.message);
     }
+  }
+
+  /**
+   * @description update given bus by id
+   */
+  async update(id: Bus['id'], payload: Partial<Bus>): Promise<Bus> {
+    const bus = await this.findById(id);
+    if (!bus) {
+      throw new BadRequestException('Bus not found');
+    }
+
+    const update = plainToClassFromExist(bus, payload);
+    let validationResult = await this.validationHelper.isValid(update);
+    if (validationResult !== null) {
+      throw new BadRequestException(validationResult);
+    }
+
+    // validate name is not given
+    validationResult = await this.validationHelper.busNotExists(update.address, update.name, id);
+    if (validationResult !== null) {
+      throw new BadRequestException(validationResult);
+    }
+
+    return this.repository.save(update);
   }
 }

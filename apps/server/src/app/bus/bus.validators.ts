@@ -1,5 +1,5 @@
 import { validate } from "class-validator";
-import { Repository } from "typeorm";
+import { FindOptionsWhere, Not, Repository } from "typeorm";
 import { ValidationErrors, ValidationResult } from "../core/validators";
 import { Bus } from "./bus.entity";
 
@@ -12,9 +12,15 @@ export class BusValidation {
   /**
    * @description validates if address and/or name not allready exists
    */
-  async busNotExists(address: Bus['address'], name: Bus['name']): Promise<ValidationResult> {
-    const entities = await this.repository.findBy([{ address }, { name }]);
+  async busNotExists(address: Bus['address'], name: Bus['name'], exclude?: Bus['id']): Promise<ValidationResult> {
+    const addressFilter: FindOptionsWhere<Bus> = { address: address };
+    const nameFilter: FindOptionsWhere<Bus> = { name: name };
+    if (exclude) {
+      addressFilter['id'] = Not(exclude);
+      nameFilter['id'] = Not(exclude);
+    }
 
+    const entities = await this.repository.findBy([addressFilter, nameFilter]);
     if (entities.length === 0) {
       return null;
     }
@@ -37,7 +43,7 @@ export class BusValidation {
   /**
    * @description validate bus is valid by data
    */
-  async valid(bus: Bus): Promise<ValidationResult> {
+  async isValid(bus: Bus): Promise<ValidationResult> {
     return validate(bus).then((errors): ValidationResult => {
       if (errors.length === 0) {
         return null;
