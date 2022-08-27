@@ -127,6 +127,7 @@ export abstract class ListDatasource<T extends { id: number | string }> {
   }
 
   write(item: ListItem<T>) {
+    debugger;
     if (!this.validate(item.raw)) {
       return;
     }

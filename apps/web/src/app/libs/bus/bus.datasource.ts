@@ -31,6 +31,7 @@ export class BusListDatasource extends ListDatasource<Bus> {
   }
 
   protected writeEntity(entity: Bus, options: Record<string, unknown>): Observable<Bus> {
+    debugger;
     const {id, ...payload} = entity;
     return this.httpClient.put<Bus>("/api/bus", payload , options);
   }

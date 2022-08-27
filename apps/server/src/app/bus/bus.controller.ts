@@ -52,7 +52,7 @@ export class BusController {
   @ApiResponse({ status: 401, description: "not authorized" })
   @CheckAbility({ action: Actions.Create, subject: Bus })
   @Put()
-  async createBus(@Body() payload: Bus): Promise<unknown> {
+  async create(@Body() payload: Bus): Promise<unknown> {
     const bus = plainToClass(Bus, payload);
     /** convert payload to bus */
     return this.busService.insert(bus)
@@ -68,7 +68,7 @@ export class BusController {
   @ApiResponse({ status: 401, description: "not authorized" })
   @CheckAbility({ action: Actions.Delete, subject: Bus })
   @Delete(':id')
-  async deleteBus(): Promise<unknown> {
+  async delete(): Promise<unknown> {
     return [{
       name: 'bus',
       address: 'foobar'
@@ -85,7 +85,7 @@ export class BusController {
   @ApiResponse({ status: 401, description: "not authorized" })
   @CheckAbility({ action: Actions.Read, subject: Bus })
   @Post(':id')
-  async updateBus(): Promise<unknown> {
+  async update(): Promise<unknown> {
     return [{
       name: 'bus',
       address: 'foobar'

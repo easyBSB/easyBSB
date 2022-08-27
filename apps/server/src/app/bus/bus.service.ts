@@ -1,3 +1,4 @@
+import { ValidationErrors, ValidationResult } from "@app/core/validators";
 import { BadRequestException, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { validate } from "class-validator";
@@ -19,10 +20,11 @@ export class BusService {
   }
 
   async insert(payload: Bus): Promise<Bus> {
-    const isValid = await this.validateParams(payload);
+    const validationResult = await this.validateParams(payload);
 
-    if (!isValid) {
-      throw new BadRequestException();
+    // should invert this one so we returns an validation message or NULL
+    if (validationResult !== null) {
+      throw new BadRequestException(validationResult);
     }
 
     try {
@@ -34,9 +36,18 @@ export class BusService {
     }
   }
 
-  private async validateParams(bus: Bus): Promise<boolean> {
-    return validate(bus).then((errors) => {
-      return errors.length === 0
+  private async validateParams(bus: Bus): Promise<ValidationResult> {
+    return validate(bus).then((errors): ValidationResult => {
+      if (errors.length === 0) {
+        return null;
+      }
+
+      return errors.reduce<ValidationErrors>((result, current) => {
+        return {
+          ...result,
+          ...current.constraints
+        }
+      }, {});
     });
   }
 }
