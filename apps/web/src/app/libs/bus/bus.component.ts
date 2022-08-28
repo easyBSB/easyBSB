@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ListItem } from '@app/core';
 import { Observable, Subject, skip, takeUntil } from 'rxjs';
-import { BusListItem } from './api';
+import { Bus } from './api';
 import { BusListDatasource } from './bus.datasource';
 
 @Component({
@@ -11,7 +12,7 @@ import { BusListDatasource } from './bus.datasource';
 export class BusComponent implements OnInit, OnDestroy {
 
   columns = ['name', 'address', 'type', 'port', 'actions'];
-  busData$: Observable<BusListItem[]>;
+  busData$: Observable<ListItem<Bus>[]>;
   busTypeOtions: ['tcpip' | 'serial' , 'TCP/IP' | 'Serial'][] = [
     ['tcpip', 'TCP/IP'],
     ['serial', 'Serial']
@@ -42,7 +43,7 @@ export class BusComponent implements OnInit, OnDestroy {
   /**
    * @description performance booster for mat-table
    */
-  trackById(_index: number, user: BusListItem) {
+  trackById(_index: number, user: ListItem<Bus>) {
     return user.raw.id;
   }
 
@@ -50,19 +51,19 @@ export class BusComponent implements OnInit, OnDestroy {
     this.datasource.create();
   }
 
-  remove(item: BusListItem) {
+  remove(item: ListItem<Bus>) {
     this.datasource.remove(item);
   }
 
-  edit(item: BusListItem) {
+  edit(item: ListItem<Bus>) {
     this.datasource.edit(item);
   }
 
-  write(item: BusListItem) {
+  write(item: ListItem<Bus>) {
     this.datasource.write(item);
   }
 
-  cancelEdit(item: BusListItem) {
+  cancelEdit(item: ListItem<Bus>) {
     this.datasource.cancelEdit(item);
   }
 }

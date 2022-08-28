@@ -10,9 +10,3 @@ export interface Bus {
   type: 'serial' | 'tcpip';
   port: number;
 }
-
-export interface BusListItem {
-  isPhantom: boolean;
-  mode: 'read' | 'write';
-  raw: Bus;
-}
