@@ -54,7 +54,7 @@ test.describe("Create new user", () => {
       expect(true).toBeFalsy();
     }
 
-    expect(message).toBe(`User ${username} updated.`);
+    expect(message).toBe(`User ${username} saved`);
     expect(type).toBe('Success');
   })
 });

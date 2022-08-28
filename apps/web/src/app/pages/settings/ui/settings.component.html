@@ -8,7 +8,7 @@
         [selectedIndex]="selectedIndex$ | async"
       >
         <mat-tab label="Geraete" [aria-label]="'devices'">
-          Devices
+          <easy-bsb-bus></easy-bsb-bus>
         </mat-tab>
 
         <mat-tab label="Benutzer" [attr.data-e2e]="'settings-tab--users'" [aria-label]="'users'" >

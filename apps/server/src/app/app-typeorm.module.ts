@@ -7,6 +7,7 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
 import { homedir } from "os";
 import { dirname, join } from "path";
 import { mkdirSync } from "fs";
+import { Bus } from "./bus";
 
 @Module({
   imports: [
@@ -25,7 +26,7 @@ import { mkdirSync } from "fs";
 
         return {
           type: "sqljs",
-          entities: [...CONNECTION_ENTITIES, User],
+          entities: [...CONNECTION_ENTITIES, User, Bus],
           migrationsRun: true,
           migrationsTableName: "migrations",
           migrations: [...config.get("database.migrations")],

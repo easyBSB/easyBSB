@@ -16,6 +16,7 @@ import { AppTypeormModule } from "./app-typeorm.module";
 // add serve static module only for production
 import { environment as APP_ENVIRONMENT } from "../environments/environment";
 import { ConfigModule, ConfigService } from "@nestjs/config";
+import { BusModule } from "./bus/bus.module";
 
 const extraImports: DynamicModule[] = [];
 if (APP_ENVIRONMENT.production) {
@@ -37,9 +38,10 @@ if (APP_ENVIRONMENT.production) {
     AppConfigModule,
     AppTypeormModule,
     AuthModule,
+    BusModule,
+    ConnectionsModule,
     RolesModule,
     UsersModule,
-    ConnectionsModule,
     EventsModule,
     ...extraImports,
   ],

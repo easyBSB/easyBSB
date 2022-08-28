@@ -4,6 +4,7 @@ import { MatTabsModule } from "@angular/material/tabs";
 import { SettingsComponent } from "./ui/settings.component";
 import { SettingsRoutingModule } from "./settings.routing.module";
 import { UsersModule } from "../../libs/users/users.module";
+import { BusModule } from "src/app/libs/bus/bus.module";
 
 @NgModule({
   declarations: [SettingsComponent],
@@ -11,7 +12,8 @@ import { UsersModule } from "../../libs/users/users.module";
     CommonModule,
     SettingsRoutingModule,
     MatTabsModule,
-    UsersModule
+    BusModule,
+    UsersModule,
   ],
   providers: [],
 })
