@@ -23,6 +23,7 @@ test.describe("Create new user", () => {
       snackbar.waitFor({ state: 'visible'}),
       usersPage.createUser(`TestUser`, `TestUser`, `Write`)
     ]);
+
     expect(await snackbar.count()).toBe(1);
 
     const [message, type] = await Promise.all([
@@ -30,7 +31,7 @@ test.describe("Create new user", () => {
       snackbar.locator('.mat-simple-snackbar-action').innerText()
     ]);
 
-    expect(message).toBe('User TestUser added.');
+    expect(message).toBe('User TestUser added');
     expect(type).toBe('Success');
   });
 

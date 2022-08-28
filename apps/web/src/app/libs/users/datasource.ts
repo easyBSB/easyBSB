@@ -76,7 +76,10 @@ export class UserListDatasource extends ListDatasource<User> {
    */
   protected writeEntity(user: User, options: Record<string, unknown>): Observable<User> {
     const {id, ...payload} = user;
-    return this.httpClient.put<User>("/api/users", payload , options);
+    return this.httpClient.put<User>("/api/users", payload , options)
+      .pipe(
+        tap((user) => this.messageService.success(`User ${user.name} added`))
+      );
   }
 
   /**

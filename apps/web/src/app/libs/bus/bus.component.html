@@ -47,7 +47,7 @@
   <ng-container matColumnDef="actions">
     <th mat-header-cell *matHeaderCellDef>
       <div class="d-inline-flex flex-row align-items-center" (click)="addBus()">
-        <mat-icon class="me-2" data-e2e="users-list-actions-create">person_add</mat-icon>
+        <mat-icon class="me-2" data-e2e="bus-list-actions-create">person_add</mat-icon>
         Neuer Bus
       </div>
     </th>
@@ -62,11 +62,11 @@
       <!-- write actions save and cancel -->
       <ng-template #writeActions>
         <mat-icon (click)="write(item)" data-e2e="bus-list-actions-accept">done</mat-icon>
-        <mat-icon (click)="cancelEdit(item)" data-e2e="users-list-actions-cancel">cancel</mat-icon>
+        <mat-icon (click)="cancelEdit(item)" data-e2e="bus-list-actions-cancel">cancel</mat-icon>
       </ng-template>
     </td>
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="columns"></tr>
-  <tr mat-row *matRowDef="let row; columns: columns" data-e2e="users-list-row" [attr.data-phantom]="row.isPhantom"></tr>
+  <tr mat-row *matRowDef="let row; columns: columns" data-e2e="bus-list-row" [attr.data-phantom]="row.isPhantom"></tr>
 </table>
