@@ -68,7 +68,7 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "14.1.2",
-    "@angular-eslint/eslint-plugin": "14.0.2",
+    "@angular-eslint/eslint-plugin": "14.0.3",
     "@angular-eslint/eslint-plugin-template": "14.0.2",
     "@angular-eslint/template-parser": "14.0.2",
     "@angular/cli": "14.1.2",
@@ -105,7 +105,7 @@
     "jest": "27.2.3",
     "jest-preset-angular": "11.1.2",
     "nx-electron": "13.2.1",
-    "playwright": "1.25.0",
+    "playwright": "1.25.1",
     "prettier": "2.7.1",
     "sane": "5.0.1",
     "ts-jest": "27.1.4",
