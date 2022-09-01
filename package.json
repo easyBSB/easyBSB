@@ -85,7 +85,7 @@
     "@nrwl/nest": "14.6.1",
     "@nrwl/node": "14.6.1",
     "@nrwl/tao": "14.6.1",
-    "@nrwl/workspace": "14.5.10",
+    "@nrwl/workspace": "14.6.2",
     "@oclif/core": "1.16.0",
     "@playwright/test": "1.25.1",
     "@types/bcryptjs": "2.4.2",
