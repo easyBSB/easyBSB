@@ -78,7 +78,7 @@
     "@nestjs/schematics": "9.0.2",
     "@nestjs/testing": "9.0.11",
     "@nrwl/angular": "14.6.1",
-    "@nrwl/cli": "14.5.10",
+    "@nrwl/cli": "14.6.1",
     "@nrwl/eslint-plugin-nx": "14.6.1",
     "@nrwl/jest": "14.6.1",
     "@nrwl/linter": "14.6.1",
