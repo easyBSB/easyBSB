@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { ListDatasource } from '@app/core';
+import { MessageService } from '@app/libs/message';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { ListDatasource } from '@app/core';
-import { Bus } from './api';
-import { MessageService } from '../message/message.service';
+import { Bus } from '../api';
 
 @Injectable()
-export class BusListDatasource extends ListDatasource<Bus> {
+export class DevicesListDatasource extends ListDatasource<Bus> {
 
   public constructor(
     private readonly httpClient: HttpClient,

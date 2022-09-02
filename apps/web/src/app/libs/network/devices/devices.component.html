@@ -1,0 +1,77 @@
+<div class="header d-flex flex-row justify-content-between">
+  <h5>[BUS_NAME] Devices</h5>
+  <mat-icon (click)="closeView()">close</mat-icon>
+</div>
+
+<table
+  class="container-fluid"
+  mat-table
+  [dataSource]="deviceList$"
+  [trackBy]="trackById"
+  data-e2e="users-list"
+>
+  <!-- Position Column -->
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef>Name</th>
+    <td mat-cell *matCellDef="let entity" data-e2e="bus-list-name">
+      <mat-form-field class="form-control" data-e2e="bus-list-name-control">
+        <input matInput [(ngModel)]="entity.raw.name" [disabled]="entity.mode === 'read'">
+      </mat-form-field>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="address">
+    <th mat-header-cell *matHeaderCellDef>Address</th>
+    <td mat-cell *matCellDef="let entity" data-e2e="bus-list-address">
+      <mat-form-field class="form-control" data-e2e="bus-list-address-control">
+        <input matInput [(ngModel)]="entity.raw.address" [disabled]="entity.mode === 'read'">
+      </mat-form-field>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="type">
+    <th mat-header-cell *matHeaderCellDef>Type</th>
+    <td mat-cell *matCellDef="let user" data-e2e="bus-list-type">
+      <mat-select class="form-control" [(ngModel)]="user.raw.type" [disabled]="user.mode === 'read'" data-e2e="bus-list-type-control">
+        <mat-option *ngFor="let option of [1, 2]" [value]="'1'">
+          2
+        </mat-option>
+      </mat-select>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="port">
+    <th mat-header-cell *matHeaderCellDef>Port</th>
+    <td mat-cell *matCellDef="let entity" data-e2e="bus-list-type">
+      <mat-form-field class="form-control" data-e2e="bus-list-port-control">
+        <input matInput [(ngModel)]="entity.raw.port" [disabled]="entity.mode === 'read'">
+      </mat-form-field>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef>
+      <div class="d-inline-flex flex-row align-items-center" (click)="addBus()">
+        <mat-icon class="me-2" data-e2e="bus-list-actions-create">person_add</mat-icon>
+        Neuer Bus
+      </div>
+    </th>
+
+    <td mat-cell *matCellDef="let item" data-e2e="users-list-actions">
+      <!-- read actions edit and delete -->
+      <ng-container *ngIf="item.mode === 'read'; else writeActions">
+        <mat-icon (click)="edit(item)" data-e2e="bus-list-actions-edit">edit</mat-icon>
+        <mat-icon (click)="remove(item)" data-e2e="bus-list-actions-delete">delete</mat-icon>
+      </ng-container>
+
+      <!-- write actions save and cancel -->
+      <ng-template #writeActions>
+        <mat-icon (click)="write(item)" data-e2e="bus-list-actions-accept">done</mat-icon>
+        <mat-icon (click)="cancelEdit(item)" data-e2e="bus-list-actions-cancel">cancel</mat-icon>
+      </ng-template>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="columns"></tr>
+  <tr mat-row *matRowDef="let row; columns: columns" data-e2e="bus-list-row" [attr.data-phantom]="row.isPhantom"></tr>
+</table>

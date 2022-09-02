@@ -23,7 +23,8 @@
     "target": "es2020",
     "baseUrl": ".",
     "paths": {
-      "@app/core": ["./src/app/core/index.ts"]
+      "@app/core": ["./src/app/core/index.ts"],
+      "@app/libs/*": ["./src/app/libs/*/public-api.ts"]
     }
   },
   "angularCompilerOptions": {

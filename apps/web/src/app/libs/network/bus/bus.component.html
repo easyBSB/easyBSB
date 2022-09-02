@@ -1,3 +1,5 @@
+<h5>Bus Systems</h5>
+
 <table
   class="container-fluid"
   mat-table
@@ -57,6 +59,7 @@
       <ng-container *ngIf="item.mode === 'read'; else writeActions">
         <mat-icon (click)="edit(item)" data-e2e="bus-list-actions-edit">edit</mat-icon>
         <mat-icon (click)="remove(item)" data-e2e="bus-list-actions-delete">delete</mat-icon>
+        <mat-icon (click)="showDevices(item)" data-e2e="bus-list-actions-show-devices">devices</mat-icon>
       </ng-container>
 
       <!-- write actions save and cancel -->
@@ -70,3 +73,8 @@
   <tr mat-header-row *matHeaderRowDef="columns"></tr>
   <tr mat-row *matRowDef="let row; columns: columns" data-e2e="bus-list-row" [attr.data-phantom]="row.isPhantom"></tr>
 </table>
+
+<div [@devicesContainer]="state" class="network-devices">
+  <easy-bsb-devices (close)="closeDevices()"></easy-bsb-devices>
+</div>
+

@@ -1,13 +1,28 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { trigger, transition, style, state, animate } from '@angular/animations';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ListItem } from '@app/core';
 import { Observable, Subject, skip, takeUntil } from 'rxjs';
-import { Bus } from './api';
+import { Bus } from '../api';
 import { BusListDatasource } from './bus.datasource';
 
 @Component({
   selector: 'easy-bsb-bus',
   templateUrl: './bus.component.html',
-  styleUrls: ['./bus.component.scss']
+  styleUrls: ['./bus.component.scss'],
+  animations: [
+    trigger('devicesContainer', [
+      transition(':enter', [
+        style({ transform: 'translateX(100%)' })
+      ]),
+
+      state('open', style({ transform: 'translateX(0)' })),
+      state('closed', style({ transform: 'translateX(100%)' })),
+
+      transition('open => closed', [animate('100ms ease-in')]),
+      transition('closed => open', [animate('200ms ease-out')])
+    ])
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BusComponent implements OnInit, OnDestroy {
 
@@ -17,6 +32,8 @@ export class BusComponent implements OnInit, OnDestroy {
     ['tcpip', 'TCP/IP'],
     ['serial', 'Serial']
   ];
+
+  state: 'open' | 'closed' = 'closed';
 
   private readonly destroy$ = new Subject<void>();
 
@@ -43,8 +60,17 @@ export class BusComponent implements OnInit, OnDestroy {
   /**
    * @description performance booster for mat-table
    */
-  trackById(_index: number, user: ListItem<Bus>) {
-    return user.raw.id;
+  trackById(_index: number, bus: ListItem<Bus>) {
+    return bus.raw.id;
+  }
+
+  showDevices(item: ListItem<Bus>) {
+    console.log(item);
+    this.state = 'open';
+  }
+
+  closeDevices() {
+    this.state = 'closed';
   }
 
   addBus() {

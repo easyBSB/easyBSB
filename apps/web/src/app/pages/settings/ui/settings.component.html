@@ -7,12 +7,16 @@
         #tabgroup
         [selectedIndex]="selectedIndex$ | async"
       >
-        <mat-tab label="Geraete" [aria-label]="'devices'">
-          <easy-bsb-bus></easy-bsb-bus>
+        <mat-tab label="Network" [aria-label]="'devices'">
+          <ng-template matTabContent>
+            <easy-bsb-network></easy-bsb-network>
+          </ng-template>
         </mat-tab>
 
         <mat-tab label="Benutzer" [attr.data-e2e]="'settings-tab--users'" [aria-label]="'users'" >
-          <easy-bsb-users></easy-bsb-users>
+          <ng-template matTabContent>
+            <easy-bsb-users></easy-bsb-users>
+          </ng-template>
         </mat-tab>
       </mat-tab-group>
     </div>
