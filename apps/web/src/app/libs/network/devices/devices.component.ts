@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ListItem } from '@app/core';
 import { Observable } from 'rxjs';
-import { Bus } from '../api';
+import { Device } from '../api';
 import { DevicesListDatasource } from './devices.datasource';
 
 @Component({
@@ -13,11 +13,11 @@ import { DevicesListDatasource } from './devices.datasource';
 export class DevicesComponent implements OnInit {
 
   @Output()
-  close: EventEmitter<void> = new EventEmitter();
+  closeView: EventEmitter<void> = new EventEmitter();
 
-  deviceList$: Observable<ListItem<Bus>[]>;
+  deviceList$: Observable<ListItem<Device>[]>;
 
-  columns = ['name', 'address', 'type', 'port', 'actions'];
+  columns = ['address', 'vendor', 'vendor_device', 'actions'];
 
   constructor(
     private readonly datasource: DevicesListDatasource,
@@ -30,31 +30,31 @@ export class DevicesComponent implements OnInit {
     console.log('not empty');
   }
 
-  trackById(_index: number, bus: ListItem<Bus>) {
-    return bus.raw.id;
+  trackById(_index: number, device: ListItem<Device>) {
+    return device.raw.id;
   }
 
-  addBus() {
+  addDevice() {
     this.datasource.create();
   }
 
-  remove(item: ListItem<Bus>) {
+  remove(item: ListItem<Device>) {
     this.datasource.remove(item);
   }
 
-  edit(item: ListItem<Bus>) {
+  edit(item: ListItem<Device>) {
     this.datasource.edit(item);
   }
 
-  write(item: ListItem<Bus>) {
+  write(item: ListItem<Device>) {
     this.datasource.write(item);
   }
 
-  cancelEdit(item: ListItem<Bus>) {
+  cancelEdit(item: ListItem<Device>) {
     this.datasource.cancelEdit(item);
   }
   
-  closeView() {
-    this.close.emit()
+  closePanel() {
+    this.closeView.emit()
   }
 }

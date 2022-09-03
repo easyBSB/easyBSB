@@ -1,7 +1,8 @@
 <div class="container-fluid h-100">
-  <div class="row">
-    <div class="col-12">
+  <div class="row h-100">
+    <div class="col-12 h-100">
       <mat-tab-group
+        class="h-100"
         mat-align-tabs="start"
         data-e2e="settings-tab--devices"
         #tabgroup
@@ -9,7 +10,7 @@
       >
         <mat-tab label="Network" [aria-label]="'devices'">
           <ng-template matTabContent>
-            <easy-bsb-network></easy-bsb-network>
+            <easy-bsb-bus></easy-bsb-bus>
           </ng-template>
         </mat-tab>
 
