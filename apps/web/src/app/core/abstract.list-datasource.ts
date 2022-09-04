@@ -45,7 +45,7 @@ export abstract class ListDatasource<T extends { id: number | string }> {
 
   protected storage: ListItem<T>[] = [];
 
-  private readonly userChange$: Subject<ListItem<T>[]> = new Subject();
+  private readonly itemChange$: Subject<ListItem<T>[]> = new Subject();
 
   /**
    * @description persist current bus we edit so we have access
@@ -79,21 +79,21 @@ export abstract class ListDatasource<T extends { id: number | string }> {
       return;
     }
 
-    const newBus: ListItem<T> = {
+    const newItem: ListItem<T> = {
       isPhantom: true,
       mode: 'read',
       raw: this.createPhantom()
     };
 
-    this.storage.push(newBus);
-    this.edit(newBus);
+    this.storage.push(newItem);
+    this.edit(newItem);
   }
 
   /**
    * @description connect to get changes for users
    */
   connect(): Observable<ListItem<T>[]> {
-    return this.userChange$.pipe(debounceTime(0, animationFrameScheduler));
+    return this.itemChange$.pipe(debounceTime(0, animationFrameScheduler));
   }
 
   edit(item: ListItem<T>) {
@@ -190,15 +190,15 @@ export abstract class ListDatasource<T extends { id: number | string }> {
     }
 
     this.storage = item.isPhantom
-      ? this.storage.filter((bus) => bus !== item)
-      : this.storage.map((bus) => bus === item ? this.mapToListItem(state) : bus);
+      ? this.storage.filter((entity) => entity !== item)
+      : this.storage.map((entity) => entity === item ? this.mapToListItem(state) : entity);
   }
 
   /**
    * @description emit list changes
    */
   private notify() {
-    this.userChange$.next(this.storage);
+    this.itemChange$.next(this.storage);
   }
 
   /**

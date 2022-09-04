@@ -1,45 +1,36 @@
-import { trigger, transition, style, state, animate } from '@angular/animations';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ListItem } from '@app/core';
 import { Observable, Subject, skip, takeUntil } from 'rxjs';
 import { Bus } from '../api';
+import { NetworkViewHelper, ViewState } from '../utils/network-view.helper';
 import { BusListDatasource } from './bus.datasource';
+import { deviceAnimationMetadata } from './constants';
 
 @Component({
   selector: 'easy-bsb-bus',
   templateUrl: './bus.component.html',
   styleUrls: ['./bus.component.scss'],
-  animations: [
-    trigger('devicesContainer', [
-      transition(':enter', [
-        style({ transform: 'translateX(100%)' })
-      ]),
-
-      state('open', style({ transform: 'translateX(0)' })),
-      state('closed', style({ transform: 'translateX(100%)' })),
-
-      transition('open => closed', [animate('100ms ease-in')]),
-      transition('closed => open', [animate('200ms ease-out')])
-    ])
-  ],
+  providers: [ NetworkViewHelper ],
+  animations: [ deviceAnimationMetadata ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BusComponent implements OnInit, OnDestroy {
 
-  columns = ['name', 'address', 'type', 'port', 'actions'];
-  busData$: Observable<ListItem<Bus>[]>;
-  busTypeOtions: ['tcpip' | 'serial' , 'TCP/IP' | 'Serial'][] = [
+  public columns = ['name', 'address', 'type', 'port', 'actions'];
+  public busData$: Observable<ListItem<Bus>[]>;
+  public busTypeOtions: ['tcpip' | 'serial' , 'TCP/IP' | 'Serial'][] = [
     ['tcpip', 'TCP/IP'],
     ['serial', 'Serial']
   ];
 
-  state: 'open' | 'closed' = 'closed';
+  public state: 'open' | 'closed' = 'closed';
 
   private readonly destroy$ = new Subject<void>();
 
   constructor(
     private readonly datasource: BusListDatasource,
-    private readonly cdRef: ChangeDetectorRef
+    private readonly cdRef: ChangeDetectorRef,
+    private readonly viewHelper: NetworkViewHelper,
   ) {
     this.busData$ = this.datasource.connect();
   }
@@ -49,6 +40,7 @@ export class BusComponent implements OnInit, OnDestroy {
       .pipe(skip(1), takeUntil(this.destroy$))
       .subscribe(() => this.cdRef.markForCheck());
 
+    this.handleViewstateChange();
     this.datasource.load();
   }
 
@@ -65,12 +57,8 @@ export class BusComponent implements OnInit, OnDestroy {
   }
 
   showDevices(item: ListItem<Bus>) {
-    console.log(item);
-    this.state = 'open';
-  }
-
-  closeDevices() {
-    this.state = 'closed';
+    this.viewHelper.selectBus(item.raw);
+    this.viewHelper.viewState = ViewState.DEVICE;
   }
 
   addBus() {
@@ -91,5 +79,17 @@ export class BusComponent implements OnInit, OnDestroy {
 
   cancelEdit(item: ListItem<Bus>) {
     this.datasource.cancelEdit(item);
+  }
+
+  /**
+   * @description handle view state changes
+   */
+  private handleViewstateChange(): void {
+    this.viewHelper.viewStateChanged()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((state) => {
+        // toggle device view
+        this.state = state === ViewState.DEVICE ? 'open' : 'closed';
+      });
   }
 }

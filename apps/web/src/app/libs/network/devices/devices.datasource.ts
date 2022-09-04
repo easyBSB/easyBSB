@@ -1,17 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ListDatasource } from '@app/core';
-import { EMPTY, Observable } from 'rxjs';
-import { Device } from '../api';
+import { EMPTY, Observable, throwError } from 'rxjs';
+import { Bus, Device } from '../api';
 
-function* deviceGenerator(): Generator<Device> {
+function* deviceGenerator(busId: Bus['id']): Generator<Device> {
   const id = Math.random().toString(32);
   let address = 0x00;
 
   while (true) {
     const device: Device = {
       address,
-      bus_id: 1,
+      bus_id: busId,
       id,
       vendor: void 0,
       vendor_device: void 0
@@ -25,7 +25,8 @@ function* deviceGenerator(): Generator<Device> {
 @Injectable()
 export class DevicesListDatasource extends ListDatasource<Device> {
 
-  private deviceGenerator = deviceGenerator();
+  private selectedBus?: Bus;
+  private deviceGenerator?: Generator<Device>;
 
   public constructor(
     private readonly httpClient: HttpClient,
@@ -33,12 +34,28 @@ export class DevicesListDatasource extends ListDatasource<Device> {
     super();
   }
 
+  public set bus(bus: Bus | undefined) {
+    this.selectedBus = bus;
+    if (bus) {
+      this.deviceGenerator = deviceGenerator(bus.id);
+    }
+  }
+
+  public get bus(): Bus | undefined {
+    return this.selectedBus;
+  }
+
   protected fetch(): Observable<Device[]> {
-    console.log('devices');
-    return this.httpClient.get<Device[]>("/api/devices");
+    if (!this.bus) {
+      return throwError(() => new Error(`No bus selected`));
+    }
+    return this.httpClient.get<Device[]>(`/api/bus/${this.bus.id}/devices`);
   }
 
   protected createPhantom(): Device {
+    if (!this.bus || !this.deviceGenerator) {
+      throw `No Bus selected`;
+    }
     return this.deviceGenerator.next().value;
   }
 
@@ -53,7 +70,6 @@ export class DevicesListDatasource extends ListDatasource<Device> {
   }
 
   protected updateEntity(): Observable<Device> {
-    console.log('update');
     return EMPTY;
   }
 
