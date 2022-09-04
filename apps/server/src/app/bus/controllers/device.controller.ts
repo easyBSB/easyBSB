@@ -1,40 +1,28 @@
 import { Actions, CheckAbility } from "@app/roles";
 import { User } from "@app/users";
-import { Controller, Delete, Get, Param, ParseIntPipe, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put } from "@nestjs/common";
 import { ApiOperation, ApiHeaders, ApiResponse, ApiTags } from "@nestjs/swagger";
-import { Device } from "./device.entity";
+import { plainToClass } from "class-transformer";
+import { Device } from "../model/device.entity";
+import { DeviceService } from "../utils/device.service";
 
-@ApiTags("bus")
+@ApiTags("device")
 @Controller({
   path: "device",
 })
 export class DeviceController {
 
   constructor(
-    /* private readonly deviceService: DeviceService */
+    private readonly deviceService: DeviceService
   ) {}
 
   @ApiOperation({
-    summary: "get list of users",
-    description: "get list of users",
-    security: [{ bearer: [] }],
-  })
-  @ApiHeaders([{ name: "Authorization", description: "Bearer auth token" }])
-  @ApiResponse({ status: 200, description: "users list", type: Array<Device> })
-  @ApiResponse({ status: 401, description: "not authorized" })
-  @CheckAbility({ action: Actions.Read, subject: User })
-  @Get()
-  async deviceList(): Promise<unknown[]> {
-    throw "not implemented";
-  }
-
-  @ApiOperation({
     summary: "get device by id",
-    description: "get specific bus by id",
+    description: "get specific device by id",
     security: [{ bearer: [] }],
   })
   @ApiHeaders([{ name: "Authorization", description: "Bearer auth token" }])
-  @ApiResponse({ status: 200, description: "users list", type: Array<User> })
+  @ApiResponse({ status: 200, description: "device entity", type: Device })
   @ApiResponse({ status: 401, description: "not authorized" })
   @CheckAbility({ action: Actions.Read, subject: Device })
   @Get(":id")
@@ -48,12 +36,13 @@ export class DeviceController {
     security: [{ bearer: [] }],
   })
   @ApiHeaders([{ name: "Authorization", description: "Bearer auth token" }])
-  @ApiResponse({ status: 200, description: "bus created", type: Device })
+  @ApiResponse({ status: 200, description: "device created", type: Device })
   @ApiResponse({ status: 401, description: "not authorized" })
   @CheckAbility({ action: Actions.Create, subject: Device })
   @Put()
-  async create(/* @Body() payload: Device */): Promise<unknown> {
-    throw "not implemented";
+  async create(@Body() payload: Device): Promise<Device> {
+    const device = plainToClass(Device, payload);
+    return this.deviceService.insert(device);
   }
 
   @ApiOperation({
@@ -69,6 +58,7 @@ export class DeviceController {
   async delete(
     @Param("id", ParseIntPipe) id: number,
   ): Promise<unknown> {
+    console.log(id);
     throw "not implemented"
   }
 

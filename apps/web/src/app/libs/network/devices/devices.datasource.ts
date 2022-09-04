@@ -34,6 +34,7 @@ export class DevicesListDatasource extends ListDatasource<Device> {
   }
 
   protected fetch(): Observable<Device[]> {
+    console.log('devices');
     return this.httpClient.get<Device[]>("/api/devices");
   }
 

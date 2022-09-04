@@ -2,7 +2,7 @@ import { BadRequestException, Injectable, NotFoundException } from "@nestjs/comm
 import { InjectRepository } from "@nestjs/typeorm";
 import { plainToClassFromExist } from "class-transformer";
 import { Repository } from "typeorm";
-import { Bus } from "./bus.entity";
+import { Bus } from "../model/bus.entity";
 import { BusValidation } from "./bus.validators";
 
 @Injectable()

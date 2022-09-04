@@ -1,4 +1,4 @@
-export * from './bus.controller';
-export * from './bus.entity';
+export * from './controllers/bus.controller';
+export * from './model/bus.entity';
 export * from './bus.module';
-export * from './bus.service';
+export * from './utils/bus.service';

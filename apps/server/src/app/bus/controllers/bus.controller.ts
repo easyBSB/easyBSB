@@ -3,8 +3,9 @@ import { User } from "@app/users";
 import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put } from "@nestjs/common";
 import { ApiOperation, ApiHeaders, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { plainToClass } from 'class-transformer';
-import { Bus } from "./bus.entity";
-import { BusService } from "./bus.service";
+import { Bus } from "../model/bus.entity";
+import { Device } from "../model/device.entity";
+import { BusService } from "../utils/bus.service";
 
 @ApiTags("bus")
 @Controller({
@@ -38,8 +39,22 @@ export class BusController {
   @ApiResponse({ status: 401, description: "not authorized" })
   @CheckAbility({ action: Actions.Read, subject: Bus })
   @Get(":id")
-  async busById(): Promise<unknown> {
+  async busById(): Promise<Bus> {
     return this.busService.findById(1);
+  }
+
+  @ApiOperation({
+    summary: "get all devices from bus",
+    description: "get all devices from bus",
+    security: [{ bearer: [] }],
+  })
+  @ApiHeaders([{ name: "Authorization", description: "Bearer auth token" }])
+  @ApiResponse({ status: 200, description: "devices list", type: Array<Device> })
+  @ApiResponse({ status: 401, description: "not authorized" })
+  @CheckAbility({ action: Actions.Read, subject: Bus })
+  @Get(":id/devices")
+  async devices(): Promise<Device[]> {
+    return Promise.resolve([]);
   }
 
   @ApiOperation({

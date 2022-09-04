@@ -1,13 +1,10 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 
-import { ENTITIES as CONNECTION_ENTITIES } from "@connections/entities";
-import { User } from "@app/users/entities/user";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { homedir } from "os";
 import { dirname, join } from "path";
 import { mkdirSync } from "fs";
-import { Bus } from "./bus";
 
 @Module({
   imports: [
@@ -26,14 +23,14 @@ import { Bus } from "./bus";
 
         return {
           type: "sqljs",
-          entities: [...CONNECTION_ENTITIES, User, Bus],
           migrationsRun: true,
           migrationsTableName: "migrations",
           migrations: [...config.get("database.migrations")],
           autoSave: true,
           logging: config.get('database.logging'),
           synchronize: false,
-          location: database
+          location: database,
+          autoLoadEntities: true
       }},
     }),
   ],

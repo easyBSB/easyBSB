@@ -28,6 +28,7 @@ export class DevicesComponent implements OnInit {
 
   ngOnInit(): void {
     console.log('not empty');
+    this.datasource.load();
   }
 
   trackById(_index: number, device: ListItem<Device>) {

@@ -2,13 +2,15 @@ import { BadRequestException, Injectable, NotFoundException } from "@nestjs/comm
 import { InjectRepository } from "@nestjs/typeorm";
 import { plainToClassFromExist } from "class-transformer";
 import { Repository } from "typeorm";
-import { Device } from "./device.entity";
+import { Device } from "../model/device.entity";
+import { DeviceValidator } from "./device.validator";
 
 @Injectable()
 export class DeviceService {
 
   constructor(
-    @InjectRepository(Device) private readonly repository: Repository<Device>
+    @InjectRepository(Device) private readonly repository: Repository<Device>,
+    private readonly validationHelper: DeviceValidator
   ) {}
 
   list(): Promise<Device[] | null> {
@@ -32,9 +34,12 @@ export class DeviceService {
    * @throws BadRequestExecption if validation failed
    */
   async insert(payload: Device): Promise<Device> {
-    /**
-     * @todo validate payload before we save
-     */
+    const validationResult = await this.validationHelper.isValid(payload);
+
+    if (validationResult !== null) {
+      throw new BadRequestException(validationResult);
+    }
+
     try {
       const result = await this.repository.insert(payload);
       const lastInsertedId = result.identifiers.at(0).id;
