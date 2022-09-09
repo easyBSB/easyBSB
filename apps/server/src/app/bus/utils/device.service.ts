@@ -2,6 +2,7 @@ import { BadRequestException, Injectable, NotFoundException } from "@nestjs/comm
 import { InjectRepository } from "@nestjs/typeorm";
 import { plainToClassFromExist } from "class-transformer";
 import { Repository } from "typeorm";
+import { Bus } from "../model/bus.entity";
 import { Device } from "../model/device.entity";
 import { DeviceValidator } from "./device.validator";
 
@@ -13,8 +14,12 @@ export class DeviceService {
     private readonly validationHelper: DeviceValidator
   ) {}
 
-  list(): Promise<Device[] | null> {
-    return this.repository.find();
+  list(bus: Bus['id']): Promise<Device[] | null> {
+    return this.repository.find({
+      where: [{
+        bus_id: bus
+      }]
+    });
   }
 
   async findById(id: Device['id']): Promise<Device | null> {

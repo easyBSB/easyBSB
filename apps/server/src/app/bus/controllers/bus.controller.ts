@@ -6,6 +6,7 @@ import { plainToClass } from 'class-transformer';
 import { Bus } from "../model/bus.entity";
 import { Device } from "../model/device.entity";
 import { BusService } from "../utils/bus.service";
+import { DeviceService } from "../utils/device.service";
 
 @ApiTags("bus")
 @Controller({
@@ -13,7 +14,10 @@ import { BusService } from "../utils/bus.service";
 })
 export class BusController {
 
-  constructor(private readonly busService: BusService) {}
+  constructor(
+    private readonly busService: BusService,
+    private readonly deviceServie: DeviceService
+  ) {}
 
   @ApiOperation({
     summary: "get list of users",
@@ -53,8 +57,8 @@ export class BusController {
   @ApiResponse({ status: 401, description: "not authorized" })
   @CheckAbility({ action: Actions.Read, subject: Bus })
   @Get(":id/devices")
-  async devices(): Promise<Device[]> {
-    return Promise.resolve([]);
+  async devices(@Param("id", ParseIntPipe) id: Bus['id']): Promise<Device[]> {
+    return this.deviceServie.list(id);
   }
 
   @ApiOperation({

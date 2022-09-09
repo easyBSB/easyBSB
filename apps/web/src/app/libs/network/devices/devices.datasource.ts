@@ -39,8 +39,9 @@ export class DevicesListDatasource extends ListDatasource<Device> {
     return device;
   }
 
-  protected writeEntity(): Observable<Device> {
-    return EMPTY;
+  protected writeEntity(entity: Device, options: Record<string, unknown>): Observable<Device> {
+    const {id, ...payload} = entity;
+    return this.httpClient.put<Device>(`/api/device`, payload, options);
   }
 
   protected removeEntity(): Observable<unknown> {
@@ -52,6 +53,9 @@ export class DevicesListDatasource extends ListDatasource<Device> {
   }
 
   protected validate(): boolean {
-    return false;
+    /**
+     * @todo validate correctly
+     */
+    return true;
   }
 }
