@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { ListItem } from '@app/core';
-import { Observable, Subject, skip, takeUntil } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { Bus } from '../api';
 import { NetworkViewHelper, ViewState } from '../utils/network-view.helper';
 import { BusListDatasource } from './bus.datasource';
@@ -10,7 +10,8 @@ import { deviceAnimationMetadata } from './constants';
   selector: 'easy-bsb-bus',
   templateUrl: './bus.component.html',
   styleUrls: ['./bus.component.scss'],
-  providers: [ NetworkViewHelper ],
+  providers: [
+  ],
   animations: [ deviceAnimationMetadata ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -29,17 +30,12 @@ export class BusComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly datasource: BusListDatasource,
-    private readonly cdRef: ChangeDetectorRef,
     private readonly viewHelper: NetworkViewHelper,
   ) {
-    this.busData$ = this.datasource.connect();
+    this.busData$ = this.connectDatasource();
   }
 
   ngOnInit(): void {
-    this.busData$
-      .pipe(skip(1), takeUntil(this.destroy$))
-      .subscribe(() => this.cdRef.markForCheck());
-
     this.handleViewstateChange();
     this.datasource.load();
   }
@@ -58,7 +54,7 @@ export class BusComponent implements OnInit, OnDestroy {
 
   showDevices(item: ListItem<Bus>) {
     this.viewHelper.selectBus(item.raw);
-    this.viewHelper.viewState = ViewState.DEVICE;
+    this.viewHelper.setViewState(ViewState.DEVICE);
   }
 
   addBus() {
@@ -87,9 +83,16 @@ export class BusComponent implements OnInit, OnDestroy {
   private handleViewstateChange(): void {
     this.viewHelper.viewStateChanged()
       .pipe(takeUntil(this.destroy$))
-      .subscribe((state) => {
-        // toggle device view
+      .subscribe(({ state }) => {
         this.state = state === ViewState.DEVICE ? 'open' : 'closed';
       });
+  }
+
+  /**
+   * @description connect to datasource, if something changed items are
+   * added or removed and they are not inside cache
+   */
+  private connectDatasource(): Observable<ListItem<Bus>[]> {
+    return this.datasource.connect();
   }
 }

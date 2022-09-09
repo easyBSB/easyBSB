@@ -13,6 +13,8 @@ import { BusComponent } from './bus/bus.component';
 import { BusListDatasource } from './bus/bus.datasource';
 import { DevicesListDatasource } from './devices/devices.datasource';
 import { DevicesComponent } from './devices/devices.component';
+import { NetworkViewHelper } from './utils/network-view.helper';
+import { NetworkStore, NetworkMemoryStore } from './utils/network.store';
 
 @NgModule({
   declarations: [
@@ -35,7 +37,9 @@ import { DevicesComponent } from './devices/devices.component';
   ],
   providers: [
     BusListDatasource,
-    DevicesListDatasource
+    DevicesListDatasource,
+    NetworkViewHelper,
+    { provide: NetworkStore, useClass: NetworkMemoryStore }
   ],
 })
 export class NetworkModule {}

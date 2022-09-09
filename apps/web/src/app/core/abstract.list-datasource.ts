@@ -16,12 +16,12 @@ export abstract class ListDatasource<T extends { id: number | string }> {
   /**
    * @description called to load all items from server
    */
-  protected abstract fetch(): Observable<T[]>;
+  protected abstract fetch(...args: unknown[]): Observable<T[]>;
 
   /**
    * @description called if an phantom item should be created which is added to list
    */
-  protected abstract createPhantom(): T;
+  protected abstract createPhantom(...args: unknown[]): T;
 
   /**
    * @description called if a new item should created on server
@@ -58,9 +58,8 @@ export abstract class ListDatasource<T extends { id: number | string }> {
    */
   private itemState?: ListItem<T>;
 
-  load(): void {
-    // should happen in child class
-    this.fetch()
+  load<T extends unknown[]>(...args: T): void {
+    this.fetch(...args)
       .pipe(
         take(1),
         map((items) => items.map((item) => this.mapToListItem(item)))
@@ -74,19 +73,21 @@ export abstract class ListDatasource<T extends { id: number | string }> {
   /**
    * @description create new phantom bus and add to list data
    */
-  create() {
+  create<P extends unknown[]>(...args: P): ListItem<T> | undefined {
     if (this.currentEditItem && this.validate(this.currentEditItem.raw) === false) {
-      return;
+      return void 0;
     }
 
     const newItem: ListItem<T> = {
       isPhantom: true,
       mode: 'read',
-      raw: this.createPhantom()
+      raw: this.createPhantom(...args)
     };
 
     this.storage.push(newItem);
     this.edit(newItem);
+
+    return newItem;
   }
 
   /**

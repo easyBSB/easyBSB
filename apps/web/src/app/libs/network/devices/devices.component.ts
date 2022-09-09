@@ -17,6 +17,8 @@ export class DevicesComponent implements OnInit {
   public listData$: Observable<ListItem<Device>[]>;
   public bus?: Bus;
 
+  private currentEditItem?: ListItem<Device>;
+
   constructor(
     private readonly datasource: DevicesListDatasource,
     private readonly viewHelper: NetworkViewHelper, 
@@ -34,7 +36,9 @@ export class DevicesComponent implements OnInit {
   }
 
   addDevice() {
-    this.datasource.create();
+    if (this.bus) {
+      this.currentEditItem = this.datasource.create<[Bus['id']]>(this.bus.id);
+    }
   }
 
   remove(item: ListItem<Device>) {
@@ -42,20 +46,26 @@ export class DevicesComponent implements OnInit {
   }
 
   edit(item: ListItem<Device>) {
+    this.currentEditItem = item;
     this.datasource.edit(item);
   }
 
   write(item: ListItem<Device>) {
+    this.currentEditItem = void 0;
     this.datasource.write(item);
   }
 
   cancelEdit(item: ListItem<Device>) {
+    this.currentEditItem = void 0;
     this.datasource.cancelEdit(item);
   }
   
   closePanel() {
-    // this closes the view state and goes back to bus
-    this.viewHelper.viewState = ViewState.BUS;
+    if (this.currentEditItem) {
+      // @todo show warning
+      this.cancelEdit(this.currentEditItem);
+    }
+    this.viewHelper.setViewState(ViewState.BUS);
   }
 
   /**
@@ -67,14 +77,17 @@ export class DevicesComponent implements OnInit {
   private handleViewstateChange(): void {
     this.viewHelper.viewStateChanged()
       .pipe(
-        // @todo unsubscribe
-        filter((state) => state === ViewState.DEVICE),        // we are on devices
-        filter(() => this.viewHelper.selectedBus !== void 0), // we have an selected bus
+        // @todo unsubscribe on destroy
+        filter((context) => context.state === ViewState.DEVICE),        // we are on devices
       )
-      .subscribe(() => {
-        // set new bus to datasource
-        this.datasource.bus = this.viewHelper.selectedBus as Bus;
-        this.datasource.load(); 
+      .subscribe(({ bus }) => {
+        if (!bus) {
+          this.viewHelper.setViewState(ViewState.BUS);
+          return;
+        }
+
+        this.bus = bus
+        this.datasource.load(bus.id); 
         this.cdRef.markForCheck();
       });
   }

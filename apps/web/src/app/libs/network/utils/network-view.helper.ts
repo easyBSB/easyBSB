@@ -1,50 +1,51 @@
-import { SelectionChange, SelectionModel } from '@angular/cdk/collections';
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, distinctUntilChanged, Observable, shareReplay } from 'rxjs';
-import { Bus } from '../api';
+import { Inject, Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { Bus, Device } from '../api';
+import { NetworkStore } from './network.store';
 
 export enum ViewState {
   BUS,
   DEVICE
 }
 
+export interface ViewContext {
+  state: ViewState;
+  bus?: Bus;
+  devices?: Device[];
+}
+
 @Injectable()
 export class NetworkViewHelper {
 
-  public busSelectionModel: SelectionModel<Bus>;
-  private selectionChange$: Observable<SelectionChange<Bus>>;
-  private viewState$ = new BehaviorSubject<ViewState>(ViewState.BUS);
+  private viewState$ = new BehaviorSubject<ViewContext>({
+    state: ViewState.BUS
+  });
 
-  constructor() {
-    this.busSelectionModel = new SelectionModel(false);
-    this.selectionChange$ = this.busSelectionModel.changed.pipe(shareReplay());
+  private selectedBus!: Bus;
+
+  constructor(
+    @Inject(NetworkStore) private store: NetworkStore
+  ) {}
+
+  setViewState(state: ViewState) {
+    if (state === ViewState.BUS) {
+      this.viewState$.next({ state });
+    }
+
+    const bus = this.selectedBus;
+    const devices = this.store.getDevices(bus);
+    this.viewState$.next({ state, bus, devices });
   }
 
-  set viewState(state: ViewState) {
-    this.viewState$.next(state);
-  }
-
-  get viewState() {
+  getViewState() {
     return this.viewState$.getValue();
   }
 
-  get busChanged(): Observable<SelectionChange<Bus>> {
-    return this.selectionChange$;
-  }
-
-  get selectedBus(): Bus | undefined {
-    if (this.busSelectionModel.selected.length > 0) {
-      return this.busSelectionModel.selected[0];
-    }
-    return void 0;
-  }
-
   public selectBus(bus: Bus) {
-    this.busSelectionModel.select(bus);
+    this.selectedBus = bus;
   }
 
-  public viewStateChanged(): Observable<ViewState> {
-    return this.viewState$
-      .pipe(distinctUntilChanged());
+  public viewStateChanged(): Observable<ViewContext> {
+    return this.viewState$;
   }
 }
