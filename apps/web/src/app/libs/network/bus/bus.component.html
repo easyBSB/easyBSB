@@ -23,7 +23,13 @@
     <th mat-header-cell *matHeaderCellDef>Address</th>
     <td mat-cell *matCellDef="let entity" data-e2e="bus-list-address">
       <mat-form-field class="form-control" data-e2e="bus-list-address-control">
-        <input matInput [(ngModel)]="entity.raw.address" [disabled]="entity.mode === 'read'">
+        <input
+          matInput
+          [disabled]="entity.mode === 'read'"
+          [ngModel]="entity.raw.address | toHex" 
+          [ngModelOptions]="{ updateOn: 'blur' }"
+          (ngModelChange)="entity.raw.address=$event" 
+          name="address" type="text" />
       </mat-form-field>
     </td>
   </ng-container>

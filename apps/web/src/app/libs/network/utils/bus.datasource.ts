@@ -45,14 +45,17 @@ export class BusListDatasource extends ListDatasource<Bus> {
 
   protected writeEntity(entity: Bus, options: Record<string, unknown>): Observable<Bus> {
     const {id, ...payload} = entity;
-    return this.httpClient.put<Bus>("/api/bus", payload , options);
-    // add bus
+    return this.httpClient.put<Bus>("/api/bus", payload , options)
+      .pipe(
+        tap((bus) => this.networkStore.addBus(bus)),
+      );
   }
 
   protected removeEntity(entity: Bus): Observable<unknown> {
     const { id } = entity;
-    return this.httpClient.delete("/api/bus/" + id);
-    // remove bus
+    return this.httpClient.delete("/api/bus/" + id).pipe(
+      tap(() => this.networkStore.removeBus(entity))
+    )
   }
 
   protected updateEntity(entity: Bus, options: Record<string, unknown>): Observable<Bus> {

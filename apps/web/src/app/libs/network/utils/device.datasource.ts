@@ -56,7 +56,7 @@ export class DevicesListDatasource extends ListDatasource<Device> {
   protected updateEntity(entity: Device, options: Record<string, unknown>): Observable<Device> {
     const { id, ...payload } = entity;
     return this.httpClient.post<Device>('/api/device/' + id, payload, options).pipe(
-      tap(() => this.networkStore.removeDevice(entity))
+      tap((response) => this.networkStore.updateDevice(response))
     );
   }
 
