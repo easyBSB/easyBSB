@@ -1,4 +1,5 @@
 import { expect, Locator } from "@playwright/test";
+import * as exp from "constants";
 import { matSelectValue } from "../support/mat-select";
 import { AbstractPageObject } from "./Abstract.page.object";
 
@@ -24,23 +25,36 @@ export class UsersPageObject extends AbstractPageObject {
     // useless to add an data attribute since angular material does not use it
     const userTab = this.page.locator('#mat-tab-label-0-1');
     await expect(userTab).toBeVisible();
-    await userTab.click();
+
+    /** 
+     * maybe this could be a problem if data is cached
+     * and we do not send any request anymore
+     */
+    await Promise.all([
+      this.page.waitForResponse((res) => {
+          return res.url().includes('/api/users') && res.status() === 200
+        }
+      ),
+      userTab.click()
+    ]);
   }
 
   /**
    * @description get all users 
    */
-  getUsers(): Locator {
+  async getUsers(): Promise<Locator> {
+    await this.page.waitForSelector('[data-e2e="users-list-row"]');
     return this.userList.locator('[data-e2e="users-list-row"]');
   }
 
   async findUser(name: string): Promise<Locator> {
-    const rows = this.getUsers();
-    const count = await rows.count()
+    const rows = await this.getUsers();
+    const count = await rows.count();
 
     for (let i = 0; i < count; i++) {
       const row = rows.nth(i);
       const ctrl = await row.locator('[data-e2e="users-list-name"] input');
+      console.log(ctrl);
 
       expect(await ctrl.count()).toBe(1);
       const value = await ctrl.inputValue();
