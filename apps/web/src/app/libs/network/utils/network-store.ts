@@ -7,10 +7,13 @@ import { Bus, Device } from "../api";
 export interface NetworkStore {
   addBus(bus: Bus): void;
   getBus(id: Bus['id']): Bus | undefined;
+  getBusList(): Bus[] | undefined;
+  updateBus(bus: Bus): void;
   removeBus(bus: Bus): void;
+  addDevice(device: Device): void;
   setDevices(bus: Bus, devices: Device[]): void;
   getDevices(bus: Bus): Device[] | undefined;
-  removeDevice(bus: Bus, device: Device): void;
+  removeDevice(device: Device): void;
 }
 
 export class NetworkMemoryStore implements NetworkStore {
@@ -18,29 +21,10 @@ export class NetworkMemoryStore implements NetworkStore {
   private networkStore: Map<Bus['id'], Bus> = new Map();  
   private busStore: WeakMap<Bus, Device[] | undefined> = new WeakMap(); 
 
-  /**
-   * @description add new bus
-   */
-  public addBus(bus: Bus): void {
-    let devices: Device[] | undefined = void 0;
-
+  public addBus(bus: Bus, devices: Device[] | undefined = void 0): void {
     if (this.networkStore.has(bus.id) && this.busStore.has(bus)) {
       return;
     }
-    
-    /**
-     * bus gets updated, since we are stateless it is not the same
-     * object anymore. So we have to remove the bus before
-     */
-    if (this.networkStore.has(bus.id) && !this.busStore.has(bus)) {
-      const removal = this.networkStore.get(bus.id) as Bus;
-      devices = this.busStore.get(removal);
-      this.removeBus(removal);
-    }
-
-    /**
-     * add new bus and devices
-     */
     this.networkStore.set(bus.id, bus);
     this.busStore.set(bus, devices);
   }
@@ -49,9 +33,16 @@ export class NetworkMemoryStore implements NetworkStore {
     return this.networkStore.get(id);
   }
 
-  /**
-   * @description remove bus
-   */
+  public getBusList(): Bus[] | undefined {
+    const items = Array.from(this.networkStore.values());
+
+    if (items.length > 0) {
+      return Array.from(this.networkStore.values());
+    }
+
+    return void 0
+  }
+
   public removeBus(bus: Bus): void {
     if (this.networkStore.has(bus.id)) {
       const removal = this.networkStore.get(bus.id) as Bus;
@@ -61,10 +52,26 @@ export class NetworkMemoryStore implements NetworkStore {
     }
   }
 
-  /**
-   * @description attach devices to an bus, create bus
-   * if not exists
-   */
+  public updateBus(bus: Bus) {
+    const source = this.getBus(bus.id);
+    let devices: Device[] | undefined;
+
+    if (source) {
+      devices = this.busStore.get(source);
+      this.removeBus(source);
+      this.addBus(bus, devices);
+    }
+  }
+
+  public addDevice(device: Device): void {
+    const bus = this.getBus(device.bus_id);
+    if (!bus) {
+      throw `No bus for device found`;
+    }
+    const devices = [...this.getDevices(bus) ?? [], device];
+    this.setDevices(bus, devices);
+  }
+
   public setDevices(bus: Bus, devices: Device[]): void {
     if (!this.networkStore.has(bus.id)) {
       this.addBus(bus);
@@ -72,9 +79,6 @@ export class NetworkMemoryStore implements NetworkStore {
     this.busStore.set(bus, devices);
   }
 
-  /**
-   * @description get devices from bus
-   */
   public getDevices(bus: Bus): Device[] | undefined {
     if (this.busStore.has(bus)) {
       return this.busStore.get(bus);
@@ -82,12 +86,11 @@ export class NetworkMemoryStore implements NetworkStore {
     return void 0;
   }
 
-  /**
-   * @description remove device from existing bus
-   */
-  public removeDevice(bus: Bus, device: Device): void {
-    const devices = this.getDevices(bus);
-    if (!devices) {
+  public removeDevice(device: Device): void {
+    const bus = this.getBus(device.bus_id);
+    const devices = bus ? this.getDevices(bus) : void 0;
+
+    if (!bus || !devices) {
       throw Error('could not remove device from store');
     }
 

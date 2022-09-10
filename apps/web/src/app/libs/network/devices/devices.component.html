@@ -1,10 +1,17 @@
-  <div class="header d-flex flex-row justify-content-between">
-    <h5>{{ bus?.name }} Devices {{ bus?.id }}</h5>
-    <mat-icon (click)="closePanel()" role="button">close</mat-icon>
+  <div class="header d-flex flex-row justify-content-between p-3">
+
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a (click)="closePanel($event)" href="#">Bus</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ bus?.name }}</li>
+      </ol>
+    </nav>
+
+    <mat-icon (click)="closePanel($event)" role="button">close</mat-icon>
   </div>
 
   <table
-    class="container-fluid"
+    class="container-fluid table table-hover"
     mat-table
     [dataSource]="listData$"
     [trackBy]="trackById"

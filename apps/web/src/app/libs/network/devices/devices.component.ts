@@ -3,7 +3,7 @@ import { ListItem } from '@app/core';
 import { filter, Observable } from 'rxjs';
 import { Bus, Device } from '../api';
 import { NetworkViewHelper, ViewState } from '../utils/network-view.helper';
-import { DevicesListDatasource } from './devices.datasource';
+import { DevicesListDatasource } from '../utils/device.datasource';
 
 @Component({
   selector: 'easy-bsb-devices',
@@ -60,7 +60,11 @@ export class DevicesComponent implements OnInit {
     this.datasource.cancelEdit(item);
   }
   
-  closePanel() {
+  closePanel($event: MouseEvent) {
+
+    $event.stopPropagation();
+    $event.preventDefault();
+
     if (this.currentEditItem) {
       // @todo show warning
       this.cancelEdit(this.currentEditItem);

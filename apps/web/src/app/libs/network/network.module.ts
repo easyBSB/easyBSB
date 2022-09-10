@@ -10,11 +10,11 @@ import { MessageModule } from '@app/libs/message';
 import { PipesModule } from '@app/core/pipes';
 
 import { BusComponent } from './bus/bus.component';
-import { BusListDatasource } from './bus/bus.datasource';
-import { DevicesListDatasource } from './devices/devices.datasource';
+import { BusListDatasource } from './utils/bus.datasource';
+import { DevicesListDatasource } from './utils/device.datasource';
 import { DevicesComponent } from './devices/devices.component';
 import { NetworkViewHelper } from './utils/network-view.helper';
-import { NetworkStore, NetworkMemoryStore } from './utils/network.store';
+import { NetworkStore, NetworkMemoryStore } from './utils/network-store';
 
 @NgModule({
   declarations: [

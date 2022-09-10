@@ -46,7 +46,7 @@ export class DeviceController {
   }
 
   @ApiOperation({
-    summary: "delete bus by id",
+    summary: "delete device by id",
     description: "delete bus by id",
     security: [{ bearer: [] }],
   })
@@ -57,9 +57,8 @@ export class DeviceController {
   @Delete(':id')
   async delete(
     @Param("id", ParseIntPipe) id: number,
-  ): Promise<unknown> {
-    console.log(id);
-    throw "not implemented"
+  ): Promise<void> {
+    await this.deviceService.delete(id);
   }
 
   @ApiOperation({

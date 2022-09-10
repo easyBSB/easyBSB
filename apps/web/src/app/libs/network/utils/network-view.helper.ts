@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Bus, Device } from '../api';
-import { NetworkStore } from './network.store';
+import { NetworkStore } from './network-store';
 
 export enum ViewState {
   BUS,

@@ -1,6 +1,6 @@
 
 import { HttpContext } from '@angular/common/http';
-import { Observable, Subject, animationFrameScheduler, of } from 'rxjs';
+import { Observable, animationFrameScheduler, of, ReplaySubject } from 'rxjs';
 import { debounceTime, map, take } from 'rxjs/operators';
 import { RequestContextToken } from '../constants/api';
 import { EasyBSBHttpErrorResponse, RequestContext } from '../libs/error-handler/error.interceptor';
@@ -45,7 +45,7 @@ export abstract class ListDatasource<T extends { id: number | string }> {
 
   protected storage: ListItem<T>[] = [];
 
-  private readonly itemChange$: Subject<ListItem<T>[]> = new Subject();
+  private readonly itemChange$: ReplaySubject<ListItem<T>[]> = new ReplaySubject(1);
 
   /**
    * @description persist current bus we edit so we have access

@@ -3,7 +3,7 @@ import { ListItem } from '@app/core';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { Bus } from '../api';
 import { NetworkViewHelper, ViewState } from '../utils/network-view.helper';
-import { BusListDatasource } from './bus.datasource';
+import { BusListDatasource } from '../utils/bus.datasource';
 import { deviceAnimationMetadata } from './constants';
 
 @Component({

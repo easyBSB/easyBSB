@@ -2,22 +2,35 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ListDatasource } from '@app/core';
 import { MessageService } from '@app/libs/message';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Bus } from '../api';
+import { NetworkStore } from './network-store';
 
 @Injectable()
 export class BusListDatasource extends ListDatasource<Bus> {
 
   public constructor(
     private readonly httpClient: HttpClient,
-    private readonly messageService: MessageService
+    private readonly messageService: MessageService,
+    private readonly networkStore: NetworkStore
   ) {
     super();
   }
 
   protected fetch(): Observable<Bus[]> {
-    return this.httpClient.get<Bus[]>("/api/bus");
+    const busList = this.networkStore.getBusList();
+    if (busList) {
+      return of(busList);
+    }
+
+    return this.httpClient.get<Bus[]>("/api/bus").pipe(
+      tap((items) => {
+        for (const item of items) {
+          this.networkStore.addBus(item);
+        }
+      })
+    )
   }
 
   protected createPhantom(): Bus {
@@ -33,11 +46,13 @@ export class BusListDatasource extends ListDatasource<Bus> {
   protected writeEntity(entity: Bus, options: Record<string, unknown>): Observable<Bus> {
     const {id, ...payload} = entity;
     return this.httpClient.put<Bus>("/api/bus", payload , options);
+    // add bus
   }
 
   protected removeEntity(entity: Bus): Observable<unknown> {
     const { id } = entity;
     return this.httpClient.delete("/api/bus/" + id);
+    // remove bus
   }
 
   protected updateEntity(entity: Bus, options: Record<string, unknown>): Observable<Bus> {
@@ -45,6 +60,7 @@ export class BusListDatasource extends ListDatasource<Bus> {
     return this.httpClient
       .post<Bus>("/api/bus/" + id, payload, options)
       .pipe(
+        tap((bus) => this.networkStore.updateBus(bus)),
         tap(() => this.messageService.success(`User ${entity.name} saved`))
       );
   }
