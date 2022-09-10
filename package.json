@@ -124,8 +124,9 @@
       "@nestjs/common": "$@nestjs/common"
     },
     "nx-electron": {
-      "@nrwl/devkit": "14.6.2",
+      "@nrwl/devkit": "14.7.3",
       "@nrwl/workspace": "$@nrwl/workspace"
     }
   }
 }
+
