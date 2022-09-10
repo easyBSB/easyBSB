@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ListDatasource } from '@app/core';
-import { EMPTY, Observable, of, tap, throwError } from 'rxjs';
+import { Observable, of, tap, throwError } from 'rxjs';
 import { Bus, Device } from '../api';
 import { NetworkStore } from './network-store';
 
@@ -20,7 +20,7 @@ export class DevicesListDatasource extends ListDatasource<Device> {
     const devices = bus ? this.networkStore.getDevices(bus) : void 0;
 
     if (!bus) {
-      return throwError('could not find bus');
+      return throwError(() => new Error('could not find bus'));
     }
 
     if (devices) {
@@ -54,7 +54,10 @@ export class DevicesListDatasource extends ListDatasource<Device> {
   }
 
   protected updateEntity(entity: Device, options: Record<string, unknown>): Observable<Device> {
-    return EMPTY;
+    const { id, ...payload } = entity;
+    return this.httpClient.post<Device>('/api/device/' + id, payload, options).pipe(
+      tap(() => this.networkStore.removeDevice(entity))
+    );
   }
 
   protected writeEntity(entity: Device, options: Record<string, unknown>): Observable<Device> {

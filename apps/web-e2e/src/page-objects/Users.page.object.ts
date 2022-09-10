@@ -54,7 +54,6 @@ export class UsersPageObject extends AbstractPageObject {
     for (let i = 0; i < count; i++) {
       const row = rows.nth(i);
       const ctrl = await row.locator('[data-e2e="users-list-name"] input');
-      console.log(ctrl);
 
       expect(await ctrl.count()).toBe(1);
       const value = await ctrl.inputValue();

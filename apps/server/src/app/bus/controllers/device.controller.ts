@@ -72,11 +72,9 @@ export class DeviceController {
   @CheckAbility({ action: Actions.Read, subject: Device })
   @Post(':id')
   async update(
-    /*
     @Param("id", ParseIntPipe) id: number,
     @Body() payload: Partial<Device>,
-    */
   ): Promise<Device> {
-    throw "not implemented"
+    return this.deviceService.update(id, payload);
   }
 }
