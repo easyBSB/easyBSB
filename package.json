@@ -106,7 +106,7 @@
     "jest-environment-jsdom": "29.0.2",
     "jest-preset-angular": "12.2.2",
     "nx-electron": "13.2.1",
-    "playwright": "1.25.1",
+    "playwright": "1.25.2",
     "prettier": "2.7.1",
     "sane": "5.0.1",
     "ts-jest": "28.0.8",
