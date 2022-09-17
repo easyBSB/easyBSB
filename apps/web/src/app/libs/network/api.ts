@@ -10,3 +10,11 @@ export interface Bus {
   type: 'serial' | 'tcpip';
   port: number;
 }
+
+export interface Device {
+  address: number;
+  bus_id: Bus['id'];
+  id: number | string;
+  vendor?: number;
+  vendor_device?: number;
+};

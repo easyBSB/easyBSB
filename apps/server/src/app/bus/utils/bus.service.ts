@@ -2,8 +2,9 @@ import { BadRequestException, Injectable, NotFoundException } from "@nestjs/comm
 import { InjectRepository } from "@nestjs/typeorm";
 import { plainToClassFromExist } from "class-transformer";
 import { Repository } from "typeorm";
-import { Bus } from "./bus.entity";
+import { Bus } from "../model/bus.entity";
 import { BusValidation } from "./bus.validators";
+import { DeviceService } from "./device.service";
 
 @Injectable()
 export class BusService {
@@ -11,7 +12,8 @@ export class BusService {
   private validationHelper: BusValidation;
 
   constructor(
-    @InjectRepository(Bus) private readonly repository: Repository<Bus>
+    @InjectRepository(Bus) private readonly repository: Repository<Bus>,
+    private readonly deviceService: DeviceService
   ) {
     this.validationHelper = new BusValidation(repository);
   }
@@ -53,7 +55,15 @@ export class BusService {
     try {
       const result = await this.repository.insert(payload);
       const lastInsertedId = result.identifiers.at(0).id;
-      return this.findById(lastInsertedId);
+      const created = await this.findById(lastInsertedId);
+
+      /**
+       * create new device with default settings
+       */
+      const device = this.deviceService.createPhantomDevice(created.id);
+      await this.deviceService.insert(device);
+
+      return created;
     } catch (error) {
       throw new BadRequestException(error.message);
     }

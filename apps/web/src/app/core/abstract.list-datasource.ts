@@ -1,6 +1,6 @@
 
 import { HttpContext } from '@angular/common/http';
-import { Observable, Subject, animationFrameScheduler, of } from 'rxjs';
+import { Observable, animationFrameScheduler, of, ReplaySubject } from 'rxjs';
 import { debounceTime, map, take } from 'rxjs/operators';
 import { RequestContextToken } from '../constants/api';
 import { EasyBSBHttpErrorResponse, RequestContext } from '../libs/error-handler/error.interceptor';
@@ -16,12 +16,12 @@ export abstract class ListDatasource<T extends { id: number | string }> {
   /**
    * @description called to load all items from server
    */
-  protected abstract fetch(): Observable<T[]>;
+  protected abstract fetch(...args: unknown[]): Observable<T[]>;
 
   /**
    * @description called if an phantom item should be created which is added to list
    */
-  protected abstract createPhantom(): T;
+  protected abstract createPhantom(...args: unknown[]): T;
 
   /**
    * @description called if a new item should created on server
@@ -45,7 +45,7 @@ export abstract class ListDatasource<T extends { id: number | string }> {
 
   protected storage: ListItem<T>[] = [];
 
-  private readonly userChange$: Subject<ListItem<T>[]> = new Subject();
+  private readonly itemChange$: ReplaySubject<ListItem<T>[]> = new ReplaySubject(1);
 
   /**
    * @description persist current bus we edit so we have access
@@ -58,9 +58,8 @@ export abstract class ListDatasource<T extends { id: number | string }> {
    */
   private itemState?: ListItem<T>;
 
-  load(): void {
-    // should happen in child class
-    this.fetch()
+  load<T extends unknown[]>(...args: T): void {
+    this.fetch(...args)
       .pipe(
         take(1),
         map((items) => items.map((item) => this.mapToListItem(item)))
@@ -74,26 +73,28 @@ export abstract class ListDatasource<T extends { id: number | string }> {
   /**
    * @description create new phantom bus and add to list data
    */
-  create() {
+  create<P extends unknown[]>(...args: P): ListItem<T> | undefined {
     if (this.currentEditItem && this.validate(this.currentEditItem.raw) === false) {
-      return;
+      return void 0;
     }
 
-    const newBus: ListItem<T> = {
+    const newItem: ListItem<T> = {
       isPhantom: true,
       mode: 'read',
-      raw: this.createPhantom()
+      raw: this.createPhantom(...args)
     };
 
-    this.storage.push(newBus);
-    this.edit(newBus);
+    this.storage.push(newItem);
+    this.edit(newItem);
+
+    return newItem;
   }
 
   /**
    * @description connect to get changes for users
    */
   connect(): Observable<ListItem<T>[]> {
-    return this.userChange$.pipe(debounceTime(0, animationFrameScheduler));
+    return this.itemChange$.pipe(debounceTime(0, animationFrameScheduler));
   }
 
   edit(item: ListItem<T>) {
@@ -131,8 +132,9 @@ export abstract class ListDatasource<T extends { id: number | string }> {
       return;
     }
 
+    // hat sich nicht geaendert ...
     const isDirty = JSON.stringify(item.raw) !== JSON.stringify(this.itemState?.raw);
-    if (isDirty) {
+    if (isDirty || item.isPhantom) {
       const requestContext = new RequestContext(this.itemState?.raw);
       const context = new HttpContext();
       context.set(RequestContextToken, requestContext);
@@ -190,15 +192,15 @@ export abstract class ListDatasource<T extends { id: number | string }> {
     }
 
     this.storage = item.isPhantom
-      ? this.storage.filter((bus) => bus !== item)
-      : this.storage.map((bus) => bus === item ? this.mapToListItem(state) : bus);
+      ? this.storage.filter((entity) => entity !== item)
+      : this.storage.map((entity) => entity === item ? this.mapToListItem(state) : entity);
   }
 
   /**
    * @description emit list changes
    */
   private notify() {
-    this.userChange$.next(this.storage);
+    this.itemChange$.next(this.storage);
   }
 
   /**
