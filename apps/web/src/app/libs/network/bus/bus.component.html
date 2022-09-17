@@ -1,5 +1,9 @@
+<div class="header d-flex flex-row justify-content-between p-3">
+  <h6>Bus</h6>
+</div>
+
 <table
-  class="container-fluid"
+  class="container-fluid table table-hover"
   mat-table
   [dataSource]="busData$"
   [trackBy]="trackById"
@@ -19,7 +23,13 @@
     <th mat-header-cell *matHeaderCellDef>Address</th>
     <td mat-cell *matCellDef="let entity" data-e2e="bus-list-address">
       <mat-form-field class="form-control" data-e2e="bus-list-address-control">
-        <input matInput [(ngModel)]="entity.raw.address" [disabled]="entity.mode === 'read'">
+        <input
+          matInput
+          [disabled]="entity.mode === 'read'"
+          [ngModel]="entity.raw.address | toHex" 
+          [ngModelOptions]="{ updateOn: 'blur' }"
+          (ngModelChange)="entity.raw.address=$event" 
+          name="address" type="text" />
       </mat-form-field>
     </td>
   </ng-container>
@@ -57,6 +67,7 @@
       <ng-container *ngIf="item.mode === 'read'; else writeActions">
         <mat-icon (click)="edit(item)" data-e2e="bus-list-actions-edit">edit</mat-icon>
         <mat-icon (click)="remove(item)" data-e2e="bus-list-actions-delete">delete</mat-icon>
+        <mat-icon (click)="showDevices(item)" data-e2e="bus-list-actions-show-devices">devices</mat-icon>
       </ng-container>
 
       <!-- write actions save and cancel -->
@@ -70,3 +81,8 @@
   <tr mat-header-row *matHeaderRowDef="columns"></tr>
   <tr mat-row *matRowDef="let row; columns: columns" data-e2e="bus-list-row" [attr.data-phantom]="row.isPhantom"></tr>
 </table>
+
+<div [@devicesContainer]="state" class="network-devices">
+  <easy-bsb-devices></easy-bsb-devices>
+</div>
+

@@ -1,7 +1,7 @@
 import { validate } from "class-validator";
 import { FindOptionsWhere, Not, Repository } from "typeorm";
-import { ValidationErrors, ValidationResult } from "../core/validators";
-import { Bus } from "./bus.entity";
+import { ValidationErrors, ValidationResult } from "../../core/validators";
+import { Bus } from "../model/bus.entity";
 
 export class BusValidation {
 

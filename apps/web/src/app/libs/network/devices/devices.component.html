@@ -1,0 +1,79 @@
+  <div class="header d-flex flex-row justify-content-between p-3">
+
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a (click)="closePanel($event)" href="#">Bus</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ bus?.name }}</li>
+      </ol>
+    </nav>
+
+    <mat-icon (click)="closePanel($event)" role="button">close</mat-icon>
+  </div>
+
+  <table
+    class="container-fluid table table-hover"
+    mat-table
+    [dataSource]="listData$"
+    [trackBy]="trackById"
+    data-e2e="users-list"
+  >
+    <!-- Position Column -->
+    <ng-container matColumnDef="address">
+      <th mat-header-cell *matHeaderCellDef>Address (number, hex)</th>
+      <td mat-cell *matCellDef="let entity" data-e2e="network-device-address">
+        <mat-form-field class="form-control" data-e2e="network-device-address-control">
+          <input
+            matInput
+            [disabled]="entity.mode === 'read'"
+            [ngModel]="entity.raw.address | toHex" 
+            [ngModelOptions]="{ updateOn: 'blur' }"
+            (ngModelChange)="entity.raw.address=$event" 
+            name="address" type="text" />
+        </mat-form-field>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="vendor">
+      <th mat-header-cell *matHeaderCellDef>Vendor</th>
+      <td mat-cell *matCellDef="let entity" data-e2e="network-device-vendor">
+        <mat-form-field class="form-control" data-e2e="network-device-vendor-control">
+          <input matInput [(ngModel)]="entity.raw.vendor" [disabled]="entity.mode === 'read'">
+        </mat-form-field>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="vendor_device">
+      <th mat-header-cell *matHeaderCellDef>Vendor Device</th>
+      <td mat-cell *matCellDef="let entity" data-e2e="network-device-vendor-device">
+        <mat-form-field class="form-control" data-e2e="network-device-vendor-device-control">
+          <input matInput [(ngModel)]="entity.raw.vendor_device" [disabled]="entity.mode === 'read'">
+        </mat-form-field>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>
+        <div class="d-inline-flex flex-row align-items-center" (click)="addDevice()" role="button">
+          <mat-icon class="me-2" data-e2e="network-device-actions-create">add_to_queue</mat-icon>
+          New Device
+        </div>
+      </th>
+
+      <td mat-cell *matCellDef="let item" data-e2e="network-device-list-actions">
+        <!-- read actions edit and delete -->
+        <ng-container *ngIf="item.mode === 'read'; else writeActions">
+          <mat-icon (click)="edit(item)" data-e2e="network-device-list-actions-edit" role="button">edit</mat-icon>
+          <mat-icon (click)="remove(item)" data-e2e="network-device-list-actions-delete" role="button">delete</mat-icon>
+        </ng-container>
+
+        <!-- write actions save and cancel -->
+        <ng-template #writeActions>
+          <mat-icon (click)="write(item)" data-e2e="network-device-actions-accept" role="button">done</mat-icon>
+          <mat-icon (click)="cancelEdit(item)" data-e2e="network-device-actions-cancel" role="button">cancel</mat-icon>
+        </ng-template>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="columns"></tr>
+    <tr mat-row *matRowDef="let row; columns: columns" data-e2e="bus-list-row" [attr.data-phantom]="row.isPhantom"></tr>
+  </table>
