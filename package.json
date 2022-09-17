@@ -99,7 +99,7 @@
     "chokidar": "3.5.3",
     "electron": "20.1.4",
     "electron-builder": "23.3.3",
-    "eslint": "8.23.0",
+    "eslint": "8.23.1",
     "eslint-config-prettier": "8.5.0",
     "exitzero": "1.0.1",
     "jest": "28.1.3",
