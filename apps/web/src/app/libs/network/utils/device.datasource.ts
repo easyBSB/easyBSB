@@ -34,14 +34,13 @@ export class DevicesListDatasource extends ListDatasource<Device> {
   }
 
   protected createPhantom(id: Bus['id']): Device {
-    const address = 0x00;
     const deviceId = Math.random().toString(32);
     const device: Device = {
-      address,
+      address: 0x00,
       bus_id: id,
       id: deviceId,
-      vendor: void 0,
-      vendor_device: void 0
+      vendor: 0,
+      vendor_device: 0
     }
     return device;
   }

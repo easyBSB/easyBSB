@@ -132,8 +132,9 @@ export abstract class ListDatasource<T extends { id: number | string }> {
       return;
     }
 
+    // hat sich nicht geaendert ...
     const isDirty = JSON.stringify(item.raw) !== JSON.stringify(this.itemState?.raw);
-    if (isDirty) {
+    if (isDirty || item.isPhantom) {
       const requestContext = new RequestContext(this.itemState?.raw);
       const context = new HttpContext();
       context.set(RequestContextToken, requestContext);

@@ -35,10 +35,10 @@ export class BusListDatasource extends ListDatasource<Bus> {
 
   protected createPhantom(): Bus {
     return {
-      address: -1,
+      address: 0x43,
       id: Math.random().toString(32),
-      name: 'Phantom Bus',
-      port: 1234,
+      name: 'BSB',
+      port: 1046,
       type: 'tcpip'
     }
   }

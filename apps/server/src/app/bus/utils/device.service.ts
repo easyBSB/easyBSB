@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { plainToClassFromExist } from "class-transformer";
+import { plainToClass, plainToClassFromExist } from "class-transformer";
 import { Repository } from "typeorm";
 import { Bus } from "../model/bus.entity";
 import { Device } from "../model/device.entity";
@@ -24,6 +24,20 @@ export class DeviceService {
 
   async findById(id: Device['id']): Promise<Device | null> {
     return await this.repository.findOneBy({ id });
+  }
+
+  /**
+   * @description create new phantom device which not exists in database
+   */
+  public createPhantomDevice(busId: Bus['id']): Device {
+    const deviceData: Device = {
+      address: 0x00,
+      bus_id: busId,
+      id: -1,
+      vendor: 0,
+      vendor_device: 0
+    }
+    return plainToClass(Device, deviceData);
   }
 
   async delete(id: Device['id']) {
