@@ -55,14 +55,20 @@ export class DeviceService {
   }
 
   /**
-   * @description update given bus by id
+   * @description update given device by id
    */
   async update(id: Device['id'], payload: Partial<Device>): Promise<Device> {
     const device = await this.findById(id);
     if (!device) {
-      throw new BadRequestException('Bus not found');
+      throw new BadRequestException('Device not found');
     }
+
     const update = plainToClassFromExist(device, payload);
+    const validationResult = await this.validationHelper.isValid(update, true);
+    if (validationResult !== null) {
+      throw new BadRequestException(validationResult);
+    }
+
     return this.repository.save(update);
   }
 }
