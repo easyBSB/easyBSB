@@ -1,18 +1,23 @@
 <div class="container-fluid h-100">
-  <div class="row">
-    <div class="col-12">
+  <div class="row h-100">
+    <div class="col-12 h-100">
       <mat-tab-group
+        class="h-100"
         mat-align-tabs="start"
         data-e2e="settings-tab--devices"
         #tabgroup
         [selectedIndex]="selectedIndex$ | async"
       >
-        <mat-tab label="Geraete" [aria-label]="'devices'">
-          <easy-bsb-bus></easy-bsb-bus>
+        <mat-tab label="Network" [aria-label]="'devices'">
+          <ng-template matTabContent>
+            <easy-bsb-bus></easy-bsb-bus>
+          </ng-template>
         </mat-tab>
 
         <mat-tab label="Benutzer" [attr.data-e2e]="'settings-tab--users'" [aria-label]="'users'" >
-          <easy-bsb-users></easy-bsb-users>
+          <ng-template matTabContent>
+            <easy-bsb-users></easy-bsb-users>
+          </ng-template>
         </mat-tab>
       </mat-tab-group>
     </div>
