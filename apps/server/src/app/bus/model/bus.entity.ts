@@ -27,6 +27,11 @@ export class Bus {
   })
   address: number;
 
+  @ApiProperty({ type: "string" })
+  @IsString()
+  @Column()
+  ip_serial: string;
+
   /**
    * @description name of the bus
    */

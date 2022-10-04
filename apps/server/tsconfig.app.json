@@ -7,6 +7,7 @@
     "outDir": "../../dist/out-tsc",
     "paths": {
       "@app/auth": ["./src/app/auth/index.ts"],
+      "@app/bus": ["./src/app/bus/index.ts"],
       "@app/users": ["./src/app/users/index.ts"],
       "@app/users/entities/*": ["./src/app/users/entities/*"],
       "@app/users/utils/*": ["./src/app/users/utils/*"],

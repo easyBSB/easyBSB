@@ -3,8 +3,10 @@ import { User } from "@app/users";
 import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put } from "@nestjs/common";
 import { ApiOperation, ApiHeaders, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { plainToClass } from 'class-transformer';
+import { busRequestAnswerC } from "../../../../../../libs/easybsb-parser/src/lib/bsb";
 import { Bus } from "../model/bus.entity";
 import { Device } from "../model/device.entity";
+import { BsbStorage } from "../utils/bsb-store";
 import { BusService } from "../utils/bus.service";
 import { DeviceService } from "../utils/device.service";
 
@@ -16,11 +18,44 @@ export class BusController {
 
   constructor(
     private readonly busService: BusService,
-    private readonly deviceServie: DeviceService
+    private readonly deviceServie: DeviceService,
+    private readonly bsbStorage: BsbStorage
   ) {}
 
   @ApiOperation({
-    summary: "get list of users",
+    summary: "get list of bus",
+    description: "get list of bus",
+    security: [{ bearer: [] }],
+  })
+  @ApiHeaders([{ name: "Authorization", description: "Bearer auth token" }])
+  @ApiResponse({ status: 200, description: "bus list", type: Array<Bus> })
+  @ApiResponse({ status: 401, description: "not authorized" })
+  @CheckAbility({ action: Actions.Read, subject: Bus })
+  @Get()
+  async busList(): Promise<unknown[]> {
+    return this.busService.list();
+  }
+
+  @ApiOperation({
+    summary: "@todo add sumary",
+    description: "@todo add description",
+    security: [{ bearer: [] }],
+  })
+  @ApiHeaders([{ name: "Authorization", description: "Bearer auth token" }])
+  @ApiResponse({ status: 200, description: "users list", type: Array<User> })
+  @ApiResponse({ status: 401, description: "not authorized" })
+  @CheckAbility({ action: Actions.Read, subject: User })
+  @Get(":id/param/:paramId")
+  async unknownName1(
+    @Param("id", ParseIntPipe) id: Bus['id'],
+    @Param("paramId", ParseIntPipe) paramId: number,
+  ): Promise<busRequestAnswerC[]> {
+    const bsb = this.bsbStorage.getById(id);
+    return bsb.get(paramId);
+  }
+
+  @ApiOperation({
+    summary: "",
     description: "get list of users",
     security: [{ bearer: [] }],
   })
@@ -28,8 +63,8 @@ export class BusController {
   @ApiResponse({ status: 200, description: "users list", type: Array<User> })
   @ApiResponse({ status: 401, description: "not authorized" })
   @CheckAbility({ action: Actions.Read, subject: User })
-  @Get()
-  async busList(): Promise<unknown[]> {
+  @Get(":id/param/:paramid")
+  async unknownName2(): Promise<unknown[]> {
     return this.busService.list();
   }
 
