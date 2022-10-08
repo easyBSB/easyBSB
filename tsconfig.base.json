@@ -21,12 +21,7 @@
     ],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
-    "baseUrl": ".",
-    "paths": {
-      "@easybsb/parser": [
-        "libs/easybsb-parser/src/index.ts"
-      ]
-    }
+    "baseUrl": "."
   },
   "exclude": [
     "node_modules",

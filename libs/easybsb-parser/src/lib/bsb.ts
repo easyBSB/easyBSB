@@ -125,29 +125,44 @@ export class BSB {
   //#endregion
 
   //#region connect
-  public connect(stream: stream.Duplex): void;
-  public connect(ip: string, port: number): void;
-  public connect(param1: string | stream.Duplex, param2?: number) {
-    try {
-      this.client?.off("data", (data) => this.newData(data));
-      if (this.client?.toClose) this.client.destroy();
-      // eslint-disable-next-line no-empty
-    } catch {}
+  public connect(stream: stream.Duplex): Promise<void>;
+  public connect(ip: string, port: number): Promise<void>;
+  public connect(param1: string | stream.Duplex, param2?: number): Promise<void> {
+    return new Promise((resolve, reject) => {
+      try {
+        this.client?.off("data", (data) => this.newData(data));
+        if (this.client?.toClose) this.client.destroy();
+        // eslint-disable-next-line no-empty
+      } catch {}
 
-    if (param1 instanceof stream.Duplex) {
-      this.client = param1;
-    } else {
-      const socket = new net.Socket();
+      if (param1 instanceof stream.Duplex) {
+        this.client = param1;
+      } else {
+        const socket = new net.Socket();
+        /** 
+         * event handlers we need only once, and remove if connection failed,
+         * do not use anonymous function if we want to remove them.
+         */
+        let lastError: Error;
+        const socketError = (error) => lastError = error;
+        const socketClose = () => reject(lastError);
 
-      socket.connect(param2 ?? 0, param1, () => {
-        console.log("connected");
-      });
+        socket.once('error', socketError);
+        socket.once('close', socketClose);
 
-      this.client = socket;
-      this.client.toClose = true;
-    }
+        socket.connect(param2 ?? 0, param1, () => {
+          console.log('connected');
+          socket.removeListener('error', socketError);
+          socket.removeListener('close', socketClose);
+          resolve();
+        });
 
-    this.client.on("data", (data) => this.newData(data));
+        this.client = socket;
+        this.client.toClose = true;
+      }
+
+      this.client.on("data", (data) => this.newData(data));
+    })
   }
   //#endregion
 
@@ -392,7 +407,7 @@ export class BSB {
         cmd[1] = swap;
       }
 
-      let data = [0xdc, this.src, dst, len, type, ...cmd, ...payload];
+      let data = [0xdc, this.src | 0x80, dst, len, type, ...cmd, ...payload];
       data = [...data, ...this.calcCRC(data)];
 
       for (let i = 0; i < data.length; i++) data[i] = ~data[i] & 0xff;

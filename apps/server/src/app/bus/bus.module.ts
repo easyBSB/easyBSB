@@ -2,6 +2,7 @@ import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { RolesModule } from "../roles";
 import { BusController } from "./controllers/bus.controller";
+import { CategoriesController } from "./controllers/categories.controller";
 import { DeviceController } from "./controllers/device.controller";
 import { Bus } from "./model/bus.entity";
 import { Device } from "./model/device.entity";
@@ -19,6 +20,7 @@ import { DeviceValidator } from "./utils/device.validator";
   ],
   controllers: [
     BusController,
+    CategoriesController,
     DeviceController
   ],
   providers: [

@@ -1,11 +1,10 @@
 import { Injectable, OnApplicationBootstrap } from "@nestjs/common";
-import { BSB } from "../../../../../../libs/easybsb-parser/src/lib/bsb";
-import { Definition } from "../../../../../../libs/easybsb-parser/src/lib/Definition";
-import { BSBDefinition } from "../../../../../../libs/easybsb-parser/src/lib/interfaces";
 import * as definition from "@easybsb/bsbdef";
+import { BSB, Definition } from "@easybsb/parser";
 import { BusService } from "./bus.service";
 import { DeviceService } from "./device.service";
 import { BsbStorage } from "./bsb-store";
+import { BSBDefinition, Category } from "../../../../../../libs/easybsb-parser/src/lib/interfaces";
 
 @Injectable()
 export class ConnectionBootstrap implements OnApplicationBootstrap {
@@ -20,16 +19,51 @@ export class ConnectionBootstrap implements OnApplicationBootstrap {
     for (const bus of await this.busService.list()) {
       // fetch all devices from bus and loop
       for (const device of await this.deviceService.list(bus.id)) {
-        const def = new Definition(definition as unknown as BSBDefinition);
-        const bsb = new BSB(def, {
-           family: device.vendor,
-           var: device.vendor_device
+
+        try {
+          const def = new Definition(this.sanitizeDefinition(definition as unknown as BSBDefinition));
+          const bsb = new BSB(def, {
+            family: device.vendor,
+            var: device.vendor_device
           }, bus.address);
 
-        bsb.connect(bus.ip_serial, bus.port);
-        bsb.Log$.subscribe((message) => console.dir(message));
-        this.bsbStorage.register(bus.id, bsb);
+          await bsb.connect(bus.ip_serial, bus.port);
+          // bsb.Log$.subscribe((message) => console.dir(message));
+
+          this.bsbStorage.register(bus.id, bsb);
+        } catch (error) {
+          console.error(error);
+        }
       }
     }
+  }
+
+  /**
+   * sanitize definition
+   */
+  private sanitizeDefinition(definition: BSBDefinition): BSBDefinition {
+
+    const { version, compiletime, categories } = definition;
+    const sanitized: BSBDefinition = {
+      categories: {},
+      compiletime,
+      version,
+    }
+
+
+    for (const [index, category] of Object.entries(categories)) {
+      const clonedCategory: Category = JSON.parse(JSON.stringify(category));
+      const usedParams = new Set<number>();
+      clonedCategory.commands = clonedCategory.commands.filter((command) => {
+        if (!usedParams.has(command.parameter)) {
+          usedParams.add(command.parameter);
+          return true;
+        }
+        return false;
+      });
+      sanitized.categories[index] = clonedCategory;
+    }
+
+    return sanitized;
   }
 }

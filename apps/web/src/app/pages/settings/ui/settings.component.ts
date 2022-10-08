@@ -56,7 +56,10 @@ export class SettingsComponent implements OnInit {
           return passed;
         }),
         map((params: Params) => {
-          const section = params['section'];
+          const section = params['section'].replace(
+            /-([a-z]{1}).*?/ig,
+            (_full: string, match: string) => match.toUpperCase()
+          );
           return Object.keys(this.sections).indexOf(section) ?? 0;
         }),
       );

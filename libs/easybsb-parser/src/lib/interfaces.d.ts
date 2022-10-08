@@ -17,10 +17,27 @@ interface KeyItem<T> {
   [key: string]: T;
 }
 
-type LanguageKeys = "KEY" | "CS" | "DE";
+declare type LanguageKeys =
+  | 'KEY'
+  | 'CS'
+  | 'DA'
+  | 'DE'
+  | 'EL'
+  | 'EN'
+  | 'ES'
+  | 'FI'
+  | 'FR'
+  | 'HU'
+  | 'IT'
+  | 'NL'
+  | 'PL'
+  | 'RU'
+  | 'SL'
+  | 'SV'
+  | 'TR';
 
 type TranslateItem = {
-  [key in LanguageKeys]: string | undefined;
+  [keyof in LanguageKeys]: string | undefined;
 };
 
 export interface Category {

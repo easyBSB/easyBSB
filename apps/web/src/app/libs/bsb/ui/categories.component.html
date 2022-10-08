@@ -1,0 +1,35 @@
+<cdk-accordion class="example-accordion" *ngIf="categorys$ | async as categories">
+
+  <cdk-accordion-item
+    *ngFor="let item of categories | keyvalue : noSort; let index = index;"
+    #accordionItem="cdkAccordionItem"
+    class="accordion-item"
+    role="button"
+    tabindex="0"
+    [attr.id]="accordionItem.id"
+    [attr.aria-expanded]="accordionItem.expanded"
+    [attr.aria-controls]="'accordion-body-' + index"
+    (opened)="handleItemOpened(accordionItem)"
+    >
+
+    <!-- header -->
+    <div (click)="accordionItem.toggle()" [ngClass]="{ open: accordionItem.expanded }" class="accordion-item-header d-flex flex-row">
+      <mat-icon>
+        {{!accordionItem.expanded ? 'keyboard_arrow_down' : 'keyboard_arrow_up'}}
+      </mat-icon>
+      {{ item.value.name }} (min {{ item.value.min }}, max {{ item.value.max }})
+    </div>
+
+    <!-- body -->
+    <div
+      class="accordion-item-body"
+      role="region"
+      [style.display]="accordionItem.expanded ? '' : 'none'"
+      [attr.id]="'accordion-body-' + index"
+      [attr.aria-labelledby]="'accordion-header-' + index">
+      <easybsb-commands [commands]="item.value.commands" *ngIf="accordionItem.expanded">
+      </easybsb-commands>
+    </div>
+  </cdk-accordion-item>
+
+</cdk-accordion>
