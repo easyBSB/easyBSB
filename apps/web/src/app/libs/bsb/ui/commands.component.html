@@ -1,0 +1,8 @@
+<ul class="list-group">
+  <li *ngFor="let item of commandList; trackBy:trackByParameter"
+    [ngClass]="{ loading: item.valueLoading }"
+    class="list-group-item device-parameter d-flex flex-direction-row align-items-center"
+  >
+    {{ item.command.description }} - Aktueller Wert: {{ item.value }}
+  </li>
+</ul>

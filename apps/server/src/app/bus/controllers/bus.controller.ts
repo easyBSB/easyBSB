@@ -5,6 +5,7 @@ import { ApiOperation, ApiHeaders, ApiResponse, ApiTags } from "@nestjs/swagger"
 import { plainToClass } from 'class-transformer';
 import { Bus } from "../model/bus.entity";
 import { Device } from "../model/device.entity";
+import { BsbStorage } from "../utils/bsb-store";
 import { BusService } from "../utils/bus.service";
 import { DeviceService } from "../utils/device.service";
 
@@ -16,21 +17,47 @@ export class BusController {
 
   constructor(
     private readonly busService: BusService,
-    private readonly deviceServie: DeviceService
+    private readonly deviceServie: DeviceService,
+    private readonly bsbStorage: BsbStorage
   ) {}
 
   @ApiOperation({
-    summary: "get list of users",
-    description: "get list of users",
+    summary: "get list of bus",
+    description: "get list of bus",
     security: [{ bearer: [] }],
   })
   @ApiHeaders([{ name: "Authorization", description: "Bearer auth token" }])
-  @ApiResponse({ status: 200, description: "users list", type: Array<User> })
+  @ApiResponse({ status: 200, description: "bus list", type: Array<Bus> })
   @ApiResponse({ status: 401, description: "not authorized" })
-  @CheckAbility({ action: Actions.Read, subject: User })
+  @CheckAbility({ action: Actions.Read, subject: Bus })
   @Get()
   async busList(): Promise<unknown[]> {
     return this.busService.list();
+  }
+
+  @ApiOperation({
+    summary: "get value by param id",
+    description: "@todo add description",
+    security: [{ bearer: [] }],
+  })
+  @ApiHeaders([{ name: "Authorization", description: "Bearer auth token" }])
+  @Get(":id/param/:paramId")
+  async unknownName1(
+    @Param("id", ParseIntPipe) id: Bus['id'],
+    @Param("paramId", ParseIntPipe) paramId: number,
+  ): Promise<string> {
+    const bsb = this.bsbStorage.getById(id);
+    const result = await bsb.get(paramId);
+
+    try {
+      if (result.length > 0) {
+        return JSON.stringify({ data: result[0].value.toString() });
+      }
+    } catch (error) {
+      return JSON.stringify({ data: result[0] });
+    }
+
+    return 'undefined';
   }
 
   @ApiOperation({

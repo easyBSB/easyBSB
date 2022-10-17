@@ -21,7 +21,7 @@
           "error",
           {
             "type": "element",
-            "prefix": "easy-bsb",
+            "prefix": ["easy-bsb", "easybsb"],
             "style": "kebab-case"
           }
         ]

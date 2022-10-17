@@ -15,6 +15,5 @@ test.describe("Dashboard", () => {
       waitUntil: "networkidle",
     });
     expect(page.url()).toContain("/dashboard");
-    await expect(page.locator("h1")).toHaveText("Dashboard");
   });
 });

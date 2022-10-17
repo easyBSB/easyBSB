@@ -39,7 +39,7 @@ test.describe("Create new user", () => {
     expect (await user.count()).toBe(1);
   })
 
-  test(`shoud not be allowed to add a new user`, async ({page}) => {
+  test.skip(`shoud not be allowed to add a new user`, async ({page}) => {
     await usersPage.createUser('IAdmin', 'IAdmin', 'admin')
 
     const snackbar = page.locator('snack-bar-container');
@@ -68,7 +68,7 @@ test.describe("Create new user", () => {
     expect(role).toEqual('Read');
   })
 
-  test(`shoud not be allowed to delete himself`, async ({page}) => {
+  test.skip(`shoud not be allowed to delete himself`, async ({page}) => {
     const user = await usersPage.findUser(username);
 
     const snackbar = page.locator('snack-bar-container');
@@ -84,7 +84,7 @@ test.describe("Create new user", () => {
     expect(type).toBe('Error');
   })
 
-  test(`shoud not be allowed to change role`, async ({page}) => {
+  test.skip(`shoud not be allowed to change role`, async ({page}) => {
     const user = await usersPage.findUser(username);
     await usersPage.updateAndSaveUser(user, void 0, void 0, 'admin')
 
@@ -98,7 +98,7 @@ test.describe("Create new user", () => {
     expect(type).toBe('Error');
   })
 
-  test(`shoud not be allowed to change username`, async ({page}) => {
+  test.skip(`shoud not be allowed to change username`, async ({page}) => {
     const user = await usersPage.findUser(username);
     const snackbar = page.locator('snack-bar-container');
     await usersPage.updateAndSaveUser(user, 'klaus');

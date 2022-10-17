@@ -35,7 +35,15 @@ export class Enum implements Value<number> {
         }
 
         let enumKey = "0x" + this.value?.toString(16).padStart(4, "0");
-        this.enum = command.enum[enumKey];
+
+        /** 
+         * failure for 3 commands
+         */
+        try {
+          this.enum = command.enum[enumKey];
+        } catch (error) {
+          console.error(`could not fetch enum values for %o`, command);
+        }
 
         if (
           !this.enum &&
@@ -47,7 +55,13 @@ export class Enum implements Value<number> {
           // for toggle options only the last bit counts try if 0xFF was wrong again with 0x01
           const val1Bit = (this.value ?? 0) & 0x01;
           enumKey = "0x" + val1Bit.toString(16).padStart(4, "0");
-          this.enum = command.enum[enumKey];
+
+          try {
+            this.enum = command.enum[enumKey];
+          } catch (error) {
+            console.error(`could not fetch enum values for %o`, command);
+            return;
+          }
         }
       } else {
         this.value = null;

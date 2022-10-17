@@ -17,7 +17,7 @@ import { deviceAnimationMetadata } from './constants';
 })
 export class BusComponent implements OnInit, OnDestroy {
 
-  public columns = ['name', 'address', 'type', 'port', 'actions'];
+  public columns = ['name', 'address', 'type', 'ip_serial',  'port', 'actions'];
   public busData$: Observable<ListItem<Bus>[]>;
   public busTypeOtions: ['tcpip' | 'serial' , 'TCP/IP' | 'Serial'][] = [
     ['tcpip', 'TCP/IP'],
