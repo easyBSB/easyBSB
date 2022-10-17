@@ -15,25 +15,26 @@ export class ConnectionBootstrap implements OnApplicationBootstrap {
     private readonly bsbStorage: BsbStorage
   ) {}
 
-  async onApplicationBootstrap() {
+  async onApplicationBootstrap(): Promise<void> {
     for (const bus of await this.busService.list()) {
       // fetch all devices from bus and loop
       for (const device of await this.deviceService.list(bus.id)) {
 
-        try {
-          const def = new Definition(this.sanitizeDefinition(definition as unknown as BSBDefinition));
-          const bsb = new BSB(def, {
-            family: device.vendor,
-            var: device.vendor_device
-          }, bus.address);
+        const def = new Definition(this.sanitizeDefinition(definition as unknown as BSBDefinition));
+        const bsb = new BSB(def, {
+          family: device.vendor,
+          var: device.vendor_device
+        }, bus.address);
 
-          await bsb.connect(bus.ip_serial, bus.port);
+        // not wait for connect
+        bsb.connect(bus.ip_serial, bus.port)
+          .then(() => {
+            this.bsbStorage.register(bus.id, bsb);
+          })
+          .catch((error) => {
+            console.error(error);
+          })
           // bsb.Log$.subscribe((message) => console.dir(message));
-
-          this.bsbStorage.register(bus.id, bsb);
-        } catch (error) {
-          console.error(error);
-        }
       }
     }
   }
@@ -49,7 +50,6 @@ export class ConnectionBootstrap implements OnApplicationBootstrap {
       compiletime,
       version,
     }
-
 
     for (const [index, category] of Object.entries(categories)) {
       const clonedCategory: Category = JSON.parse(JSON.stringify(category));
