@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { ListItem } from '@app/core';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { filter, Observable, Subject, take, takeUntil } from 'rxjs';
+import { DialogService, DialogType } from '@app/libs/dialog';
 import { Bus } from '../api';
 import { NetworkViewHelper, ViewState } from '../utils/network-view.helper';
 import { BusListDatasource } from '../utils/bus.datasource';
@@ -31,6 +32,7 @@ export class BusComponent implements OnInit, OnDestroy {
   constructor(
     private readonly datasource: BusListDatasource,
     private readonly viewHelper: NetworkViewHelper,
+    private readonly dialogService: DialogService
   ) {
     this.busData$ = this.connectDatasource();
   }
@@ -62,7 +64,17 @@ export class BusComponent implements OnInit, OnDestroy {
   }
 
   remove(item: ListItem<Bus>) {
-    this.datasource.remove(item);
+    const reference = this.dialogService.openDialog(DialogType.CONFIRM, {
+      cancelText: 'Cancel',
+      confirmText: 'Delete',
+      message: `If you delete the bus ${item.raw.name} all devices will be lost.`,
+      title: `Delete bus: ${item.raw.name}`
+    });
+
+    reference.afterClosed().pipe(
+      filter((result) => result?.confirm === true),
+      take(1)
+    ).subscribe(() => this.datasource.remove(item));
   }
 
   edit(item: ListItem<Bus>) {

@@ -8,6 +8,7 @@ import { MessageModule } from "./libs/message/message.module";
 import { ErrorHandlerModule } from "./libs/error-handler/error-handler.module";
 import { SidebarModule } from "./libs/sidebar/sidebar.module";
 import { CommonModule } from "@angular/common";
+import { DialogModule } from "@app/libs/dialog";
 
 @NgModule({
   declarations: [AppComponent],
@@ -18,7 +19,8 @@ import { CommonModule } from "@angular/common";
     ErrorHandlerModule,
     HttpClientModule,
     MessageModule.forRoot(),
-    SidebarModule
+    SidebarModule,
+    DialogModule,
   ],
   bootstrap: [AppComponent],
 })
