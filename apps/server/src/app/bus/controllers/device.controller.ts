@@ -41,7 +41,8 @@ export class DeviceController {
   @CheckAbility({ action: Actions.Create, subject: Device })
   @Put()
   async create(@Body() payload: Device): Promise<Device> {
-    const device = plainToClass(Device, payload);
+    const { id, ...data } = payload;
+    const device = plainToClass(Device, data);
     return this.deviceService.insert(device);
   }
 

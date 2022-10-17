@@ -1,0 +1,14 @@
+<div class="content">
+  {{ dialogData.message }}
+</div>
+
+<footer class="d-flex justify-content-between">
+
+  <button class="btn btn-sm btn-primary" (click)="closeDialog(true)">
+    {{ dialogData.confirmText }}
+  </button>
+
+  <button class="btn btn-sm btn-secondary" (click)="closeDialog(false)">
+    {{ dialogData.cancelText }}
+  </button>
+</footer>

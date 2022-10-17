@@ -1,0 +1,21 @@
+@use "@angular/material" as mat;
+@import 'functions/rem-calc';
+
+:host {
+  $blues: mat.$blue-palette;
+
+  footer,
+  .content {
+    border: 1px solid map-get($blues, 100);
+    border-width: 0 1px;
+  }
+
+  footer {
+    padding: rem-calc(10px);
+    border-bottom-width: 1px;
+  }
+
+  .content {
+    padding: rem-calc(5px) rem-calc(16px);
+  }
+}

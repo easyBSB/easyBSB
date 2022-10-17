@@ -1,7 +1,7 @@
-import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
+import { BadRequestException, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { plainToClass, plainToClassFromExist } from "class-transformer";
-import { Repository } from "typeorm";
+import { FindManyOptions, Repository } from "typeorm";
 import { Bus } from "../model/bus.entity";
 import { Device } from "../model/device.entity";
 import { DeviceValidator } from "./device.validator";
@@ -26,26 +26,26 @@ export class DeviceService {
     return await this.repository.findOneBy({ id });
   }
 
+  async find(options: FindManyOptions<Device>): Promise<Device[]> {
+    return await this.repository.find(options);
+  }
+
   /**
    * @description create new phantom device which not exists in database
    */
   public createPhantomDevice(busId: Bus['id']): Device {
-    const deviceData: Device = {
+    const deviceData: Omit<Device, 'id'> = {
       address: 0x00,
       bus_id: busId,
-      id: -1,
       vendor: 0,
       vendor_device: 0
     }
     return plainToClass(Device, deviceData);
   }
 
-  async delete(id: Device['id']) {
-    const device: Device = await this.findById(id);
-    if (!device) {
-      throw new NotFoundException(`Device with id: ${id} was not found`);
-    }
-    await this.repository.delete(id);
+  async delete(id: Device['id'] | Device['id'][]) {
+    const toRemove = Array.isArray(id) ? id : [id];
+    await this.repository.delete(toRemove);
   }
 
   /**

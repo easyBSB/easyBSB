@@ -3,6 +3,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { plainToClassFromExist } from "class-transformer";
 import { Repository } from "typeorm";
 import { Bus } from "../model/bus.entity";
+import { Device } from "../model/device.entity";
 import { BusValidation } from "./bus.validators";
 import { DeviceService } from "./device.service";
 
@@ -31,6 +32,14 @@ export class BusService {
     if (!bus) {
       throw new NotFoundException(`Bus with id: ${id} was not found`);
     }
+
+    const devices = await this.deviceService.find({ where: { bus_id: bus.id } });
+    const toRemove = devices.reduce<Device['id'][]>((result, device) => 
+      result.concat(device.id)
+    , [])
+
+    await this.deviceService.delete(toRemove);
+
     await this.repository.delete(id);
   }
 
