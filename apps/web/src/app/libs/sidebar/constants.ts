@@ -23,5 +23,5 @@ export const MenuEntries: MenuEntry[] = [
   },
 ];
 
-export const MENU_MIN_WIDTH = '24px';
-export const MENU_MAX_WIDTH = '160px';
+export const MENU_MIN_WIDTH = '70px';
+export const MENU_MAX_WIDTH = '230px';

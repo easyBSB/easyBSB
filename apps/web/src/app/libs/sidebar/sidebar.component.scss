@@ -1,6 +1,8 @@
 @use "sass:math";
 @use "@angular/material" as mat;
 
+@import "functions/rem-calc";
+
 :host {
   $blues: mat.$blue-palette;
   $gap: .5rem;
@@ -9,7 +11,7 @@
   position: relative;
   white-space: nowrap;
 
-  width: calc(24px + #{$gap} * 2);
+  width: rem-calc(70px);
 
   .menu {
     list-style-type: none;
@@ -29,7 +31,7 @@
   .menu-entry {
 
     color: darken(map-get($blues, 500), 25);
-    padding: #{math.div($gap, 2)}rem 0;
+    padding: #{math.div($gap, 2)} 0;
 
     a {
       color: inherit;
@@ -37,7 +39,7 @@
     }
 
     mat-icon {
-      margin-right: $gap;
+      margin: 0 rem-calc(23px);
       flex-shrink: 0;
       color: inherit;
     }
