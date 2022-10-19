@@ -8,6 +8,7 @@ export interface Bus {
   address: number;
   name: string;
   type: 'serial' | 'tcpip';
+  ip_serial: string;
   port: number;
 }
 
