@@ -39,6 +39,7 @@ export class BusListDatasource extends ListDatasource<Bus> {
       id: Math.random().toString(32),
       name: 'BSB',
       port: 1046,
+      ip_serial: '0.0.0.0',
       type: 'tcpip'
     }
   }
@@ -68,7 +69,43 @@ export class BusListDatasource extends ListDatasource<Bus> {
       );
   }
 
-  protected validate(): boolean {
-    return true;
+  /**
+   * simple validator to check combination of type_address_?port
+   */
+  protected validate(entity: Bus): boolean {
+    let isValid = true;
+    let error: string | null = null;
+
+    if (entity.name.trim() === '') {
+      error = `Name darf nicht leer sein`;
+    }
+
+    const entityUniqueKey = this.createUniqueKey(entity);
+    const isDuplicate = this.storage.some((item) => {
+      if (item.raw === entity) {
+        return false;
+      }
+      return entityUniqueKey === this.createUniqueKey(item.raw)
+    });
+
+    if (isDuplicate) {
+      error = `IP/Serial(:Port) bereits belegt.`
+    }
+
+    if (error !== null) {
+      this.messageService.error(error);
+      isValid = false;
+    }
+    return isValid;
+  }
+
+  private createUniqueKey(entity: Bus): string {
+    return [
+      entity.type,
+      entity.ip_serial,
+      entity.port.toString() ?? ''
+    ]
+      .filter((val) => val.trim() !== '')
+      .join('_');
   }
 }

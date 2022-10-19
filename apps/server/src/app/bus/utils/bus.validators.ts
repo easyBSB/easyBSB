@@ -12,32 +12,27 @@ export class BusValidation {
   /**
    * @description validates if address and/or name not allready exists
    */
-  async busNotExists(address: Bus['address'], name: Bus['name'], exclude?: Bus['id']): Promise<ValidationResult> {
-    const addressFilter: FindOptionsWhere<Bus> = { address: address };
-    const nameFilter: FindOptionsWhere<Bus> = { name: name };
+  async busNotExists(entity: Bus, exclude?: Bus['id']): Promise<ValidationResult> {
+
+    /** combination of ip_serial, port and type has to been unique */
+    const filter: FindOptionsWhere<Bus> = {
+      ip_serial: entity.ip_serial,
+      port: entity.port,
+      type: entity.type
+    };
+
     if (exclude) {
-      addressFilter['id'] = Not(exclude);
-      nameFilter['id'] = Not(exclude);
+      filter['id'] = Not(exclude);
     }
 
-    const entities = await this.repository.findBy([addressFilter, nameFilter]);
+    const entities = await this.repository.findBy([filter]);
     if (entities.length === 0) {
       return null;
     }
 
-    const nameExists = entities.some((entity) => entity.name === name);
-    const addressExists = entities.some((entity) => entity.address === address);
-    const errors = {};
-
-    if (nameExists) {
-      errors['nameExists'] = `Bus with name ${name} allready exists`;
-    }
-
-    if (addressExists) {
-      errors['addressExists'] = `Bus with address ${address} allready exists`;
-    }
-
-    return errors;
+    return {
+      exists: `Bus allready exists.`
+    };
   }
 
   /**

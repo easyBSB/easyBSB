@@ -56,7 +56,7 @@ export class BusService {
     }
 
     // check bus address/name allready exists
-    const result = await this.validationHelper.busNotExists(payload.address, payload.name);
+    const result = await this.validationHelper.busNotExists(payload);
     if (result !== null) {
       throw new BadRequestException(result);
     }
@@ -94,7 +94,7 @@ export class BusService {
     }
 
     // validate name is not given
-    validationResult = await this.validationHelper.busNotExists(update.address, update.name, id);
+    validationResult = await this.validationHelper.busNotExists(update, id);
     if (validationResult !== null) {
       throw new BadRequestException(validationResult);
     }
