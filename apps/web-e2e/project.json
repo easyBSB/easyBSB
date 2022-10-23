@@ -11,6 +11,5 @@
       }
     }
   },
-  "tags": [],
-  "implicitDependencies": ["@easybsb/web"]
+  "tags": []
 }
