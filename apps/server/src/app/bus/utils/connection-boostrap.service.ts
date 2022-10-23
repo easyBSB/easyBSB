@@ -1,10 +1,9 @@
 import { Injectable, OnApplicationBootstrap } from "@nestjs/common";
 import * as definition from "@easybsb/bsbdef";
-import { BSB, Definition } from "@easybsb/parser";
+import { BSB, BSBDefinition, Category, Definition } from "@eaysbsb/parser";
 import { BusService } from "./bus.service";
 import { DeviceService } from "./device.service";
 import { BsbStorage } from "./bsb-store";
-import { BSBDefinition, Category } from "../../../../../../libs/easybsb-parser/src/lib/interfaces";
 
 @Injectable()
 export class ConnectionBootstrap implements OnApplicationBootstrap {

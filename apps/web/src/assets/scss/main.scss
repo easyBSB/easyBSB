@@ -16,6 +16,7 @@ $blue-palette: (
   500: #3B28CC,
 );
 
+@include mat.legacy-typography-hierarchy(mat.define-legacy-typography-config());
 @include mat.core();
 
 html, body {

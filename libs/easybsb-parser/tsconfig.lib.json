@@ -5,7 +5,7 @@
     "resolveJsonModule": true,
     "declarationMap": true,
     "outDir": "../../dist/out-tsc",
-    "declaration": true
+    "declaration": true,
   },
   "exclude": [
     "**/*.spec.ts",
@@ -13,6 +13,6 @@
     "jest.config.ts"
   ],
   "include": [
-    "**/*.ts"
+    "src/**/*.ts"
   ]
 }
