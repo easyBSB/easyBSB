@@ -1,4 +1,4 @@
-FROM node:16-alpine As development
+FROM node:19-alpine As development
 
 WORKDIR /usr/src/app
 
@@ -8,7 +8,7 @@ RUN npm install --production=false
 
 RUN npm run package:server
 
-FROM node:16-alpine as production
+FROM node:19-alpine as production
 
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
