@@ -4,7 +4,7 @@
   "projectType": "application",
   "targets": {
     "build": {
-      "executor": "@nrwl/node:webpack",
+      "executor": "@nrwl/webpack:webpack",
       "outputs": [
         "{options.outputPath}"
       ],
@@ -15,7 +15,9 @@
         "assets": [
           "apps/server/src/assets"
         ],
-        "generatePackageJson": true
+        "generatePackageJson": true,
+        "target": "node",
+        "compiler": "tsc"
       },
       "configurations": {
         "e2e": {
@@ -62,7 +64,7 @@
       }
     },
     "package": {
-      "executor": "@nrwl/workspace:run-commands",
+      "executor": "nx:run-commands",
       "outputs": [],
       "options": {
         "commands": [
@@ -76,7 +78,7 @@
     "test": {
       "executor": "@nrwl/jest:jest",
       "outputs": [
-        "coverage/apps/server"
+        "{workspaceRoot}/coverage/apps/server"
       ],
       "options": {
         "jestConfig": "apps/server/jest.config.ts",
@@ -84,7 +86,7 @@
       }
     },
     "migration-generate": {
-      "executor": "@nrwl/workspace:run-commands",
+      "executor": "nx:run-commands",
       "outputs": [],
       "options": {
         "command": "ts-node --project tsconfig.app.json ../../node_modules/typeorm/cli.js migration:generate -o true -d src/typeorm/datasource.ts src/typeorm/migrations/{args.name}",
@@ -92,7 +94,7 @@
       }
     },
     "migration-run": {
-      "executor": "@nrwl/workspace:run-commands",
+      "executor": "nx:run-commands",
       "outputs": [],
       "options": {
         "command": "ts-node --project tsconfig.app.json ../../node_modules/typeorm/cli.js migration:run -d src/typeorm/datasource.ts",
@@ -100,7 +102,7 @@
       }
     },
     "migration-create": {
-      "executor": "@nrwl/workspace:run-commands",
+      "executor": "nx:run-commands",
       "outputs": [],
       "options": {
         "command": "ts-node --project tsconfig.app.json ../../node_modules/typeorm/cli.js migration:create -o true src/typeorm/migrations/{args.name}",

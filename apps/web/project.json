@@ -98,7 +98,7 @@
     "test": {
       "executor": "@nrwl/jest:jest",
       "outputs": [
-        "coverage/apps/web"
+        "{workspaceRoot}/coverage/apps/web"
       ],
       "options": {
         "jestConfig": "apps/web/jest.config.ts",
@@ -108,13 +108,13 @@
     "e2e": {
       "executor": "./libs/executors:playwright",
       "outputs": [
-        "coverage/apps/web"
+        "{workspaceRoot}/coverage/apps/web"
       ]
     },
     "e2e-dev": {
       "executor": "./libs/executors:playwright",
       "outputs": [
-        "coverage/apps/web"
+        "{workspaceRoot}/coverage/apps/web"
       ],
       "options": {
         "app": {

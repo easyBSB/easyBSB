@@ -36,6 +36,7 @@ export abstract class AbstractPageObject {
     // check method exists
     try {
       // typings are not cool here
+      // eslint-disable-next-line @typescript-eslint/ban-types
       result = await (this[method as keyof AbstractPageObject] as Function).call(this, ...arg)
     } catch (error) {
       console.error(error)

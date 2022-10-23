@@ -55,7 +55,7 @@ test.describe("Create new user", () => {
     expect(type).toBe('Error');
   })
 
-  test(`should be see only himself`, async ({page}) => {
+  test(`should be see only himself`, async () => {
     const user = await usersPage.findUser(username);
     expect(await user.count()).toBe(1);
 
@@ -109,7 +109,7 @@ test.describe("Create new user", () => {
     expect(type).toBe('Error');
   })
 
-  test(`should be not allowed to update custom user`, async ({page, request}) => {
+  test(`should be not allowed to update custom user`, async ({request}) => {
     const sessionToken = await resolveSessionToken(request, username, password);
     const victim = await createUser(request, adminToken, {
       name: `AdminUser-` + Math.random().toString(32),

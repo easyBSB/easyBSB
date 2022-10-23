@@ -1,5 +1,4 @@
 import { expect, Locator } from "@playwright/test";
-import * as exp from "constants";
 import { matSelectValue } from "../support/mat-select";
 import { AbstractPageObject } from "./Abstract.page.object";
 
@@ -65,8 +64,8 @@ export class UsersPageObject extends AbstractPageObject {
     throw `not found`;
   }
 
-  getUserCol(row: number, locator?: Locator): Locator {
-    return this.getUsers().nth(row).locator('td');
+  async getUserCol(row: number): Promise<Locator> {
+    return (await this.getUsers()).nth(row).locator('td');
   }
 
   async getUserName(row: Locator): Promise<string> {
@@ -80,8 +79,6 @@ export class UsersPageObject extends AbstractPageObject {
     await ctrl.waitFor({ state: "visible" })
     return ctrl.innerText();
   }
-
-  cancelEditUser(row: number) {}
 
   async createUser(username: string, password: string, role: string): Promise<void> {
     const create = this.page.locator('[data-e2e="users-list-actions-create"]');
