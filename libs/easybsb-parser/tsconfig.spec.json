@@ -19,5 +19,5 @@
     "**/*.spec.jsx",
     "**/*.d.ts",
     "jest.config.ts"
-  ]
+, "src/lib/interfaces.ts"  ]
 }

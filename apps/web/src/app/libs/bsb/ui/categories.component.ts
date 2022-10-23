@@ -2,9 +2,8 @@ import { CdkAccordionItem } from '@angular/cdk/accordion';
 import { ChangeDetectionStrategy, Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { animationFrameScheduler, delay, of, ReplaySubject, Subject, switchMap, take, takeUntil } from 'rxjs';
 import { I18NService } from '@app/libs/i18n';
-// @todo replace this ugly import
-import { Category } from '../../../../../../../libs/easybsb-parser/src/lib/interfaces';
 import { DeviceDataService } from '../utils/bsb.service';
+import { Category } from '@eaysbsb/parser';
 
 @Component({
   selector: 'easybsb-device-data',

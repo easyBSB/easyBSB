@@ -1,7 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { Bus } from '../model/bus.entity';
-import { BSB } from "@easybsb/parser";
-import { Category, Command, KeyItem, LanguageKeys, TranslateItem, Type } from "@easybsb/parser/api";
+import { BSB, Category, Command, KeyItem, LanguageKeys, TranslateItem, Type } from '@eaysbsb/parser';
 
 interface EasybsbCommandType extends Omit<Type, 'unit'> {
   unit: string

@@ -16,6 +16,7 @@ $blue-palette: (
   500: #3B28CC,
 );
 
+<<<<<<< HEAD
 // TODO(v15): As of v15 mat.legacy-core no longer includes default typography styles.
 //  The following line adds:
 //    1. Default typography styles for all components
@@ -26,6 +27,10 @@ $blue-palette: (
 //    `@include mat.legacy-typography-hierarchy(mat.define-legacy-typography-config());`
 @include mat.all-legacy-component-typographies();
 @include mat.legacy-core();
+=======
+@include mat.legacy-typography-hierarchy(mat.define-legacy-typography-config());
+@include mat.core();
+>>>>>>> f6531f9 (chore(nrwl): 15.0.1)
 
 html, body {
   min-height: 100%;
