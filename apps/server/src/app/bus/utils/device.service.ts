@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { plainToClass, plainToClassFromExist } from "class-transformer";
+import { plainToClassFromExist } from "class-transformer";
 import { FindManyOptions, Repository } from "typeorm";
 import { Bus } from "../model/bus.entity";
 import { Device } from "../model/device.entity";
@@ -30,19 +30,6 @@ export class DeviceService {
     return await this.repository.find(options);
   }
 
-  /**
-   * @description create new phantom device which not exists in database
-   */
-  public createPhantomDevice(busId: Bus['id']): Device {
-    const deviceData: Omit<Device, 'id'> = {
-      address: 0x00,
-      bus_id: busId,
-      vendor: 0,
-      vendor_device: 0
-    }
-    return plainToClass(Device, deviceData);
-  }
-
   async delete(id: Device['id'] | Device['id'][]) {
     const toRemove = Array.isArray(id) ? id : [id];
     await this.repository.delete(toRemove);
@@ -54,9 +41,9 @@ export class DeviceService {
    */
   async insert(payload: Device): Promise<Device> {
     const validationResult = await this.validationHelper.isValid(payload);
-
     if (validationResult !== null) {
-      throw new BadRequestException(validationResult);
+      // das hier liefert ein json in dem falle ist error = ein JSON ?
+      throw new BadRequestException(Object.values(validationResult)[0]);
     }
 
     try {

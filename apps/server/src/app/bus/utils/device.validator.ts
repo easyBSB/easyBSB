@@ -29,14 +29,16 @@ export class DeviceValidator {
       }, {});
     }
 
-    /** validate bus exists */
     if (validationResult === null) {
       validationResult = await this.busExists(device);
     }
 
-    /** validate combination of address and bus_id not exists */
     if (validationResult === null) {
-      validationResult = await this.deviceNotExists(device, isUpdate);
+      validationResult = await this.deviceNameNotInUse(device, isUpdate);
+    }
+
+    if (validationResult === null) {
+      validationResult = await this.addressNotInUse(device, isUpdate);
     }
 
     return validationResult
@@ -57,34 +59,44 @@ export class DeviceValidator {
   }
 
   /**
-   * @description validate a given device not exists in combination with bus_id and address
-   * an bus can not have 2 devices with same address
-   * 
-   * what if the bus adress changes, then it is an update but more like create
+   * @description validate name for device is not in use globally
    */
-  private async deviceNotExists(device: Device, isUpdate: boolean): Promise<ValidationResult | null> {
-
-    const findOptions: FindOptionsWhere<Device> = {
-      bus_id: device.bus_id,
-      address: device.address,
+  private async deviceNameNotInUse(device: Device, isUpdate = false): Promise<ValidationResult | null> {
+    const findOptions: FindOptionsWhere<Device> = { 
+      name: device.name
     };
 
-    /** 
-     * for an update it is important we check the bus has been changed, if not we have to
-     * exclude the existing device address, otherwise it could happen we find the device 
-     * we want to update if address has not been changed.
-     */
     if (isUpdate) {
-      const existingDevice = await this.deviceRepository.findOneBy({ id: device.id });
-      if (existingDevice.bus_id === device.bus_id ) {
-        findOptions['address'] =  Not(existingDevice.address);
+      findOptions['id'] = Not(device.id);
+    }
+
+    // mhm not sure we make another db operation for this 
+    const deviceExists = await this.deviceRepository.findOneBy(findOptions);
+    if (deviceExists) {
+      return {
+        nameAllreadyInUse: `Name for device alleready in use.`
       }
+    }
+    return null;
+  }
+
+  /**
+   * @description validate a given device.address not exists allready on bus
+   */
+  private async addressNotInUse(device: Device, isUpdate = false): Promise<ValidationResult | null> {
+    const findOptions: FindOptionsWhere<Device> = { 
+      bus_id: device.bus_id,
+      address: device.address
+    };
+
+    if (isUpdate) {
+      findOptions['id'] = Not(device.id);
     }
 
     const deviceExists = await this.deviceRepository.findOneBy(findOptions);
     if (deviceExists) {
       return {
-        deviceWithAddressExists: `Device with given address on bus allready exists`
+        addressAllreadyInUse: `Address for device alleready in use.`
       }
     }
     return null;

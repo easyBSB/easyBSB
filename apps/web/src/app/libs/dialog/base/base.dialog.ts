@@ -19,6 +19,7 @@ export class BaseDialogComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    // get component portal from cache if we rendered this once
     const componentPortal = new ComponentPortal(this.dialogData.content, this.viewRef);
     this.selectedPortal?.attach(componentPortal);
   }

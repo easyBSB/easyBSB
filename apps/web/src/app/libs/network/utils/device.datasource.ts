@@ -39,6 +39,7 @@ export class DevicesListDatasource extends ListDatasource<Device> {
       address: 0x00,
       bus_id: id,
       id: deviceId,
+      name: '',
       vendor: 0,
       vendor_device: 0
     }

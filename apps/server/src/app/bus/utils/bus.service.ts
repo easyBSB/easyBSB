@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { plainToClassFromExist } from "class-transformer";
+import { plainToClass, plainToClassFromExist } from "class-transformer";
 import { Repository } from "typeorm";
 import { Bus } from "../model/bus.entity";
 import { Device } from "../model/device.entity";
@@ -13,18 +13,19 @@ export class BusService {
   private validationHelper: BusValidation;
 
   constructor(
-    @InjectRepository(Bus) private readonly repository: Repository<Bus>,
+    @InjectRepository(Bus) private readonly busRepository: Repository<Bus>,
+    @InjectRepository(Device) private readonly deviceRepository: Repository<Device>,
     private readonly deviceService: DeviceService
   ) {
-    this.validationHelper = new BusValidation(repository);
+    this.validationHelper = new BusValidation(busRepository);
   }
 
   list(): Promise<Bus[] | null> {
-    return this.repository.find();
+    return this.busRepository.find();
   }
 
   async findById(id: Bus['id']): Promise<Bus | null> {
-    return await this.repository.findOneBy({ id });
+    return await this.busRepository.findOneBy({ id });
   }
 
   async delete(id: Bus['id']) {
@@ -33,14 +34,16 @@ export class BusService {
       throw new NotFoundException(`Bus with id: ${id} was not found`);
     }
 
+    // remove all devices which exists on bus
     const devices = await this.deviceService.find({ where: { bus_id: bus.id } });
-    const toRemove = devices.reduce<Device['id'][]>((result, device) => 
-      result.concat(device.id)
-    , [])
+    if (devices.length > 0) {
+      const toRemove = devices.reduce<Device['id'][]>((result, device) => 
+        result.concat(device.id)
+      , [])
+      await this.deviceService.delete(toRemove);
+    }
 
-    await this.deviceService.delete(toRemove);
-
-    await this.repository.delete(id);
+    await this.busRepository.delete(id);
   }
 
   /**
@@ -62,14 +65,14 @@ export class BusService {
     }
 
     try {
-      const result = await this.repository.insert(payload);
+      const result = await this.busRepository.insert(payload);
       const lastInsertedId = result.identifiers.at(0).id;
       const created = await this.findById(lastInsertedId);
 
       /**
        * create new device with default settings
        */
-      const device = this.deviceService.createPhantomDevice(created.id);
+      const device = await this.createFirstBusDevice(created);
       await this.deviceService.insert(device);
 
       return created;
@@ -99,6 +102,38 @@ export class BusService {
       throw new BadRequestException(validationResult);
     }
 
-    return this.repository.save(update);
+    return this.busRepository.save(update);
+  }
+
+  /**
+   * @description create a device if bus has been created, it is important
+   * the name must be unique global, so we have to check device exists allready.
+   * 
+   * If we found one we add an index until we find a free name.
+   */
+  private async createFirstBusDevice(bus: Bus): Promise<Device> {
+    const queryBuilder = this.deviceRepository.createQueryBuilder('device');
+    const query =  queryBuilder.where("device.name like :name", { name:`${bus.name}%` });
+    const [devices, count] = await query.getManyAndCount();
+
+    let name = bus.name
+    let index = 1;
+
+    if (count > 0) {
+      let nameExists = false;
+      do {
+        nameExists = devices.some((device) => device.name === name);
+        name = nameExists ? bus.name + ` (${index++})` : name; 
+      } while (nameExists);
+    }
+
+    const deviceData: Omit<Device, 'id'> = {
+      name,
+      address: 0x00,
+      bus_id: bus.id,
+      vendor: 0,
+      vendor_device: 0
+    }
+    return plainToClass(Device, deviceData);
   }
 }

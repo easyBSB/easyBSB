@@ -13,7 +13,7 @@ import { DevicesListDatasource } from '../utils/device.datasource';
 })
 export class DevicesComponent implements OnInit {
 
-  public columns = ['address', 'vendor', 'vendor_device', 'actions'];
+  public columns: (keyof Omit<Device, 'id'> | 'actions')[] = ['name', 'address', 'vendor', 'vendor_device', 'actions'];
   public listData$: Observable<ListItem<Device>[]>;
   public bus?: Bus;
 
@@ -61,7 +61,6 @@ export class DevicesComponent implements OnInit {
   }
   
   closePanel($event: MouseEvent) {
-
     $event.stopPropagation();
     $event.preventDefault();
 

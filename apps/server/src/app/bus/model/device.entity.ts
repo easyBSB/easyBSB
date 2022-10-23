@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Type } from "class-transformer";
-import { IsNumber, Max, Min } from "class-validator";
+import { IsNumber, IsString, Max, Min } from "class-validator";
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
@@ -14,6 +14,12 @@ export class Device {
   @Column()
   @Type(() => Number)
   bus_id: number;
+
+  @ApiProperty({ type: "string" })
+  @IsString()
+  @Column()
+  @Type(() => String)
+  name: string;
 
   /**
    * @description address in bus
