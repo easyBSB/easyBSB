@@ -65,7 +65,7 @@ export class BusListDatasource extends ListDatasource<Bus> {
       .post<Bus>("/api/bus/" + id, payload, options)
       .pipe(
         tap((bus) => this.networkStore.updateBus(bus)),
-        tap(() => this.messageService.success(`User ${entity.name} saved`))
+        tap(() => this.messageService.success(`Bus ${entity.name} saved.`))
       );
   }
 

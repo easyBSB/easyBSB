@@ -44,6 +44,8 @@ export class ErrorInterceptor implements HttpInterceptor {
 
     return next.handle(req).pipe(
       catchError((response: HttpErrorResponse) => {
+        console.log(response.error);
+
         this.messageService.error(response.error.message);
         if (context) {
           throw new EasyBSBHttpErrorResponse(context, response);

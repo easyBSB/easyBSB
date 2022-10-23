@@ -4,18 +4,19 @@ export enum BusType {
 }
 
 export interface Bus {
-  id: number | string;
   address: number;
-  name: string;
-  type: 'serial' | 'tcpip';
+  id: number | string;
   ip_serial: string;
+  name: string;
   port: number;
+  type: 'serial' | 'tcpip';
 }
 
 export interface Device {
   address: number;
   bus_id: Bus['id'];
   id: number | string;
+  name: string;
   vendor?: number;
   vendor_device?: number;
 };
