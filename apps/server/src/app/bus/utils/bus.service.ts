@@ -113,7 +113,7 @@ export class BusService {
    */
   private async createFirstBusDevice(bus: Bus): Promise<Device> {
     const queryBuilder = this.deviceRepository.createQueryBuilder('device');
-    const query =  queryBuilder.where("device.name like :name", { name:`%${bus.name}%` });
+    const query =  queryBuilder.where("device.name like :name", { name:`${bus.name}%` });
     const [devices, count] = await query.getManyAndCount();
 
     let name = bus.name
@@ -122,9 +122,7 @@ export class BusService {
     if (count > 0) {
       let nameExists = false;
       do {
-        // check we find the name
         nameExists = devices.some((device) => device.name === name);
-        // set new name for next run
         name = nameExists ? bus.name + ` (${index++})` : name; 
       } while (nameExists);
     }
