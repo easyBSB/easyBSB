@@ -5,7 +5,7 @@ test.describe.serial("Test Authorization", () => {
    * @description log in to app, and save the sessionStorage inside the
    * process environment variable
    */
-  test("Login success", async ({ page, context }) => {
+  test("Login success", async ({ page }) => {
     await page.goto("http://localhost:4200", { waitUntil: "networkidle" });
     expect(page.url()).toBe("http://localhost:4200/login");
 

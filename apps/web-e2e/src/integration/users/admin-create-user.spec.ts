@@ -35,7 +35,7 @@ test.describe("Create new user", () => {
     expect(type).toBe('Success');
   });
 
-  test("TestUser should exists", async ({page}) => {
+  test("TestUser should exists", async () => {
     const testUser = await usersPage.findUser('TestUser');
     expect(await testUser.count()).toBe(1);
 
