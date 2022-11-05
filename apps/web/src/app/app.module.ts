@@ -1,26 +1,29 @@
 import { NgModule } from "@angular/core";
 import { HttpClientModule } from "@angular/common/http";
-import { AuthorizationModule } from "./libs/authorization";
+import { CommonModule } from "@angular/common";
+
+import { MessageModule } from "@app/libs/message";
+import { DialogModule } from "@app/libs/dialog";
+import { ErrorHandlerModule } from "@app/libs/error-handler";
+import { AuthorizationModule } from "@app/libs/authorization";
+import { SidebarModule } from "@app/libs/sidebar";
+import { I18NModule } from "@app/libs/i18n";
 
 import { AppComponent } from "./app.component";
 import { AppRoutingModule } from "./app-routing.module";
-import { MessageModule } from "./libs/message/message.module";
-import { ErrorHandlerModule } from "./libs/error-handler/error-handler.module";
-import { SidebarModule } from "./libs/sidebar/sidebar.module";
-import { CommonModule } from "@angular/common";
-import { DialogModule } from "@app/libs/dialog";
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
-    CommonModule,
     AppRoutingModule,
     AuthorizationModule.forRoot(),
+    DialogModule,
+    CommonModule,
     ErrorHandlerModule,
     HttpClientModule,
+    I18NModule.forRoot(),
     MessageModule.forRoot(),
     SidebarModule,
-    DialogModule,
   ],
   bootstrap: [AppComponent],
 })

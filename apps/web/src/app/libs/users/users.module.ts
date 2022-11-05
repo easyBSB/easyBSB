@@ -8,6 +8,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { UsersComponent } from './users.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MessageModule } from '../message/message.module';
+import { I18NModule } from '../i18n/src/i18n.module';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { MessageModule } from '../message/message.module';
     MatIconModule,
     MessageModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    I18NModule
   ],
   exports: [UsersComponent],
   providers: [],

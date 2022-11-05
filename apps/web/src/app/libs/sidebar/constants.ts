@@ -7,17 +7,17 @@ interface MenuEntry {
 
 export const MenuEntries: MenuEntry[] = [
   {
-    label: 'Dashboard',
+    label: 'EASYBSB_SIDEBAR_DASHBOARD',
     route: ['./'],
     icon: 'home'
   },
   {
-    label: 'Devices',
+    label: 'EASYBSB_SIDEBAR_DEVICES',
     route: ['./settings', 'devices'],
     icon: 'devices'
   },
   {
-    label: 'Users',
+    label: 'EASYBSB_SIDEBAR_USERS',
     route: ['./settings', 'users'],
     icon: 'people'
   },

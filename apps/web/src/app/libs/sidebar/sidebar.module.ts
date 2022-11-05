@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
+import { I18NModule } from '../i18n/src/i18n.module';
 import { SidebarComponent } from './sidebar.component';
 
 @NgModule({
@@ -11,10 +12,10 @@ import { SidebarComponent } from './sidebar.component';
     MatIconModule,
     BrowserAnimationsModule,
     RouterModule,
+    I18NModule
   ],
   exports: [SidebarComponent],
   declarations: [SidebarComponent],
-  providers: [],
 })
 export class SidebarModule { }
 

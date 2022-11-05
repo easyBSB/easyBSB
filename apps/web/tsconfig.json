@@ -25,7 +25,8 @@
     "paths": {
       "@app/core": ["./src/app/core/index.ts"],
       "@app/core/*": ["./src/app/core/*/public-api.ts"],
-      "@app/libs/*": ["./src/app/libs/*/public-api.ts"]
+      "@app/libs/*": ["./src/app/libs/*/public-api.ts"],
+      "app/i18n/*": ["./src/app/i18n/*"]
     }
   },
   "angularCompilerOptions": {

@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { map, Observable } from "rxjs";
-import { AuthorizationService } from "./libs/authorization";
+import { AuthorizationService } from "./libs/authorization/public-api";
 import { SettingsSections } from "./pages/settings/public.api";
 
 @Component({
