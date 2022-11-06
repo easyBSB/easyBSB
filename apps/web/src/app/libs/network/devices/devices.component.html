@@ -19,7 +19,7 @@
   >
 
     <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef>Name</th>
+      <th mat-header-cell *matHeaderCellDef>{{ 'EASYBSB_NETWORK_DEVICE_NAME' | translate }}</th>
       <td mat-cell *matCellDef="let entity" data-e2e="network-device-name">
         <mat-form-field class="form-control" data-e2e="network-device-name-control">
           <input
@@ -33,7 +33,7 @@
 
     <!-- Position Column -->
     <ng-container matColumnDef="address">
-      <th mat-header-cell *matHeaderCellDef>Address (number, hex)</th>
+      <th mat-header-cell *matHeaderCellDef>{{ 'EASYBSB_NETWORK_DEVICE_ADDRESS' | translate }} (number, hex)</th>
       <td mat-cell *matCellDef="let entity" data-e2e="network-device-address">
         <mat-form-field class="form-control" data-e2e="network-device-address-control">
           <input
@@ -48,7 +48,7 @@
     </ng-container>
 
     <ng-container matColumnDef="vendor">
-      <th mat-header-cell *matHeaderCellDef>Vendor</th>
+      <th mat-header-cell *matHeaderCellDef>{{ 'EASYBSB_NETWORK_DEVICE_VENDOR' | translate}}</th>
       <td mat-cell *matCellDef="let entity" data-e2e="network-device-vendor">
         <mat-form-field class="form-control" data-e2e="network-device-vendor-control">
           <input matInput [(ngModel)]="entity.raw.vendor" [disabled]="entity.mode === 'read'">
@@ -57,7 +57,7 @@
     </ng-container>
 
     <ng-container matColumnDef="vendor_device">
-      <th mat-header-cell *matHeaderCellDef>Vendor Device</th>
+      <th mat-header-cell *matHeaderCellDef>{{ 'EASYBSB_NETWORK_DEVICE_VENDOR_DEVICE' | translate }}</th>
       <td mat-cell *matCellDef="let entity" data-e2e="network-device-vendor-device">
         <mat-form-field class="form-control" data-e2e="network-device-vendor-device-control">
           <input matInput [(ngModel)]="entity.raw.vendor_device" [disabled]="entity.mode === 'read'">
@@ -69,7 +69,7 @@
       <th mat-header-cell *matHeaderCellDef>
         <div class="d-inline-flex flex-row align-items-center" (click)="addDevice()" role="button">
           <mat-icon class="me-2" data-e2e="network-device-actions-create">add_to_queue</mat-icon>
-          New Device
+          {{ 'EASYBSB_NETWORK_DEVICE_CREATE' | translate }}
         </div>
       </th>
 

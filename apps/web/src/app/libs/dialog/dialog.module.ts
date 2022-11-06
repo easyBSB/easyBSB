@@ -1,9 +1,11 @@
 import { NgModule } from '@angular/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
+import { PortalModule } from '@angular/cdk/portal';
+import { I18NModule } from '@app/libs/i18n';
+
 import { BaseDialogComponent } from './base/base.dialog';
 import { ConfirmDialogComponent } from './confirm/confirm.dialog';
-import { PortalModule } from '@angular/cdk/portal';
 
 @NgModule({
   declarations: [
@@ -13,7 +15,8 @@ import { PortalModule } from '@angular/cdk/portal';
   imports: [
     CommonModule,
     MatDialogModule,
-    PortalModule
+    PortalModule,
+    I18NModule
   ],
   exports: [
     MatDialogModule

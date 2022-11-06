@@ -1,5 +1,10 @@
 {
   "executors": {
+    "i18n-sync": {
+      "implementation": "./i18n/bin/i18n-sync.executor",
+      "schema": "./i18n/schema.json",
+      "description": "synchronize i18n files"
+    },
     "playwright": {
       "implementation": "./playwright/bin/playwright.executor",
       "schema": "./playwright/schema.json",

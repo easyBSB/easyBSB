@@ -6,8 +6,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 
-import { MessageModule } from '@app/libs/message';
 import { PipesModule } from '@app/core/pipes';
+import { I18NModule } from '@app/libs/i18n';
+import { MessageModule } from '@app/libs/message';
 
 import { BusComponent } from './bus/bus.component';
 import { BusListDatasource } from './utils/bus.datasource';
@@ -30,7 +31,8 @@ import { NetworkStore, NetworkMemoryStore } from './utils/network-store';
     MessageModule,
     ReactiveFormsModule,
     FormsModule,
-    PipesModule
+    PipesModule,
+    I18NModule
   ],
   exports: [
     BusComponent

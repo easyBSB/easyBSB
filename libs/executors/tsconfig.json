@@ -8,6 +8,9 @@
     },
     {
       "path": "./api-server-e2e/tsconfig.lib.json"
+    },
+    {
+      "path": "./i18n/tsconfig.lib.json"
     }
   ]
 }

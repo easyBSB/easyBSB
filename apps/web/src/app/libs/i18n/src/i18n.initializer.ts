@@ -10,7 +10,7 @@ export function i18nInitializer(
   const currentLang = navigator.language.replace(/^([a-z]{2})(-.*)?$/, '$1')
   let language = localStorage.getItem('lang') || currentLang;
 
-  if (supportedLanguages.indexOf(language) > -1) {
+  if (supportedLanguages.indexOf(language) === -1) {
     language = 'en';
   }
 

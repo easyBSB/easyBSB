@@ -19,7 +19,7 @@ export class I18NModule {
       ngModule: I18NModule,
       providers: [{
         provide: APP_INITIALIZER,
-        useFactory: (i18n: TranslateService, http: HttpClient) => i18nInitializer(i18n, http),
+        useFactory: (i18n: TranslateService, http: HttpClient) => i18nInitializer(i18n, http), 
         deps: [TranslateService, HttpClient],
         multi: true
       }],
