@@ -15,6 +15,9 @@ export class ConnectionBootstrap implements OnApplicationBootstrap {
   ) {}
 
   async onApplicationBootstrap(): Promise<void> {
+
+    process.stdout.write('da fuck');
+
     for (const bus of await this.busService.list()) {
 
       // fetch all devices from bus and loop
