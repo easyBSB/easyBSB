@@ -21,7 +21,7 @@ import { AuthorizationService } from "./utils/authorization.service";
     FormsModule,
     ReactiveFormsModule,
     I18NModule
-  ],
+  ]
 })
 export class AuthorizationModule {
 

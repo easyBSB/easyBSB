@@ -8,7 +8,9 @@ import { HttpClient } from '@angular/common/http';
   declarations: [],
   exports: [ TranslateModule ],
   imports: [
-    TranslateModule.forRoot(),
+    TranslateModule.forChild({
+      isolate: false
+    }),
     CommonModule,
   ],
 })
@@ -23,6 +25,12 @@ export class I18NModule {
         deps: [TranslateService, HttpClient],
         multi: true
       }],
+    }
+  }
+
+  static forChild(): ModuleWithProviders<I18NModule> {
+    return {
+      ngModule: I18NModule
     }
   }
 }

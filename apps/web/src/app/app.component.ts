@@ -16,7 +16,7 @@ export class AppComponent implements OnInit {
 
   constructor(
     private readonly authService: AuthorizationService,
-   ) { }
+  ) {}
 
   ngOnInit(): void {
     this.loggedIn$ = this.authService.stateChange()
