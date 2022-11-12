@@ -10,6 +10,7 @@ import { supportedLanguages } from "../constants/supported-languages";
 export class I18NService {
 
   private lang$ = new BehaviorSubject<string>(this.translateService.getDefaultLang());
+  private currentLang = this.translateService.getDefaultLang();
 
   constructor(
     private readonly translateService: TranslateService,
@@ -52,10 +53,13 @@ export class I18NService {
 
   public setLanguage(lang: string) {
     let doSwitch = true && this.translateService.getLangs().indexOf(lang) > -1;
-    doSwitch = doSwitch && this.translateService.currentLang !== lang;
+    doSwitch = doSwitch && this.currentLang !== lang;
+
 
     if (doSwitch) {
       localStorage.setItem('lang', lang);
+
+      this.currentLang = lang;
       this.translateService.use(lang);
     }
   }
