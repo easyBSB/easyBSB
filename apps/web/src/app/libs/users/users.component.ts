@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnIni
 import { Observable, skip, Subject, takeUntil } from "rxjs";
 import { UserListDatasource } from "./datasource";
 import { UserListItem, UserRoles } from "./api";
-import { TranslateService } from "@ngx-translate/core";
 
 @Component({
   selector: "easy-bsb-users",

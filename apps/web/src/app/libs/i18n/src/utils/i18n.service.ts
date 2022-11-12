@@ -53,6 +53,7 @@ export class I18NService {
 
   public setLanguage(lang: string) {
     let doSwitch = true && this.translateService.getLangs().indexOf(lang) > -1;
+<<<<<<< HEAD
     doSwitch = doSwitch && this.currentLang !== lang;
 
 
@@ -60,6 +61,12 @@ export class I18NService {
       localStorage.setItem('lang', lang);
 
       this.currentLang = lang;
+=======
+    doSwitch = doSwitch && this.translateService.currentLang !== lang;
+
+    if (doSwitch) {
+      localStorage.setItem('lang', lang);
+>>>>>>> 8939bba (feat(#588): translate)
       this.translateService.use(lang);
     }
   }
