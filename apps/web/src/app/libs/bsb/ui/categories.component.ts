@@ -1,6 +1,8 @@
 import { CdkAccordionItem } from '@angular/cdk/accordion';
-import { ChangeDetectionStrategy, Component, ElementRef, OnInit } from '@angular/core';
-import { animationFrameScheduler, delay, of, ReplaySubject, take } from 'rxjs';
+import { ChangeDetectionStrategy, Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
+import { animationFrameScheduler, delay, of, ReplaySubject, Subject, switchMap, take, takeUntil } from 'rxjs';
+import { I18NService } from '@app/libs/i18n';
+// @todo replace this ugly import
 import { Category } from '../../../../../../../libs/easybsb-parser/src/lib/interfaces';
 import { DeviceDataService } from '../utils/bsb.service';
 
@@ -10,18 +12,32 @@ import { DeviceDataService } from '../utils/bsb.service';
   styleUrls: ['./categories.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CategoriesComponent implements OnInit {
+export class CategoriesComponent implements OnInit, OnDestroy {
 
   public categorys$: ReplaySubject<Record<string, Category>> = new ReplaySubject(1);
 
+  private destroy$ = new Subject<void>();
+
   constructor(
     private readonly deviceDataService: DeviceDataService,
-    private elRef: ElementRef<HTMLElement>
+    private readonly i81nService: I18NService,
+    private elRef: ElementRef<HTMLElement>,
   ) {}
 
   public ngOnInit(): void {
-    this.deviceDataService.getDeviceConfiguration()
-      .pipe(take(1)).subscribe((data) => this.categorys$.next(data))
+    this.i81nService.getLanguage()
+      .pipe(
+        takeUntil(this.destroy$),
+        switchMap((lang) => this.deviceDataService.getDeviceConfiguration(lang)),
+      )
+      // since we switch to getDeviceConfiguration observe gets completed
+      // so we need to pass data by our self
+      .subscribe((data) => this.categorys$.next(data));
+  }
+
+  public ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   public handleItemOpened(item: CdkAccordionItem) {

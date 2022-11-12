@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnIni
 import { Observable, skip, Subject, takeUntil } from "rxjs";
 import { UserListDatasource } from "./datasource";
 import { UserListItem, UserRoles } from "./api";
-import { TranslateService } from "@ngx-translate/core";
 
 @Component({
   selector: "easy-bsb-users",
@@ -22,11 +21,8 @@ export class UsersComponent implements OnInit, OnDestroy {
   constructor(
     private readonly datasource: UserListDatasource,
     private readonly cdRef: ChangeDetectorRef,
-    private readonly translationService: TranslateService
   ) {
     this.userData$ = this.datasource.connect();
-
-    console.log(this.translationService.defaultLang)
   }
 
   ngOnInit(): void {

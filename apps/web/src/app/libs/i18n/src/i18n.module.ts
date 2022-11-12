@@ -1,17 +1,27 @@
 import { APP_INITIALIZER, ModuleWithProviders, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { i18nInitializer } from './i18n.initializer';
 import { HttpClient } from '@angular/common/http';
+import { MatMenuModule } from '@angular/material/menu';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { LanguageSelectorComponent } from './ui/language-selector';
+import { I18NService } from './utils/i18n.service';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
-  declarations: [],
-  exports: [ TranslateModule ],
+  declarations: [
+    LanguageSelectorComponent,
+  ],
+  exports: [
+    LanguageSelectorComponent,
+    TranslateModule,
+  ],
   imports: [
+    CommonModule,
+    MatMenuModule,
+    MatIconModule,
     TranslateModule.forChild({
       isolate: false
     }),
-    CommonModule,
   ],
 })
 export class I18NModule {
@@ -21,7 +31,7 @@ export class I18NModule {
       ngModule: I18NModule,
       providers: [{
         provide: APP_INITIALIZER,
-        useFactory: (i18n: TranslateService, http: HttpClient) => i18nInitializer(i18n, http), 
+        useFactory: (i18n: TranslateService, http: HttpClient) => I18NService.i18nInitializer(i18n, http), 
         deps: [TranslateService, HttpClient],
         multi: true
       }],

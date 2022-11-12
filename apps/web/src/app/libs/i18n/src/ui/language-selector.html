@@ -1,0 +1,9 @@
+<button class="btn btn-sm p-0" mat-icon-button [matMenuTriggerFor]="languageMenu" aria-label="language selector">
+  <mat-icon>language</mat-icon>
+</button>
+
+<mat-menu #languageMenu="matMenu">
+  <button mat-menu-item *ngFor="let keyValue of supportedLanguages | keyvalue:noSort">
+    <span (click)="switchLanguage(keyValue.key)">{{ keyValue.value | translate }}</span>
+  </button>
+</mat-menu>
