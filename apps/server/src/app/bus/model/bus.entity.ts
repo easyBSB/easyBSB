@@ -3,7 +3,7 @@ import { Type } from "class-transformer";
 import { IsIn, IsNumber, IsOptional, IsString, Max, Min } from "class-validator";
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity()
+@Entity('Bus')
 export class Bus {
   @ApiProperty({ type: "number" })
   @PrimaryGeneratedColumn()

@@ -38,15 +38,15 @@
       text-decoration: none;
     }
 
-    mat-icon {
-      margin: 0 rem-calc(23px);
-      flex-shrink: 0;
-      color: inherit;
-    }
-
     &-label {
       text-overflow: ellipsis;
       overflow: hidden;
+      color: inherit;
+    }
+
+    &-item {
+      margin: 0 rem-calc(23px);
+      flex-shrink: 0;
       color: inherit;
     }
   }

@@ -124,6 +124,12 @@
           "start": false
         }
       }
+    },
+    "i18n-sync": {
+      "executor": "./libs/executors:i18n-sync",
+      "options": {
+        "path": "apps/web/src/assets/i18n"
+      }
     }
   },
   "tags": []

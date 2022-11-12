@@ -6,6 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { CategoriesComponent } from './ui/categories.component';
 import { CommandsComponent } from './ui/commands.component';
 import { BsbComponent } from './ui/bsb.component';
+import { I18NModule } from '../i18n/src/i18n.module';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { BsbComponent } from './ui/bsb.component';
   imports: [
     CommonModule,
     CdkAccordionModule,
-    MatIconModule
+    MatIconModule,
+    I18NModule
   ],
   exports: [
     BsbComponent

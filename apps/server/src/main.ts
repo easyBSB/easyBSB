@@ -8,6 +8,7 @@ import { ConfigModule } from "@nestjs/config";
 import { NestFactory } from "@nestjs/core";
 import { SwaggerModule, DocumentBuilder } from "@nestjs/swagger";
 import { AppModule } from "./app/app.module";
+import { createProxyMiddleware } from 'http-proxy-middleware';
 import * as compression from 'compression';
 
 async function bootstrap() {
@@ -22,6 +23,12 @@ async function bootstrap() {
    * MIDDELWARE
    */
   app.use(compression());
+  app.use('/i18n', createProxyMiddleware({
+    target: 'http://localhost:' + port,
+    pathRewrite: {
+        '^/i18n': '/assets/i18n',
+    }
+  }));
 
   /**
    * SWAGGER

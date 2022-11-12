@@ -1,7 +1,7 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
-import { AuthorizationService } from '../authorization';
-import { User } from '../users/api';
+import { AuthorizationService } from '@app/libs/authorization';
+import { User } from '@app/libs/users';
 import { MenuEntries, MENU_MAX_WIDTH, MENU_MIN_WIDTH } from './constants';
 
 @Component({

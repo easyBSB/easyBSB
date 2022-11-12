@@ -2,7 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { map, Observable } from "rxjs";
 import { Category, Command } from "../../../../../../../libs/easybsb-parser/src/lib/interfaces";
-import { Bus } from "../../network/api";
+import { Bus } from "@app/libs/network";
 
 @Injectable()
 export class DeviceDataService {
@@ -11,12 +11,10 @@ export class DeviceDataService {
     private readonly httpClient: HttpClient
   ) {}
 
-  public getDeviceConfiguration(id: Bus['id'] = 1): Observable<Record<string, Category>> {
+  public getDeviceConfiguration(lang: string, id: Bus['id'] = 1): Observable<Record<string, Category>> {
     // assume for now we have only 1 device with ID = 1
     return this.httpClient.get<Record<string, Category>>(`api/bsb/bus/${id}/categories`, {
-      params: {
-        lang: 'de'
-      }
+      params: { lang }
     })
   }
 

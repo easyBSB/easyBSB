@@ -8,14 +8,16 @@
   <img src="./assets/images/easybsb.svg">
 
   <mat-form-field class="form-ctrl" data-e2e="authorization-login-username">
-    <input type="text" matInput formControlName="username" placeholder="Benutzername" />
+    <input type="text" matInput formControlName="username" placeholder="{{ 'EASYBSB_AUTHORIZATION_USERNAME' | translate }}" />
   </mat-form-field>
 
   <mat-form-field class="form-ctrl" data-e2e="authorization-login-password">
-    <input type="password" matInput formControlName="password" placeholder="Passwort" />
+    <input type="password" matInput formControlName="password" placeholder="{{ 'EASYBSB_AUTHORIZATION_PASSWORD' | translate }}" />
   </mat-form-field>
 
-  <button mat-flat-button color="primary" type="submit" data-e2e="authorization-login-submit">Login</button>
+  <button mat-flat-button color="primary" type="submit" data-e2e="authorization-login-submit">
+    {{ 'EASYBSB_AUTHORIZATION_LOGIN' | translate }}
+  </button>
 
   <mat-error *ngIf="error?.trim() !== ''" data-e2e="authorization-login-error">
     {{ error }}

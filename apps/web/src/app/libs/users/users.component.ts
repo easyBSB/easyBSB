@@ -20,7 +20,7 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly datasource: UserListDatasource,
-    private readonly cdRef: ChangeDetectorRef
+    private readonly cdRef: ChangeDetectorRef,
   ) {
     this.userData$ = this.datasource.connect();
   }

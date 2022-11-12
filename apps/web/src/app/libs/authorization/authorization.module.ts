@@ -5,11 +5,12 @@ import { Router } from "@angular/router";
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 
 import { AuthorizationBearerInterceptor } from "./utils/authorization-bearer.interceptor";
+import { MatInputModule } from "@angular/material/input";
+import { MatButtonModule } from "@angular/material/button";
+import { I18NModule } from "@app/libs/i18n";
 import { applicationBootstrap } from "./utils/authorization.app-initializer";
 import { LoginComponent } from "./ui/login.component";
 import { AuthorizationService } from "./utils/authorization.service";
-import { MatInputModule } from "@angular/material/input";
-import { MatButtonModule } from "@angular/material/button";
 
 @NgModule({
   declarations: [LoginComponent],
@@ -18,8 +19,9 @@ import { MatButtonModule } from "@angular/material/button";
     MatInputModule,
     MatButtonModule,
     FormsModule,
-    ReactiveFormsModule
-  ],
+    ReactiveFormsModule,
+    I18NModule
+  ]
 })
 export class AuthorizationModule {
 
