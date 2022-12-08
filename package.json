@@ -83,7 +83,7 @@
     "@nestjs/testing": "9.1.5",
     "@nrwl/angular": "15.0.1",
     "@nrwl/cli": "15.0.1",
-    "@nrwl/eslint-plugin-nx": "15.0.1",
+    "@nrwl/eslint-plugin-nx": "15.3.0",
     "@nrwl/jest": "15.0.1",
     "@nrwl/linter": "15.0.1",
     "@nrwl/nest": "15.0.1",
