@@ -5,8 +5,8 @@ import { Router } from "@angular/router";
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 
 import { AuthorizationBearerInterceptor } from "./utils/authorization-bearer.interceptor";
-import { MatInputModule } from "@angular/material/input";
-import { MatButtonModule } from "@angular/material/button";
+import { MatLegacyInputModule as MatInputModule } from "@angular/material/legacy-input";
+import { MatLegacyButtonModule as MatButtonModule } from "@angular/material/legacy-button";
 import { I18NModule } from "@app/libs/i18n";
 import { applicationBootstrap } from "./utils/authorization.app-initializer";
 import { LoginComponent } from "./ui/login.component";

@@ -40,5 +40,6 @@
       }
     }
   },
-  "tags": []
+  "tags": [],
+  "name": "easybsb-parser"
 }

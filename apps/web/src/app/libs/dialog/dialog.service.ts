@@ -1,6 +1,6 @@
 import { ComponentType } from '@angular/cdk/portal';
 import { Injectable } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { BaseDialogConfiguration, ConfirmDialogConfiguration, ConfirmDialogResponse, DialogType } from './api/dialog-type';
 import { BaseDialogComponent } from './base/base.dialog';
 import { ConfirmDialogComponent } from './confirm/confirm.dialog';

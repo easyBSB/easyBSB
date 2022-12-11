@@ -5,11 +5,16 @@
   "targets": {
     "lint": {
       "executor": "@nrwl/linter:eslint",
-      "outputs": ["{options.outputFile}"],
+      "outputs": [
+        "{options.outputFile}"
+      ],
       "options": {
-        "lintFilePatterns": ["apps/web-e2e/**/*.{js,ts}"]
+        "lintFilePatterns": [
+          "apps/web-e2e/**/*.{js,ts}"
+        ]
       }
     }
   },
-  "tags": []
+  "tags": [],
+  "name": "web-e2e"
 }

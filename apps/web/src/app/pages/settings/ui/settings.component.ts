@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from "@angular/core";
-import { MatTabChangeEvent, MatTabGroup } from "@angular/material/tabs";
+import { MatLegacyTabChangeEvent as MatTabChangeEvent, MatLegacyTabGroup as MatTabGroup } from "@angular/material/legacy-tabs";
 import { ActivatedRoute, Params, Router } from "@angular/router";
 import { filter, map, Observable } from "rxjs";
 import { SettingsSections } from "../constants/settings-sections";
