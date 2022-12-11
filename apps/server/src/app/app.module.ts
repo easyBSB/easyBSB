@@ -2,10 +2,10 @@ import { DynamicModule, Module } from "@nestjs/common";
 import { APP_GUARD, Reflector } from "@nestjs/core";
 import { ServeStaticModule } from "@nestjs/serve-static";
 
-import { ConnectionsModule } from "@connections/connections.module";
-import { RoleGuard, RolesModule } from "@app/roles/index";
-import { UsersModule } from "@app/users";
-import { AuthModule, JwtAuthGuard } from "@app/auth";
+import { AuthModule, JwtAuthGuard } from "@lib/auth";
+import { NetworkModule } from "@lib/network";
+import { UsersModule } from "@lib/users";
+
 import { EventsModule } from "./events/events.module";
 
 import { AppController } from "./app.controller";
@@ -16,7 +16,8 @@ import { AppTypeormModule } from "./app-typeorm.module";
 // add serve static module only for production
 import { environment as APP_ENVIRONMENT } from "../environments/environment";
 import { ConfigModule, ConfigService } from "@nestjs/config";
-import { BusModule } from "./bus/bus.module";
+import { RoleGuard, RolesModule } from "@lib/roles";
+import { ConnectionModule } from "@lib/connection";
 
 const extraImports: DynamicModule[] = [];
 if (APP_ENVIRONMENT.production) {
@@ -37,9 +38,9 @@ if (APP_ENVIRONMENT.production) {
   imports: [
     AppConfigModule,
     AppTypeormModule,
+    ConnectionModule,
     AuthModule,
-    BusModule,
-    ConnectionsModule,
+    NetworkModule,
     RolesModule,
     UsersModule,
     EventsModule,
