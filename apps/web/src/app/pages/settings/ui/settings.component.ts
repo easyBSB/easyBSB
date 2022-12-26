@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from "@angular/core";
-import { MatLegacyTabChangeEvent as MatTabChangeEvent, MatLegacyTabGroup as MatTabGroup } from "@angular/material/legacy-tabs";
+import { MatTabChangeEvent, MatTabGroup } from "@angular/material/tabs";
 import { ActivatedRoute, Params, Router } from "@angular/router";
 import { filter, map, Observable } from "rxjs";
 import { SettingsSections } from "../constants/settings-sections";
@@ -55,6 +55,7 @@ export class SettingsComponent implements OnInit {
           this.triggeredManually = false;
           return passed;
         }),
+        filter((params) => params['section'] !== undefined),
         map((params: Params) => {
           const section = params['section'].replace(
             /-([a-z]{1}).*?/ig,

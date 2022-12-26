@@ -17,7 +17,7 @@ test.describe("Admin is not allowed", () => {
   });
 
   test("to change own role", async ({page}) => {
-    const snackbar = page.locator('snack-bar-container');
+    const snackbar = page.locator('mat-snack-bar-container');
     await Promise.all([
       snackbar.waitFor({ state: 'visible'}),
       await settingsPage.updateAndSaveUser(admin, void 0, void 0, 'Read')
@@ -26,8 +26,8 @@ test.describe("Admin is not allowed", () => {
     expect(await snackbar.count()).toBe(1);
 
     const [message, type] = await Promise.all([
-      snackbar.locator('.mat-simple-snack-bar-content').innerText(),
-      snackbar.locator('.mat-simple-snackbar-action').innerText()
+      snackbar.locator('[matsnackbarlabel]').innerText(),
+      snackbar.locator('[matsnackbaractions]').innerText()
     ]);
 
     expect(message).toBe('Not allowed to change own role.');
@@ -36,7 +36,7 @@ test.describe("Admin is not allowed", () => {
   });
 
   test("to delete himself", async ({page}) => {
-    const snackbar = page.locator('snack-bar-container');
+    const snackbar = page.locator('mat-snack-bar-container');
     await Promise.all([
       snackbar.waitFor({ state: 'visible'}),
       settingsPage.deleteUser(admin)
@@ -44,8 +44,8 @@ test.describe("Admin is not allowed", () => {
     expect(await snackbar.count()).toBe(1);
 
     const [message, type] = await Promise.all([
-      snackbar.locator('.mat-simple-snack-bar-content').innerText(),
-      snackbar.locator('.mat-simple-snackbar-action').innerText()
+      snackbar.locator('[matsnackbarlabel]').innerText(),
+      snackbar.locator('[matsnackbaractions]').innerText()
     ]);
 
     expect(message).toBe('Not allowed to remove yourself');

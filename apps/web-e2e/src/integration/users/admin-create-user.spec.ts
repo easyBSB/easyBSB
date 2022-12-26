@@ -18,7 +18,7 @@ test.describe("Create new user", () => {
 
   test("can create new user", async ({page}) => {
 
-    const snackbar = page.locator('snack-bar-container');
+    const snackbar = page.locator('mat-snack-bar-container');
     await Promise.all([
       snackbar.waitFor({ state: 'visible'}),
       usersPage.createUser(`TestUser`, `TestUser`, `Write`)
@@ -27,8 +27,8 @@ test.describe("Create new user", () => {
     expect(await snackbar.count()).toBe(1);
 
     const [message, type] = await Promise.all([
-      snackbar.locator('.mat-simple-snack-bar-content').innerText(),
-      snackbar.locator('.mat-simple-snackbar-action').innerText()
+      snackbar.locator('[matsnackbarlabel]').innerText(),
+      snackbar.locator('[matsnackbaractions]').innerText()
     ]);
 
     expect(message).toBe('User TestUser added');
@@ -47,7 +47,7 @@ test.describe("Create new user", () => {
   });
 
   test("duplicate username is forbidden", async ({page}) => {
-    const snackbar = page.locator('snack-bar-container');
+    const snackbar = page.locator('mat-snack-bar-container');
     await Promise.all([
       snackbar.waitFor({ state: 'visible'}),
       usersPage.createUser(`TestUser`, `TestUser`, `Read`)
@@ -55,8 +55,8 @@ test.describe("Create new user", () => {
     expect(await snackbar.count()).toBe(1);
 
     const [message, type] = await Promise.all([
-      snackbar.locator('.mat-simple-snack-bar-content').innerText(),
-      snackbar.locator('.mat-simple-snackbar-action').innerText()
+      snackbar.locator('[matsnackbarlabel]').innerText(),
+      snackbar.locator('[matsnackbaractions]').innerText()
     ]);
 
     expect(message).toBe('Username allready taken');

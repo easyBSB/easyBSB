@@ -7,11 +7,11 @@ export async function matSelectValue(
 ): Promise<void> {
   const ctrl = selectCtrl.first();
 
-  const trigger = ctrl.locator('.mat-select-trigger');
+  const trigger = ctrl.locator('.mat-mdc-select-trigger');
   await trigger.click()
 
   const overlayId = await trigger.getAttribute('aria-owns');
 
-  const matOption = page.locator(`#${overlayId} .mat-option-text`, { hasText: option });
+  const matOption = page.locator(`#${overlayId} mat-option`, { hasText: option });
   await matOption.click();
 }

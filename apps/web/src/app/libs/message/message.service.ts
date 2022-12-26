@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { MatLegacySnackBar as MatSnackBar } from "@angular/material/legacy-snack-bar";
+import { MatSnackBar } from "@angular/material/snack-bar";
 import { concatMap, Subject } from "rxjs";
 import { MessageType, Message, messageConfig } from "./constants";
 

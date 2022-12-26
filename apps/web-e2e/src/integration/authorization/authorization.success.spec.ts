@@ -6,7 +6,7 @@ test.describe.serial("Test Authorization", () => {
    * process environment variable
    */
   test("Login success", async ({ page }) => {
-    await page.goto("http://localhost:4200", { waitUntil: "networkidle" });
+    await page.goto("http://localhost:4200/login", { waitUntil: "networkidle" });
     expect(page.url()).toBe("http://localhost:4200/login");
 
     // do login

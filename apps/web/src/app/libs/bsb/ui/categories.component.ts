@@ -29,8 +29,6 @@ export class CategoriesComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$),
         switchMap((lang) => this.deviceDataService.getDeviceConfiguration(lang)),
       )
-      // since we switch to getDeviceConfiguration observe gets completed
-      // so we need to pass data by our self
       .subscribe((data) => this.categorys$.next(data));
   }
 

@@ -8,10 +8,15 @@ module.exports = {
       use: {
         launchOptions: {
           slowMo: 0,
+          devtools: true,
         },
-        headless: true,
+        headless: false,
         browserName: "chromium",
         channel: "chrome",
+        viewport: {
+          height: 1080,
+          width: 1920
+        }
       },
     },
   ],

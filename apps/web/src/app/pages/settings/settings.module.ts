@@ -1,6 +1,6 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { MatLegacyTabsModule as MatTabsModule } from "@angular/material/legacy-tabs";
+import { MatTabsModule } from "@angular/material/tabs";
 import { UsersModule } from "@app/libs/users";
 import { NetworkModule } from "@app/libs/network";
 import { SettingsComponent } from "./ui/settings.component";
