@@ -1,3 +1,4 @@
+import { LanguageKeys } from "@eaysbsb/parser";
 import { Controller, Get, Param, ParseIntPipe, Query } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
 import { Bus } from "../model/bus.entity";
@@ -18,7 +19,7 @@ export class CategoriesController {
   @Get('categories')
   public getCategories(
     @Param('id', ParseIntPipe) busId: Bus['id'],
-    @Query() query: { lang: any } 
+    @Query() query: { lang: LanguageKeys } 
   ): Record<string, EasybsbCategory> {
     return this.bsbStorage.getConfiguration(busId, query.lang);
   }
