@@ -8,9 +8,9 @@ module.exports = {
       use: {
         launchOptions: {
           slowMo: 0,
-          devtools: true,
+          devtools: false,
         },
-        headless: false,
+        headless: true,
         browserName: "chromium",
         channel: "chrome",
         viewport: {
