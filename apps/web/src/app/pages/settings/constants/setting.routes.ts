@@ -4,7 +4,8 @@ import { SettingsComponent } from "../ui/settings.component";
 export const SettingRoutes: Route[] = [
   {
     path: "",
-    component: SettingsComponent,
+    redirectTo: "devices",
+    pathMatch: "prefix"
   },
   {
     path: ":section",

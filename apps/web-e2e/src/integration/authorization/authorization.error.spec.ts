@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 
 test("Login Error", async ({ page }) => {
-  await page.goto("http://localhost:4200", { waitUntil: "networkidle" });
+  await page.goto("http://localhost:4200/login", { waitUntil: "networkidle" });
   expect(page.url()).toBe("http://localhost:4200/login");
 
   // do login
@@ -17,18 +17,19 @@ test("Login Error", async ({ page }) => {
     "SuperSecretUnknownPasswordButNobodyCaresBecauseNobodyKnows"
   );
 
-  const snackbar = page.locator('snack-bar-container');
+  const snackbar = page.locator('mat-snack-bar-container');
   const [response] = await Promise.all([
     page.waitForResponse("http://localhost:4200/api/auth/login"),
-    snackbar.waitFor({ state: 'visible'}),
     passwordControl.press("Enter"),
+    snackbar.waitFor({ state: 'visible'}),
   ]);
+
   expect(await snackbar.count()).toBe(1);
   expect(response.status()).toBe(401);
 
   const [message, type] = await Promise.all([
-    snackbar.locator('.mat-simple-snack-bar-content').innerText(),
-    snackbar.locator('.mat-simple-snackbar-action').innerText()
+    snackbar.locator('[matsnackbarlabel]').innerText(),
+    snackbar.locator('[matsnackbaractions]').innerText()
   ]);
 
   expect(message).toBe("invalid username or password");

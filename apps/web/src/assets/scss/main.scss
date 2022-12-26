@@ -16,6 +16,7 @@ $blue-palette: (
   500: #3B28CC,
 );
 
+@include mat.legacy-typography-hierarchy(mat.define-legacy-typography-config());
 @include mat.core();
 
 html, body {
@@ -28,5 +29,16 @@ html, body {
   &-content {
     padding-top: 0 !important;
     padding-bottom: 0 !important;
+  }
+}
+
+.mat-mdc-table  {
+
+  .mat-mdc-form-field {
+
+  }
+
+  .mat-mdc-form-field-bottom-align {
+    display: none;
   }
 }

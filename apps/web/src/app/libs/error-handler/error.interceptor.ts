@@ -41,11 +41,10 @@ export class ErrorInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<unknown>, next: HttpHandler) {
     const context = req.context.get(RequestContextToken);
+    const request = next.handle(req);
 
-    return next.handle(req).pipe(
+    return request.pipe(
       catchError((response: HttpErrorResponse) => {
-        console.log(response.error);
-
         this.messageService.error(response.error.message);
         if (context) {
           throw new EasyBSBHttpErrorResponse(context, response);

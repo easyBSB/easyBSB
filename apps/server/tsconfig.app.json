@@ -17,8 +17,6 @@
       "@app/roles": ["./src/app/roles/index.ts"],
       "@app/core/*": ["./src/app/core/*/index.ts"],
       "@connections/*": ["./src/app/connections/*"],
-      "@easybsb/parser": ["../../libs/easybsb-parser/src"],
-      "@easybsb/parser/api": ["../../libs/easybsb-parser/src/lib/interfaces"],
     },
     "target": "es2015",
     "types": [

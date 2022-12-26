@@ -2,9 +2,8 @@ import { CdkAccordionItem } from '@angular/cdk/accordion';
 import { ChangeDetectionStrategy, Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { animationFrameScheduler, delay, of, ReplaySubject, Subject, switchMap, take, takeUntil } from 'rxjs';
 import { I18NService } from '@app/libs/i18n';
-// @todo replace this ugly import
-import { Category } from '../../../../../../../libs/easybsb-parser/src/lib/interfaces';
 import { DeviceDataService } from '../utils/bsb.service';
+import { Category } from '@eaysbsb/parser';
 
 @Component({
   selector: 'easybsb-device-data',
@@ -30,8 +29,6 @@ export class CategoriesComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$),
         switchMap((lang) => this.deviceDataService.getDeviceConfiguration(lang)),
       )
-      // since we switch to getDeviceConfiguration observe gets completed
-      // so we need to pass data by our self
       .subscribe((data) => this.categorys$.next(data));
   }
 

@@ -72,5 +72,6 @@
         "passWithNoTests": true
       }
     }
-  }
+  },
+  "name": "electron"
 }

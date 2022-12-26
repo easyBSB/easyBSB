@@ -1,8 +1,6 @@
 import { APP_INITIALIZER, ModuleWithProviders, NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { HTTP_INTERCEPTORS } from "@angular/common/http";
-import { Router } from "@angular/router";
-import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 
 import { AuthorizationBearerInterceptor } from "./utils/authorization-bearer.interceptor";
 import { MatInputModule } from "@angular/material/input";
@@ -11,6 +9,8 @@ import { I18NModule } from "@app/libs/i18n";
 import { applicationBootstrap } from "./utils/authorization.app-initializer";
 import { LoginComponent } from "./ui/login.component";
 import { AuthorizationService } from "./utils/authorization.service";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { Router } from "@angular/router";
 
 @NgModule({
   declarations: [LoginComponent],

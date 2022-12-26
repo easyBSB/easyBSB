@@ -13,11 +13,11 @@ export interface BSBDefinition {
   categories: KeyItem<Category>;
 }
 
-interface KeyItem<T> {
+export interface KeyItem<T> {
   [key: string]: T;
 }
 
-declare type LanguageKeys =
+export declare type LanguageKeys =
   | 'KEY'
   | 'CS'
   | 'DA'
@@ -36,7 +36,7 @@ declare type LanguageKeys =
   | 'SV'
   | 'TR';
 
-type TranslateItem = {
+export type TranslateItem = {
   [keyof in LanguageKeys]: string | undefined;
 };
 

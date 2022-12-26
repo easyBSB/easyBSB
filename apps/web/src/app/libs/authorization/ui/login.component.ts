@@ -40,7 +40,7 @@ export class LoginComponent implements OnInit {
       .subscribe({
         next: () => this.router.navigate(["/"]),
         error: (response: HttpErrorResponse) => {
-          this.error = response.error.message;
+          this.error = response.message;
         },
       });
   }

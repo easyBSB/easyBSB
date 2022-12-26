@@ -55,6 +55,7 @@ export class SettingsComponent implements OnInit {
           this.triggeredManually = false;
           return passed;
         }),
+        filter((params) => params['section'] !== undefined),
         map((params: Params) => {
           const section = params['section'].replace(
             /-([a-z]{1}).*?/ig,
