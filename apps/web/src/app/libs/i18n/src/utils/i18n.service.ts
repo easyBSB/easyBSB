@@ -55,10 +55,8 @@ export class I18NService {
     let doSwitch = true && this.translateService.getLangs().indexOf(lang) > -1;
     doSwitch = doSwitch && this.currentLang !== lang;
 
-
     if (doSwitch) {
       localStorage.setItem('lang', lang);
-
       this.currentLang = lang;
       this.translateService.use(lang);
     }

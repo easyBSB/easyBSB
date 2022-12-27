@@ -151,7 +151,6 @@ export class BSB {
         socket.once('close', socketClose);
 
         socket.connect(param2 ?? 0, param1, () => {
-          console.log('connected');
           socket.removeListener('error', socketError);
           socket.removeListener('close', socketClose);
           resolve();
