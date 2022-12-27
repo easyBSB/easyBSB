@@ -85,15 +85,15 @@
     "@eaysbsb/parser": "file:bin/easybsb-parser.tar.gz",
     "@nestjs/schematics": "9.0.3",
     "@nestjs/testing": "9.1.5",
-    "@nrwl/angular": "15.3.0",
-    "@nrwl/cli": "15.3.0",
-    "@nrwl/eslint-plugin-nx": "15.3.0",
-    "@nrwl/jest": "15.3.0",
-    "@nrwl/linter": "15.3.0",
-    "@nrwl/nest": "15.3.0",
-    "@nrwl/node": "15.3.0",
-    "@nrwl/tao": "15.3.0",
-    "@nrwl/workspace": "15.3.0",
+    "@nrwl/angular": "15.4.1",
+    "@nrwl/cli": "15.4.1",
+    "@nrwl/eslint-plugin-nx": "15.4.1",
+    "@nrwl/jest": "15.4.1",
+    "@nrwl/linter": "15.4.1",
+    "@nrwl/nest": "15.4.1",
+    "@nrwl/node": "15.4.1",
+    "@nrwl/tao": "15.4.1",
+    "@nrwl/workspace": "15.4.1",
     "@oclif/core": "1.19.1",
     "@playwright/test": "1.27.1",
     "@types/bcryptjs": "2.4.2",
@@ -137,3 +137,4 @@
     }
   }
 }
+
