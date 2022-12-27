@@ -1,5 +1,5 @@
 import { Id } from "@core/decorators";
-import { BSB, Definition } from "@easybsb/parser";
+import { BSB, Definition } from "@eaysbsb/parser";
 import { Bus, Device } from "@lib/network";
 import { Observable, Subject } from "rxjs";
 import { ConnectionMessage, ConnectionMessageType, IConnection } from "../api";
