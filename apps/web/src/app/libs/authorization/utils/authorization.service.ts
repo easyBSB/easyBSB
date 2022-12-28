@@ -1,14 +1,15 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
+import { User } from "@app/libs/users";
 import { BehaviorSubject, catchError, map, Observable, of, switchMap, take, tap } from "rxjs";
-import { User } from "../../users/api";
 import { LoginDto, LoginResponseDto } from "../api/login.dto";
 import { STORAGE_KEY_JWT, STORAGE_KEY_USER } from "../constants";
 
 interface AuthorizationState {
   loggedIn: boolean;
   user: User | undefined;
+  expires: number;
 }
 
 @Injectable({
@@ -21,7 +22,8 @@ export class AuthorizationService {
    */
   private sessionState: AuthorizationState = {
     loggedIn: false,
-    user: undefined
+    user: undefined,
+    expires: 0
   };
 
   private readonly authorizationState$ = new BehaviorSubject<AuthorizationState>(this.sessionState);
@@ -35,9 +37,22 @@ export class AuthorizationService {
    * @description send head request to check we are logged in
    */
   isAuthorized(): Observable<boolean> {
+
+    if (!sessionStorage.getItem(STORAGE_KEY_JWT)) {
+      this.clearSessionState();
+      return of(false);
+    }
+
+    if (this.sessionState.expires > new Date().getTime()) {
+      return of(true);
+    }
+
     return this.httpClient.head("/api/auth/authorized").pipe(
       take(1),
-      map(() => true),
+      map(() => {
+        this.refreshSessionState();
+        return true;
+      }),
       catchError(() => {
         this.clearSessionState();
         return of(false)
@@ -54,10 +69,10 @@ export class AuthorizationService {
           }
         }),
         switchMap(() => this.httpClient.get<User>('/api/auth/user')),
-        map<User, AuthorizationState>((user: User) => ({loggedIn: true, user })),
+        map<User, AuthorizationState>((user: User) => ({loggedIn: true, user, expires: 0 })),
         catchError(() => {
           this.clearSessionState();
-          return of({ loggedIn: false, user: undefined });
+          return of({ loggedIn: false, user: undefined, expires: 0 });
         }),
         tap((state) => this.authorizationState$.next(state))
       )
@@ -95,7 +110,18 @@ export class AuthorizationService {
   private writeSessionState(jwt: string, user: User): void {
     sessionStorage.setItem(STORAGE_KEY_JWT, jwt);
     sessionStorage.setItem(STORAGE_KEY_USER, JSON.stringify(user ?? ""));
-    this.sessionState = { loggedIn: true, user };
+    this.sessionState = {
+      loggedIn: true,
+      user,
+      expires: new Date().getTime() + 60 * 5 * 1000 // +5 minutes
+    };
+  }
+
+  private refreshSessionState(): void {
+    this.sessionState = { 
+      ...this.sessionState, 
+      expires: new Date().getTime() + 60 * 5 * 1000 // +5 minutes
+    }
   }
 
   /**
@@ -104,6 +130,6 @@ export class AuthorizationService {
   private clearSessionState(): void {
     sessionStorage.removeItem(STORAGE_KEY_JWT);
     sessionStorage.removeItem(STORAGE_KEY_USER);
-    this.sessionState = { loggedIn: false, user: undefined };
+    this.sessionState = { loggedIn: false, user: undefined, expires: 0 };
   }
 }
