@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivateChild, Router } from '@angular/router';
+import { CanActivateChild, Router } from '@angular/router';
 import { catchError, Observable, of, tap } from 'rxjs';
 import { AuthorizationService } from '../utils/authorization.service';
 
@@ -13,13 +13,8 @@ export class AuthorizationGuard implements CanActivateChild {
     private readonly router: Router
   ) {}
 
-  canActivateChild(
-    childRoute: ActivatedRouteSnapshot
-  ): Observable<boolean> {
+  canActivateChild(): Observable<boolean> {
     const authorized$ = this.authService.isAuthorized();
-
-    console.log(childRoute);
-
     return authorized$.pipe(
       tap((authorized) => {
         if (!authorized) {
