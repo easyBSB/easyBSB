@@ -1,8 +1,10 @@
 import { Route } from "@angular/router";
+import { AuthorizationGuard } from "@app/libs/authorization";
 
 export const AppRoutes: Route[] = [
   {
     path: "",
+    canActivateChild: [ AuthorizationGuard ],
     children: [
       {
         path: "dashboard",
