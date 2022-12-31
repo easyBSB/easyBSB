@@ -5,22 +5,24 @@
         {{ user?.name }}
     </span>
   </li>
-  <li
-    *ngFor="let entry of menuEntries"
-    [ngClass]="{ 'mt-auto': entry.bottom }"
-    class="menu-entry"
-  >
-    <a 
-      *ngIf="entry.route"
-      [routerLink]="entry.route"
-      class="d-flex flex-row"
+  <ng-container *ngFor="let entry of menuEntries">
+    <li 
+      *ngIf="!entry.subject || ('read' | able : entry.subject)"
+      [ngClass]="{ 'mt-auto': entry.bottom }"
+      class="menu-entry"
     >
-      <mat-icon class="menu-entry-item">{{ entry.icon }}</mat-icon>
-      <span class="menu-entry-label">
-        {{ entry.label | translate }}
-      </span>
-    </a>
-  </li>
+      <a
+        *ngIf="entry.route"
+        [routerLink]="entry.route"
+        class="d-flex flex-row"
+      >
+        <mat-icon class="menu-entry-item">{{ entry.icon }}</mat-icon>
+        <span class="menu-entry-label">
+          {{ entry.label | translate }}
+        </span>
+      </a>
+    </li>
+  </ng-container>
 
   <li class="d-flex menu-entry mt-auto">
     <easybsb-i18n-language-selector class="menu-entry-item"></easybsb-i18n-language-selector>

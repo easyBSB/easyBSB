@@ -11,6 +11,7 @@ import { LoginComponent } from "./ui/login.component";
 import { AuthorizationService } from "./utils/authorization.service";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { Router } from "@angular/router";
+import { PermissionsModule } from "@app/libs/permissions";
 
 @NgModule({
   declarations: [LoginComponent],
@@ -20,6 +21,7 @@ import { Router } from "@angular/router";
     MatButtonModule,
     FormsModule,
     ReactiveFormsModule,
+    PermissionsModule,
     I18NModule
   ]
 })

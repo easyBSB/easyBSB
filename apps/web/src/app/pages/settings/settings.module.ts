@@ -6,6 +6,7 @@ import { NetworkModule } from "@app/libs/network";
 import { SettingsComponent } from "./ui/settings.component";
 import { SettingsRoutingModule } from "./settings.routing.module";
 import { I18NModule } from "@app/libs/i18n";
+import { PermissionsModule } from "@app/libs/permissions";
 
 @NgModule({
   declarations: [SettingsComponent],
@@ -15,8 +16,8 @@ import { I18NModule } from "@app/libs/i18n";
     MatTabsModule,
     NetworkModule,
     UsersModule,
-    I18NModule
-  ],
-  providers: [],
+    I18NModule,
+    PermissionsModule
+  ]
 })
 export class SettingsModule {}

@@ -3,8 +3,10 @@ import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { User } from "@app/libs/users";
 import { BehaviorSubject, catchError, map, Observable, of, switchMap, take, tap } from "rxjs";
+import { PermissionService } from "@app/libs/permissions";
 import { LoginDto, LoginResponseDto } from "../api/login.dto";
-import { STORAGE_KEY_JWT, STORAGE_KEY_USER } from "../constants";
+import { STORAGE_KEY_JWT } from "../constants";
+
 
 interface AuthorizationState {
   loggedIn: boolean;
@@ -31,6 +33,7 @@ export class AuthorizationService {
   constructor(
     private readonly httpClient: HttpClient,
     private readonly router: Router,
+    private readonly permissionService: PermissionService
   ) { }
 
   /**
@@ -60,7 +63,10 @@ export class AuthorizationService {
     );
   }
 
-  loadSessionState(): Observable<AuthorizationState> {
+  /**
+   * @description initializes session state
+   */
+  loadSessionState(): Observable<void> {
     return this.isAuthorized()
       .pipe(
         tap((authorized) => {
@@ -69,12 +75,12 @@ export class AuthorizationService {
           }
         }),
         switchMap(() => this.httpClient.get<User>('/api/auth/user')),
-        map<User, AuthorizationState>((user: User) => ({loggedIn: true, user, expires: 0 })),
+        tap((user) => this.writeSessionState(user)),
         catchError(() => {
           this.clearSessionState();
           return of({ loggedIn: false, user: undefined, expires: 0 });
         }),
-        tap((state) => this.authorizationState$.next(state))
+        map(() => void 0)
       )
   }
 
@@ -88,8 +94,8 @@ export class AuthorizationService {
       .pipe(
         tap((response) => {
           const {jwt, user} = response;
-          this.writeSessionState(jwt, user);
-          this.authorizationState$.next(this.sessionState);
+          sessionStorage.setItem(STORAGE_KEY_JWT, jwt);
+          this.writeSessionState(user);
         })
       );
   }
@@ -107,14 +113,14 @@ export class AuthorizationService {
   /**
    * @description write current sesstion state and notify observers
    */
-  private writeSessionState(jwt: string, user: User): void {
-    sessionStorage.setItem(STORAGE_KEY_JWT, jwt);
-    sessionStorage.setItem(STORAGE_KEY_USER, JSON.stringify(user ?? ""));
+  private writeSessionState(user: User): void {
     this.sessionState = {
       loggedIn: true,
       user,
       expires: new Date().getTime() + 60 * 5 * 1000 // +5 minutes
     };
+    this.permissionService.defineAbilities(user);
+    this.authorizationState$.next(this.sessionState);
   }
 
   private refreshSessionState(): void {
@@ -129,7 +135,6 @@ export class AuthorizationService {
    */
   private clearSessionState(): void {
     sessionStorage.removeItem(STORAGE_KEY_JWT);
-    sessionStorage.removeItem(STORAGE_KEY_USER);
     this.sessionState = { loggedIn: false, user: undefined, expires: 0 };
   }
 }

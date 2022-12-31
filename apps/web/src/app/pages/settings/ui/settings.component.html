@@ -8,13 +8,13 @@
         #tabgroup
         [selectedIndex]="selectedIndex$ | async"
       >
-        <mat-tab [label]="'EASYBSB_SETTINGS_TAB_BUS' | translate" [aria-label]="'bus'">
+        <mat-tab [label]="'EASYBSB_SETTINGS_TAB_BUS' | translate" [aria-label]="'bus'" *ngIf="'read' | able: 'devices'">
           <ng-template matTabContent>
             <easy-bsb-bus></easy-bsb-bus>
           </ng-template>
         </mat-tab>
 
-        <mat-tab [label]="'EASYBSB_SETTINGS_TAB_USERS' | translate" [attr.data-e2e]="'settings-tab--users'" [aria-label]="'users'" >
+        <mat-tab [label]="'EASYBSB_SETTINGS_TAB_USERS' | translate" [attr.data-e2e]="'settings-tab--users'" [aria-label]="'users'"  *ngIf="'read' | able: 'user'">
           <ng-template matTabContent>
             <easy-bsb-users></easy-bsb-users>
           </ng-template>

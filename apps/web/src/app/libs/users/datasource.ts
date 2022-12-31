@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { ListDatasource, ListItem } from '@app/core';
 import { Observable, tap } from 'rxjs';
 import { MessageService } from '../message/message.service';
-import { User } from './api';
+import { User, UserRoles } from './api';
 
 @Injectable()
 export class UserListDatasource extends ListDatasource<User> {
@@ -26,7 +26,7 @@ export class UserListDatasource extends ListDatasource<User> {
     return {
       id: Math.random().toString(32),
       name: '',
-      role: 'read' 
+      role: UserRoles.read 
     };
   }
 
