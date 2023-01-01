@@ -43,14 +43,14 @@ test.describe("Create new user", () => {
       usersPage.getUserName(testUser),
       usersPage.getUserRole(testUser)
     ]);
-    expect(data).toStrictEqual(['TestUser', 'Write']);
+    expect(data).toStrictEqual(['TestUser', 'write']);
   });
 
   test("duplicate username is forbidden", async ({page}) => {
     const snackbar = page.locator('mat-snack-bar-container');
     await Promise.all([
       snackbar.waitFor({ state: 'visible'}),
-      usersPage.createUser(`TestUser`, `TestUser`, `Read`)
+      usersPage.createUser(`TestUser`, `TestUser`, `read`)
     ]);
     expect(await snackbar.count()).toBe(1);
 

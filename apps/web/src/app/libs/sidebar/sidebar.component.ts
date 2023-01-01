@@ -1,8 +1,7 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
-import { AuthorizationService } from '@app/libs/authorization';
+import { AuthorizationService } from '@app/core/authorization';
 import { User } from '@app/libs/users';
-import { AppAbility } from '../permissions/src/api';
 import { MenuEntries, MENU_MAX_WIDTH, MENU_MIN_WIDTH } from './constants';
 
 @Component({
@@ -33,12 +32,10 @@ export class SidebarComponent implements OnInit {
 
   constructor(
     private readonly authorizationService: AuthorizationService,
-    private readonly ability: AppAbility
   ) {
   }
 
   ngOnInit(): void {
-    console.dir(this.ability);
     this.user = this.authorizationService.authorizedUser();
   }
 

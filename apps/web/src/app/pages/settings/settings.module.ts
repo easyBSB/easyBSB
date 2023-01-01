@@ -1,12 +1,16 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { MatTabsModule } from "@angular/material/tabs";
+import { AbilityModule } from "@casl/angular";
+
+import { I18NModule } from "@app/core/i18n";
+import { PermissionsModule } from "@app/core/permissions";
+
 import { UsersModule } from "@app/libs/users";
 import { NetworkModule } from "@app/libs/network";
+
 import { SettingsComponent } from "./ui/settings.component";
 import { SettingsRoutingModule } from "./settings.routing.module";
-import { I18NModule } from "@app/libs/i18n";
-import { PermissionsModule } from "@app/libs/permissions";
 
 @NgModule({
   declarations: [SettingsComponent],
@@ -17,7 +21,8 @@ import { PermissionsModule } from "@app/libs/permissions";
     NetworkModule,
     UsersModule,
     I18NModule,
-    PermissionsModule
-  ]
+    PermissionsModule,
+    AbilityModule
+  ],
 })
 export class SettingsModule {}

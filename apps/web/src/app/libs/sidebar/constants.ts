@@ -1,4 +1,4 @@
-import { Subjects } from "@app/libs/permissions";
+import { Subjects } from "@app/core/permissions";
 
 interface MenuEntry {
   label: string;

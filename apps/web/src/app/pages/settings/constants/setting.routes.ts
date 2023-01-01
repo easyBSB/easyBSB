@@ -1,4 +1,5 @@
 import { Route } from "@angular/router";
+import { PermissionGuard } from "@app/core/permissions";
 import { SettingsComponent } from "../ui/settings.component";
 
 export const SettingRoutes: Route[] = [
@@ -9,6 +10,7 @@ export const SettingRoutes: Route[] = [
   },
   {
     path: ":section",
+    canActivate: [ PermissionGuard ],
     component: SettingsComponent,
   },
 ];

@@ -3,29 +3,32 @@ import { HttpClientModule } from "@angular/common/http";
 import { CommonModule } from "@angular/common";
 import { TranslateModule } from "@ngx-translate/core";
 
-import { MessageModule } from "@app/libs/message";
-import { DialogModule } from "@app/libs/dialog";
-import { ErrorHandlerModule } from "@app/libs/error-handler";
-import { AuthorizationModule } from "@app/libs/authorization";
+// core modules
+import { MessageModule } from "@app/core/message";
+import { ErrorHandlerModule } from "@app/core/error-handler";
+import { I18NModule } from "@app/core/i18n";
+
+// libs
+import { AuthorizationModule } from "@app/core/authorization";
 import { SidebarModule } from "@app/libs/sidebar";
-import { I18NModule } from "@app/libs/i18n";
 
 import { AppComponent } from "./app.component";
 import { AppRoutingModule } from "./app-routing.module";
+import { DialogModule } from "@app/core/dialog";
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
     AppRoutingModule,
     AuthorizationModule.forRoot(),
-    DialogModule,
     CommonModule,
     ErrorHandlerModule,
     HttpClientModule,
     TranslateModule.forRoot({ isolate: false }),
-    I18NModule.forRoot(),
     MessageModule.forRoot(),
     SidebarModule,
+    I18NModule.forRoot(),
+    DialogModule
   ],
   bootstrap: [AppComponent],
 })
