@@ -1,7 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { AuthorizationService } from "@app/core/authorization";
 import { map, Observable } from "rxjs";
-import { SettingsSections } from "./pages/settings/public.api";
 
 @Component({
   selector: "easy-bsb-root",
@@ -11,8 +10,6 @@ import { SettingsSections } from "./pages/settings/public.api";
 export class AppComponent implements OnInit {
 
   loggedIn$?: Observable<boolean>;
-
-  settingsPage = SettingsSections;
 
   constructor(
     private readonly authService: AuthorizationService,

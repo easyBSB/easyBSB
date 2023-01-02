@@ -6,6 +6,7 @@ import { I18NModule } from '@app/core/i18n';
 
 import { BaseDialogComponent } from './base/base.dialog';
 import { ConfirmDialogComponent } from './confirm/confirm.dialog';
+import { DialogService } from './dialog.service';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,9 @@ import { ConfirmDialogComponent } from './confirm/confirm.dialog';
     MatDialogModule,
     PortalModule,
     I18NModule
+  ],
+  providers: [
+    DialogService,
   ],
   exports: [
     MatDialogModule

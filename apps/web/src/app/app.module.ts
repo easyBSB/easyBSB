@@ -1,7 +1,7 @@
 import { NgModule } from "@angular/core";
 import { HttpClientModule } from "@angular/common/http";
-import { CommonModule } from "@angular/common";
 import { TranslateModule } from "@ngx-translate/core";
+import { CommonModule } from "@angular/common";
 
 // core modules
 import { MessageModule } from "@app/core/message";
@@ -14,7 +14,6 @@ import { SidebarModule } from "@app/libs/sidebar";
 
 import { AppComponent } from "./app.component";
 import { AppRoutingModule } from "./app-routing.module";
-import { DialogModule } from "@app/core/dialog";
 
 @NgModule({
   declarations: [AppComponent],
@@ -28,7 +27,6 @@ import { DialogModule } from "@app/core/dialog";
     MessageModule.forRoot(),
     SidebarModule,
     I18NModule.forRoot(),
-    DialogModule
   ],
   bootstrap: [AppComponent],
 })

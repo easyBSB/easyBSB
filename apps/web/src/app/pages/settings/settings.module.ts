@@ -3,6 +3,7 @@ import { CommonModule } from "@angular/common";
 import { MatTabsModule } from "@angular/material/tabs";
 import { AbilityModule } from "@casl/angular";
 
+import { DialogModule } from "@app/core/dialog";
 import { I18NModule } from "@app/core/i18n";
 import { PermissionsModule } from "@app/core/permissions";
 
@@ -22,7 +23,8 @@ import { SettingsRoutingModule } from "./settings.routing.module";
     UsersModule,
     I18NModule,
     PermissionsModule,
-    AbilityModule
+    AbilityModule,
+    DialogModule
   ],
 })
 export class SettingsModule {}
