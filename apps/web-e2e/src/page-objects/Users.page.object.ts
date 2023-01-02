@@ -22,11 +22,12 @@ export class UsersPageObject extends AbstractPageObject {
    */
   private async navigate(): Promise<void> {
 
-    await this.page.goto('http://localhost:4200/settings', { waitUntil: 'networkidle' });
+    await this.page.goto('http://localhost:4200/settings/users', { waitUntil: 'networkidle' });
     expect(this.page.url()).toContain('/settings');
 
-    const userTab = this.page.getByRole('tab', { name: 'users' })
+    const userTab = this.page.getByRole('tab', { name: 'users' });
     await expect(userTab).toBeVisible();
+    await userTab.click();
   }
 
   /**
