@@ -65,7 +65,7 @@ test.describe("Create new user", () => {
     ])
 
     expect(name).toEqual(username);
-    expect(role).toEqual('Read');
+    expect(role).toEqual('read');
   })
 
   test.skip(`shoud not be allowed to delete himself`, async ({page}) => {

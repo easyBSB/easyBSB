@@ -1,7 +1,7 @@
 import { CdkAccordionItem } from '@angular/cdk/accordion';
 import { ChangeDetectionStrategy, Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { animationFrameScheduler, delay, of, ReplaySubject, Subject, switchMap, take, takeUntil } from 'rxjs';
-import { I18NService } from '@app/libs/i18n';
+import { I18NService } from '@app/core/i18n';
 import { DeviceDataService } from '../utils/bsb.service';
 import { Category } from '@eaysbsb/parser';
 

@@ -32,7 +32,7 @@ test.describe("Admin is not allowed", () => {
 
     expect(message).toBe('Not allowed to change own role.');
     expect(type).toBe('Error');
-    expect(await settingsPage.getUserRole(admin)).toBe('Admin')
+    expect(await settingsPage.getUserRole(admin)).toBe('admin')
   });
 
   test("to delete himself", async ({page}) => {

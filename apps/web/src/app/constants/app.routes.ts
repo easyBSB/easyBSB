@@ -1,5 +1,5 @@
 import { Route } from "@angular/router";
-import { AuthorizationGuard } from "@app/libs/authorization";
+import { AuthorizationGuard } from "@app/core/authorization";
 
 export const AppRoutes: Route[] = [
   {

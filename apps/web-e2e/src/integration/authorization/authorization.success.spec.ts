@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test";
+import { loginAndCacheSession } from "../../support/authorize";
 
 test.describe.serial("Test Authorization", () => {
   /**
@@ -6,7 +7,13 @@ test.describe.serial("Test Authorization", () => {
    * process environment variable
    */
   test("Login success", async ({ page }) => {
-    await page.goto("http://localhost:4200/login", { waitUntil: "networkidle" });
+
+    await Promise.all([
+      page.goto("http://localhost:4200", { waitUntil: "networkidle" }),
+      page.waitForNavigation({ url: "http://localhost:4200/login" })
+    ]);
+
+    // should be redirected to login page
     expect(page.url()).toBe("http://localhost:4200/login");
 
     // do login
@@ -50,23 +57,13 @@ test.describe.serial("Test Authorization", () => {
    * to login again since we are authorized now
    */
   test("Should stay logged in an not redirect if jwt is inside storage", async ({
-    context,
+    page
   }) => {
-    const sessionStorageDump = JSON.parse(
-      process.env["SESSION_STORAGE"] ?? "{}"
-    );
-    await context.addInitScript((storage: Record<string, string>) => {
-      for (const [key, value] of Object.entries(storage)) {
-        window.sessionStorage.setItem(key, value as string);
-      }
-    }, sessionStorageDump);
+    await loginAndCacheSession(page);
 
     // go to page
-    const page = await context.newPage();
-    await Promise.all([
-      page.goto("http://localhost:4200"),
-      page.waitForNavigation({ url: "http://localhost:4200/dashboard" }),
-    ]);
+    await page.goto("http://localhost:4200"),
+    await page.waitForNavigation({ url: "http://localhost:4200/dashboard" }),
 
     // test and clean up
     expect(page.url()).toBe("http://localhost:4200/dashboard");

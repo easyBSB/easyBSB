@@ -17,25 +17,17 @@ export class UsersPageObject extends AbstractPageObject {
     await this.navigate();
   }
 
+  /**
+   * user tab is allready loaded
+   */
   private async navigate(): Promise<void> {
-    await this.page.goto('http://localhost:4200/settings', { waitUntil: 'networkidle' });
+
+    await this.page.goto('http://localhost:4200/settings/users', { waitUntil: 'networkidle' });
     expect(this.page.url()).toContain('/settings');
 
-    // useless to add an data attribute since angular material does not use it
-    const userTab = this.page.locator('#mat-tab-label-0-1');
+    const userTab = this.page.getByRole('tab', { name: 'users' });
     await expect(userTab).toBeVisible();
-
-    /** 
-     * maybe this could be a problem if data is cached
-     * and we do not send any request anymore
-     */
-    await Promise.all([
-      this.page.waitForResponse((res) => {
-          return res.url().includes('/api/users') && res.status() === 200
-        }
-      ),
-      userTab.click()
-    ]);
+    await userTab.click();
   }
 
   /**

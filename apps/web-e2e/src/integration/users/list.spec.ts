@@ -21,6 +21,6 @@ test.describe("Users list", () => {
       settingsPage.getUserName(admin),
       settingsPage.getUserRole(admin)
     ]);
-    expect(data).toStrictEqual(['easybsb', 'Admin']);
+    expect(data).toStrictEqual(['easybsb', 'admin']);
   });
 });
