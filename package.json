@@ -41,7 +41,7 @@
     "@angular/platform-browser": "15.0.3",
     "@angular/platform-browser-dynamic": "15.0.3",
     "@angular/router": "15.0.3",
-    "@casl/ability": "6.3.1",
+    "@casl/ability": "6.3.3",
     "@casl/angular": "8.2.0",
     "@easybsb/bsbdef": "2.1.8",
     "@nestjs/common": "9.1.5",
