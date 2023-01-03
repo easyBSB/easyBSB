@@ -86,15 +86,15 @@
     "@eaysbsb/parser": "file:bin/easybsb-parser.tar.gz",
     "@nestjs/schematics": "9.0.3",
     "@nestjs/testing": "9.2.1",
-    "@nrwl/angular": "15.4.2",
-    "@nrwl/cli": "15.4.1",
-    "@nrwl/eslint-plugin-nx": "15.4.1",
-    "@nrwl/jest": "15.4.1",
-    "@nrwl/linter": "15.4.1",
-    "@nrwl/nest": "15.4.1",
-    "@nrwl/node": "15.4.1",
-    "@nrwl/tao": "15.4.1",
-    "@nrwl/workspace": "15.4.1",
+    "@nrwl/angular": "15.4.4",
+    "@nrwl/cli": "15.4.4",
+    "@nrwl/eslint-plugin-nx": "15.4.4",
+    "@nrwl/jest": "15.4.4",
+    "@nrwl/linter": "15.4.4",
+    "@nrwl/nest": "15.4.4",
+    "@nrwl/node": "15.4.4",
+    "@nrwl/tao": "15.4.4",
+    "@nrwl/workspace": "15.4.4",
     "@oclif/core": "1.22.0",
     "@playwright/test": "1.27.1",
     "@types/bcryptjs": "2.4.2",
@@ -135,6 +135,12 @@
     "nx-electron": {
       "@nrwl/devkit": "15.3.0",
       "@nrwl/workspace": "$@nrwl/workspace"
+    },
+    "@nestjs/swagger": {
+      "@nestjs/mapped-types": {
+        "class-validator": "$class-validator"
+      }
     }
   }
 }
+
