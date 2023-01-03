@@ -86,7 +86,7 @@
     "@eaysbsb/parser": "file:bin/easybsb-parser.tar.gz",
     "@nestjs/schematics": "9.0.3",
     "@nestjs/testing": "9.2.1",
-    "@nrwl/angular": "15.4.1",
+    "@nrwl/angular": "15.4.2",
     "@nrwl/cli": "15.4.1",
     "@nrwl/eslint-plugin-nx": "15.4.1",
     "@nrwl/jest": "15.4.1",
