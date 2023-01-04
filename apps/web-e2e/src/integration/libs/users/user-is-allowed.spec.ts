@@ -1,9 +1,9 @@
 
 import { expect, test } from "@playwright/test";
-import { User } from "../../fixtures/User";
-import { UsersPageObject } from "../../page-objects/Users.page.object";
-import { resolveSessionToken } from "../../support/authorize";
-import { createUser, removeUser } from "../../support/user.support";
+import { User } from "../../../fixtures/User";
+import { UsersPageObject } from "@e2e/page-objects/Users";
+import { resolveSessionToken } from "../../../support/authorize";
+import { createUser, removeUser } from "../../../support/user.support";
 
 test.describe("Create new user", () => {
 

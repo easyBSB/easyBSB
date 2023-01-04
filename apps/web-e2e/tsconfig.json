@@ -10,7 +10,12 @@
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "baseUrl": ".",
+    "paths": {
+      "@e2e/page-objects/*": ["src/page-objects/*.page.object.ts"],
+      "@e2e/support/*": ["src/support/*.ts"]
+    }
   },
   "include": ["src/**/*.ts", "src/**/*.js"],
   "angularCompilerOptions": {
