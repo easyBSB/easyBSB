@@ -1,4 +1,4 @@
-import { Definition } from "@eaysbsb/parser";
+import { Definition } from "@easybsb/parser";
 import { Bus, Device } from "@lib/network";
 import { Injectable } from "@nestjs/common";
 import { IConnection } from "../api";

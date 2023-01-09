@@ -26,7 +26,9 @@
       "@app/core/*": ["./src/app/core/*/public-api.ts"],
       "@app/interfaces/*": ["./src/app/interfaces/*/index.ts"],
       "@app/libs/*": ["./src/app/libs/*/public-api.ts"],
-      "app/i18n/*": ["./src/app/i18n/*"]
+      "app/i18n/*": ["./src/app/i18n/*"],
+      "@easybsb/parser": ["../../libs/easybsb-parser/src"],
+      "@easybsb/parser/api": ["../../libs/easybsb-parser/src/lib/interfaces"]
     }
   },
   "angularCompilerOptions": {

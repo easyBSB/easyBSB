@@ -1,4 +1,4 @@
-import { LanguageKeys } from "@eaysbsb/parser";
+import { LanguageKeys } from "@easybsb/parser";
 import { Controller, Get, Param, ParseIntPipe, Query } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
 import { Bus } from "../model/bus.entity";

@@ -12,7 +12,9 @@
       "@lib/*": [
         "./src/app/libs/*/index.ts",
         "./src/app/libs/*/public-api.ts",
-      ]
+      ],
+      "@easybsb/parser": ["../../libs/easybsb-parser/src"],
+      "@easybsb/parser/api": ["../../libs/easybsb-parser/src/lib/interfaces"],
     },
     "target": "es2015",
     "types": [

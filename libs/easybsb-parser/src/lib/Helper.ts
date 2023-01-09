@@ -3,26 +3,26 @@ import { TranslateItem } from "./interfaces";
 export class Helper {
   public static getLanguage(
     langResource: TranslateItem | null | undefined,
-    language = "KEY"
+    language: keyof TranslateItem = "KEY"
   ): string | null {
     if (!langResource) return null;
 
     const lookup = langResource;
 
     if (Object.prototype.hasOwnProperty.call(lookup, language)) {
-      return lookup[language];
+      return lookup[language] as string;
     }
 
     if (Object.prototype.hasOwnProperty.call(lookup, "EN")) {
-      return lookup[language];
+      return lookup[language] as string;
     }
 
     if (Object.prototype.hasOwnProperty.call(lookup, "DE")) {
-      return lookup[language];
+      return lookup[language] as string;
     }
 
     if (Object.prototype.hasOwnProperty.call(lookup, "KEY")) {
-      return lookup[language];
+      return lookup[language] as string;
     }
 
     return null;

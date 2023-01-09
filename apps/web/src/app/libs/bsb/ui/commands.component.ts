@@ -1,5 +1,5 @@
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy } from '@angular/core';
-import { Command } from '@eaysbsb/parser';
+import { Command } from '@easybsb/parser';
 import { from, mergeMap, Observable, of, ReplaySubject, Subject, switchMap, takeUntil, zip } from 'rxjs';
 import { DeviceDataService } from '../utils/bsb.service';
 
