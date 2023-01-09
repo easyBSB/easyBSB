@@ -1,4 +1,5 @@
 import { LanguageKeys } from "@easybsb/parser";
+import { EasybsbCategory } from "@lib/connection";
 import { Actions, CheckAbility } from "@lib/roles";
 import { User } from "@lib/users";
 import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query } from "@nestjs/common";
@@ -7,7 +8,6 @@ import { plainToClass } from 'class-transformer';
 import { ConnectionMonitor } from "../../connection/src/utils/connection-monitor";
 import { Bus } from "../model/bus.entity";
 import { Device } from "../model/device.entity";
-import { EasybsbCategory } from "../utils/bsb-store";
 import { BusService } from "../utils/bus.service";
 import { DeviceService } from "../utils/device.service";
 

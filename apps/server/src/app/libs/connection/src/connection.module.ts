@@ -1,6 +1,6 @@
 import { Module } from "@nestjs/common";
 import { NetworkModule } from "@lib/network";
-import { ConnectionMonitor } from "./utils";
+import { ConnectionMonitor } from "./utils/connection-monitor";
 
 @Module({
   imports: [NetworkModule],

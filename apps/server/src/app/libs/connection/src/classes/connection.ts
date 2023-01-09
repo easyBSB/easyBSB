@@ -1,8 +1,8 @@
 import { Id } from "@core/decorators";
 import { BSB, busRequestAnswerC, Command, Definition, LanguageKeys, TranslateItem } from "@easybsb/parser";
-import { Bus, Device, EasybsbCategory, EasybsbCommand, EasybsbCommandEnum, EasybsbCommandType } from "@lib/network";
+import { Bus, Device } from "@lib/network";
 import { Observable, Subject } from "rxjs";
-import { ConnectionMessage, ConnectionMessageType, IConnection } from "../api";
+import { ConnectionMessage, ConnectionMessageType, EasybsbCategory, EasybsbCommand, EasybsbCommandEnum, EasybsbCommandType, IConnection } from "../api";
 
 export class Connection implements IConnection {
 
