@@ -1,5 +1,5 @@
 import { APIRequestContext, Page } from "@playwright/test";
-import { resolveSessionToken, writeSessionToken } from "../support/authorize";
+import { resolveSessionToken, writeSessionToken } from "../utils/authorize";
 
 export abstract class AbstractPageObject {
 

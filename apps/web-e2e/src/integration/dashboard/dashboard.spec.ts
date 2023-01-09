@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { clearSession, loginAndCacheSession } from "../../support/authorize";
+import { clearSession, loginAndCacheSession } from "../../utils/authorize";
 
 test.describe("Dashboard", () => {
   test.beforeEach(async ({ page }) => {

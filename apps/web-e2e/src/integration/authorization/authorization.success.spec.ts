@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { loginAndCacheSession } from "../../support/authorize";
+import { loginAndCacheSession } from "../../utils/authorize";
 
 test.describe.serial("Test Authorization", () => {
   /**

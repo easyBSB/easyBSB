@@ -1,5 +1,5 @@
 import { test } from "@playwright/test";
-import { clearSession, loginAndCacheSession } from "../../support/authorize";
+import { clearSession, loginAndCacheSession } from "../../utils/authorize";
 
 test.describe("App: sidebar", () => {
 

@@ -1,15 +1,10 @@
-import { AbstractPageObject } from "./Abstract.page.object";
-import { Locator } from "@playwright/test";
+import { Locator, Page } from "@playwright/test";
 
-export class SidebarPageObject extends AbstractPageObject {
+export class SidebarPageObject {
 
-  protected async initialize(): Promise<void> {
-    await this.page.goto('http://localhost:4200/dashboard', { waitUntil: 'networkidle' });
-  }
-
-  reload(): Promise<void> {
-    throw new Error("Method not implemented.");
-  }
+  constructor(
+    protected readonly page: Page,
+  ) {}
 
   getSidebar(): Locator {
     return this.page.getByTestId('easybsb-sidebar');

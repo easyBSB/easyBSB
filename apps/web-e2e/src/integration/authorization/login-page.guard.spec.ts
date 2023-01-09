@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { loginAndCacheSession, clearSession } from "../../support/authorize";
+import { loginAndCacheSession, clearSession } from "../../utils/authorize";
 
 test.describe("Login page guard", () => {
 

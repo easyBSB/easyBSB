@@ -1,5 +1,5 @@
 import { expect, Locator } from "@playwright/test";
-import { matSelectValue } from "../support/mat-select";
+import { matSelectValue } from "../utils/mat-select";
 import { AbstractPageObject } from "./Abstract.page.object";
 
 export class UsersPageObject extends AbstractPageObject {
@@ -85,7 +85,6 @@ export class UsersPageObject extends AbstractPageObject {
   }
 
   async deleteUser(row: Locator): Promise<void> {
-
     const deleteAction = row.locator('[data-e2e="users-list-actions-delete"]');
     expect(await deleteAction.count()).toBe(1);
     await deleteAction.click()

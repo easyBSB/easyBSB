@@ -14,7 +14,7 @@
     "baseUrl": ".",
     "paths": {
       "@e2e/page-objects/*": ["src/page-objects/*.page.object.ts"],
-      "@e2e/support/*": ["src/support/*.ts"]
+      "@e2e/utils/*": ["src/utils/*.service.ts"]
     }
   },
   "include": ["src/**/*.ts", "src/**/*.js"],

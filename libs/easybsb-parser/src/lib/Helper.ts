@@ -3,7 +3,7 @@ import { TranslateItem } from "./interfaces";
 export class Helper {
   public static getLanguage(
     langResource: TranslateItem | null | undefined,
-    language = "KEY"
+    language: keyof TranslateItem = 'KEY'
   ): string | null {
     if (!langResource) return null;
 

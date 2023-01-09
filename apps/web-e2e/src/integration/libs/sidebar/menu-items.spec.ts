@@ -1,13 +1,17 @@
 import { test, expect } from '@playwright/test';
 import { SidebarPageObject } from '@e2e/page-objects/Sidebar';
+import { SessionService } from '@e2e/utils/Session';
 
 test.describe.parallel('Easybsb sidebar', () => {
 
+  let sessionService: SessionService;
   let sidebarPageObject: SidebarPageObject;
 
-  test.beforeEach(async ({ page, request }) => {
-    sidebarPageObject = new SidebarPageObject(page, request);
-    await sidebarPageObject.bootstrap();
+  test.beforeEach(async ({ page }) => {
+    sessionService = new SessionService(page);
+    await sessionService.login();
+
+    sidebarPageObject = new SidebarPageObject(page);
   });
 
   test(`should have menu entrys`, async () => {
