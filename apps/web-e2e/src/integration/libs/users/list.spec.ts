@@ -1,5 +1,5 @@
 import { expect, Locator, test } from "@playwright/test";
-import { UsersPageObject } from "../../page-objects/Users.page.object";
+import { UsersPageObject } from "../../../page-objects/Users.page.object";
 
 test.describe("Users list", () => {
 

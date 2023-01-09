@@ -13,10 +13,7 @@ module.exports = {
         headless: true,
         browserName: "chromium",
         channel: "chrome",
-        viewport: {
-          height: 1080,
-          width: 1920
-        }
+        testIdAttribute: 'data-e2e'
       },
     },
   ],

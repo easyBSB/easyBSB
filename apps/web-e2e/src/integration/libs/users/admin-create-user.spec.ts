@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { UsersPageObject } from "../../page-objects/Users.page.object";
+import { UsersPageObject } from "@e2e/page-objects/Users";
 
 test.describe("Create new user", () => {
 

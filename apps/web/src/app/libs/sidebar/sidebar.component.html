@@ -1,5 +1,5 @@
 <ul [@sidebarTrigger]="state" class="menu d-flex flex-column">
-  <li (click)="toggleMenu()" class="d-flex menu-entry">
+  <li (click)="toggleMenu()" class="d-flex menu-entry" data-e2e="easybsb-sidebar-toggle">
     <mat-icon class="menu-entry-item">menu</mat-icon>
     <span class="menu-entry-label">
         {{ user?.name }}
@@ -9,6 +9,7 @@
     <li 
       *ngIf="!entry.subject || ('read' | able : entry.subject)"
       [ngClass]="{ 'mt-auto': entry.bottom }"
+      [attr.data-e2e]="'easybsb-sidebar-' + entry.name"
       class="menu-entry"
     >
       <a
@@ -24,14 +25,14 @@
     </li>
   </ng-container>
 
-  <li class="d-flex menu-entry mt-auto">
+  <li class="d-flex menu-entry mt-auto" data-e2e="easybsb-sidebar-language">
     <easybsb-i18n-language-selector class="menu-entry-item"></easybsb-i18n-language-selector>
     <span class="menu-entry-label">
       {{ 'EASYBSB_SIDEBAR_SWITCH_LANGUAGE' | translate }}
     </span>
   </li>
 
-  <li (click)="logout()" class="d-flex menu-entry">
+  <li (click)="logout()" class="d-flex menu-entry" data-e2e="easybsb-sidebar-logout">
     <mat-icon class="menu-entry-item">logout</mat-icon>
     <span class="menu-entry-label">
         {{ 'EASYBSB_SIDEBAR_LOGOUT' | translate }}

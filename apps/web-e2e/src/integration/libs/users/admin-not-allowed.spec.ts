@@ -1,5 +1,5 @@
 import { expect, Locator, test } from "@playwright/test";
-import { UsersPageObject } from "../../page-objects/Users.page.object";
+import { UsersPageObject } from "@e2e/page-objects/Users";
 
 test.describe("Admin is not allowed", () => {
 
