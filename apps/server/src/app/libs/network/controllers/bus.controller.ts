@@ -1,11 +1,13 @@
+import { LanguageKeys } from "@easybsb/parser";
 import { Actions, CheckAbility } from "@lib/roles";
 import { User } from "@lib/users";
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query } from "@nestjs/common";
 import { ApiOperation, ApiHeaders, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { plainToClass } from 'class-transformer';
+import { ConnectionMonitor } from "../../connection/src/utils/connection-monitor";
 import { Bus } from "../model/bus.entity";
 import { Device } from "../model/device.entity";
-import { BsbStorage } from "../utils/bsb-store";
+import { EasybsbCategory } from "../utils/bsb-store";
 import { BusService } from "../utils/bus.service";
 import { DeviceService } from "../utils/device.service";
 
@@ -18,7 +20,7 @@ export class BusController {
   constructor(
     private readonly busService: BusService,
     private readonly deviceServie: DeviceService,
-    private readonly bsbStorage: BsbStorage
+    private readonly connectionMonitor: ConnectionMonitor
   ) {}
 
   @ApiOperation({
@@ -35,6 +37,18 @@ export class BusController {
     return this.busService.list();
   }
 
+  @Get(':id/categories')
+  public getCategories(
+    @Param('id', ParseIntPipe) busId: Bus['id'],
+    @Query() query: { lang: LanguageKeys } 
+  ): Record<string, EasybsbCategory> {
+    const connection = this.connectionMonitor.getConnectionByBusId(busId);
+
+    if (connection) {
+      return connection.getConfiguration(query.lang);
+    }
+  }
+
   @ApiOperation({
     summary: "get value by param id",
     description: "@todo add description",
@@ -46,8 +60,8 @@ export class BusController {
     @Param("id", ParseIntPipe) id: Bus['id'],
     @Param("paramId", ParseIntPipe) paramId: number,
   ): Promise<string> {
-    const bsb = this.bsbStorage.getById(id);
-    const result = await bsb.get(paramId);
+    const connection = this.connectionMonitor.getConnectionByBusId(id);
+    const result = await connection.getParam(paramId);
 
     try {
       if (result.length > 0) {

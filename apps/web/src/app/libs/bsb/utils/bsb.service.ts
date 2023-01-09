@@ -13,7 +13,7 @@ export class DeviceDataService {
 
   public getDeviceConfiguration(lang: string, id: Bus['id'] = 1): Observable<Record<string, Category>> {
     // assume for now we have only 1 device with ID = 1
-    return this.httpClient.get<Record<string, Category>>(`api/bsb/bus/${id}/categories`, {
+    return this.httpClient.get<Record<string, Category>>(`api/bus/${id}/categories`, {
       params: { lang }
     })
   }

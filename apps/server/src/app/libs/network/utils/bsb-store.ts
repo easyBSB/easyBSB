@@ -2,15 +2,15 @@ import { Injectable } from "@nestjs/common";
 import { Bus } from '../model/bus.entity';
 import { BSB, Category, Command, KeyItem, LanguageKeys, TranslateItem, Type } from '@easybsb/parser';
 
-interface EasybsbCommandType extends Omit<Type, 'unit'> {
+export interface EasybsbCommandType extends Omit<Type, 'unit'> {
   unit: string
 }
 
-interface EasybsbCommandEnum {
+export interface EasybsbCommandEnum {
   [key: string]: string;
 }
 
-interface EasybsbCommand extends Omit<Command, 'description' | 'type' | 'enum'> {
+export interface EasybsbCommand extends Omit<Command, 'description' | 'type' | 'enum'> {
   description: string;
   type: EasybsbCommandType
   enum: EasybsbCommandEnum

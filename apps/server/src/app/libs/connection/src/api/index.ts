@@ -1,3 +1,5 @@
+import { busRequestAnswerC, LanguageKeys } from "@easybsb/parser";
+import { EasybsbCategory } from "@lib/network";
 import { Observable } from "rxjs";
 
 export enum ConnectionMessageType {
@@ -31,4 +33,14 @@ export interface IConnection {
    * sends a message
    */
   onMessage(): Observable<ConnectionMessage>;
+
+  /**
+   * get configuration
+   */
+  getConfiguration(lang: LanguageKeys): Record<string, EasybsbCategory> | undefined;
+
+  /**
+   * get param
+   */
+  getParam(param: number): Promise<busRequestAnswerC[]>;
 }
