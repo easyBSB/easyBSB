@@ -2,7 +2,7 @@ import { Injectable, OnApplicationBootstrap } from "@nestjs/common";
 import * as definition from "@easybsb/bsbdef";
 import { BSBDefinition, Category, Definition } from "@easybsb/parser";
 import { BusService, DeviceService } from "@lib/network";
-import { ConnectionMonitor } from "./connection-monitor";
+import { ConnectionMonitor } from "./libs/connection/src/utils/connection-monitor";
 
 @Injectable()
 export class ConnectionBootstrap implements OnApplicationBootstrap {
@@ -18,7 +18,6 @@ export class ConnectionBootstrap implements OnApplicationBootstrap {
       for (const device of await this.deviceService.list(bus.id)) {
         const def = new Definition(this.sanitizeDefinition(definition as unknown as BSBDefinition));
         const connection = this.connectionMonitor.addConnection(bus, device, def);
-
         // connect directly
         await connection.connect();
       }

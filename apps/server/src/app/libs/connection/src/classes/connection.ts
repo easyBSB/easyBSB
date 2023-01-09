@@ -1,8 +1,8 @@
 import { Id } from "@core/decorators";
-import { BSB, Definition } from "@easybsb/parser";
+import { BSB, busRequestAnswerC, Command, Definition, LanguageKeys, TranslateItem } from "@easybsb/parser";
 import { Bus, Device } from "@lib/network";
 import { Observable, Subject } from "rxjs";
-import { ConnectionMessage, ConnectionMessageType, IConnection } from "../api";
+import { ConnectionMessage, ConnectionMessageType, EasybsbCategory, EasybsbCommand, EasybsbCommandEnum, EasybsbCommandType, IConnection } from "../api";
 
 export class Connection implements IConnection {
 
@@ -50,10 +50,69 @@ export class Connection implements IConnection {
     return this.message$.asObservable();
   }
 
+  getConfiguration(lang: LanguageKeys): Record<string, EasybsbCategory> {
+    const i18nKey = lang;
+    const categories = this.bsb.definition.config.categories;
+    const result: Record<string, EasybsbCategory> = {};
+
+    for (const [key, category] of Object.entries(categories)) {
+      const commands: EasybsbCommand[] = [];
+      const name = this.translateItem(category.name, i18nKey);
+
+      for (const command of category.commands) {
+        const commandType: EasybsbCommandType = { ...command.type, unit: this.translateItem(command.type.unit, i18nKey)};
+        const commandEnum: EasybsbCommandEnum = this.translateCommandEnum(command, i18nKey);
+        const commandDescription = this.translateItem(command.description, i18nKey);
+        commands.push({ 
+          ...command,
+          description: commandDescription,
+          enum: commandEnum,
+          type: commandType
+        });
+      }
+      result[key] = { ...category, name, commands };
+    }
+
+    return result;
+  }
+
+  getParam(param: number): Promise<busRequestAnswerC[]> {
+    return this.bsb.get(param);
+  }
+
   private sendMessage(type: ConnectionMessageType, message: string) {
     this.message$.next({
       message,
       type
     })
+  }
+
+  /**
+   * @description translate command enum values
+   */
+  private translateCommandEnum(command: Command, i18nKey: LanguageKeys): EasybsbCommandEnum | undefined {
+    if (!command.enum) {
+      return;
+    }
+
+    const result: EasybsbCommandEnum = {};
+    for (const [key, value] of Object.entries(command.enum)) {
+      result[key] = this.translateItem(value, i18nKey);
+    }
+    return result;
+  }
+
+  /**
+   * @description translate item by given language key otherwise return TEXT_KEY
+   */
+  private translateItem(data: TranslateItem, lang: LanguageKeys): string | undefined {
+    if (!data) {
+      return;
+    }
+
+    if (data[lang] && data[lang].trim() !== '') {
+      return data[lang];
+    }
+    return data['KEY'];
   }
 }

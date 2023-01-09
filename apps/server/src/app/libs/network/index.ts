@@ -4,4 +4,3 @@ export * from './model/device.entity'
 export * from './network.module';
 export * from './utils/bus.service';
 export * from './utils/device.service';
-export * from './utils/bsb-store';

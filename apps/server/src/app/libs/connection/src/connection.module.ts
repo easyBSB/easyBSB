@@ -1,9 +1,10 @@
 import { Module } from "@nestjs/common";
 import { NetworkModule } from "@lib/network";
-import { ConnectionBootstrap, ConnectionMonitor } from "./utils";
+import { ConnectionMonitor } from "./utils/connection-monitor";
 
 @Module({
   imports: [NetworkModule],
-  providers: [ConnectionBootstrap, ConnectionMonitor],
+  providers: [ ConnectionMonitor ],
+  exports: [ ConnectionMonitor ]
 })
 export class ConnectionModule {}

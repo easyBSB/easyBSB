@@ -3,7 +3,6 @@ import { APP_GUARD, Reflector } from "@nestjs/core";
 import { ServeStaticModule } from "@nestjs/serve-static";
 
 import { AuthModule, JwtAuthGuard } from "@lib/auth";
-import { NetworkModule } from "@lib/network";
 import { UsersModule } from "@lib/users";
 
 import { EventsModule } from "./events/events.module";
@@ -18,6 +17,8 @@ import { environment as APP_ENVIRONMENT } from "../environments/environment";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { RoleGuard, RolesModule } from "@lib/roles";
 import { ConnectionModule } from "@lib/connection";
+import { ConnectionBootstrap } from "./connection.bootstrap";
+import { NetworkHttpModule } from "./libs/network/network-http.module";
 
 const extraImports: DynamicModule[] = [];
 if (APP_ENVIRONMENT.production) {
@@ -40,7 +41,7 @@ if (APP_ENVIRONMENT.production) {
     AppTypeormModule,
     ConnectionModule,
     AuthModule,
-    NetworkModule,
+    NetworkHttpModule,
     RolesModule,
     UsersModule,
     EventsModule,
@@ -49,6 +50,7 @@ if (APP_ENVIRONMENT.production) {
   controllers: [AppController],
   providers: [
     AppService,
+    ConnectionBootstrap,
     {
       provide: APP_GUARD,
       useFactory: () => {
