@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, ElementRef, OnDestroy, OnInit } fro
 import { animationFrameScheduler, delay, of, ReplaySubject, Subject, switchMap, take, takeUntil } from 'rxjs';
 import { I18NService } from '@app/core/i18n';
 import { DeviceDataService } from '../utils/bsb.service';
-import { Category } from '@eaysbsb/parser';
+import { Category } from '@easybsb/parser';
 
 @Component({
   selector: 'easybsb-device-data',

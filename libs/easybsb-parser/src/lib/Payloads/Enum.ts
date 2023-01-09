@@ -1,4 +1,4 @@
-import { Value, Command, TranslateItem } from "../interfaces";
+import { Value, Command, TranslateItem, LanguageKeys } from "../interfaces";
 
 import { Helper } from "../Helper";
 
@@ -79,7 +79,9 @@ export class Enum implements Value<number> {
     return [];
   }
 
-  public toString(lang = "KEY") {
+  public toString(xlang = "KEY") {
+    const lang: LanguageKeys = (xlang as unknown) as LanguageKeys;
+
     if (this.value) {
       return (
         Helper.getLanguage(this.enum, lang) ??

@@ -1,6 +1,6 @@
 import { Injectable, OnApplicationBootstrap } from "@nestjs/common";
 import * as definition from "@easybsb/bsbdef";
-import { BSBDefinition, Category, Definition } from "@eaysbsb/parser";
+import { BSBDefinition, Category, Definition } from "@easybsb/parser";
 import { BusService, DeviceService } from "@lib/network";
 import { ConnectionMonitor } from "./connection-monitor";
 

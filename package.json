@@ -83,7 +83,6 @@
     "@angular/common": "15.0.3",
     "@angular/compiler-cli": "15.0.3",
     "@angular/language-service": "15.0.3",
-    "@eaysbsb/parser": "file:bin/easybsb-parser.tar.gz",
     "@nestjs/schematics": "9.0.3",
     "@nestjs/testing": "9.2.1",
     "@nrwl/angular": "15.4.4",

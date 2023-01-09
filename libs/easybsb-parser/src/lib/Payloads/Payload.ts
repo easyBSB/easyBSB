@@ -20,6 +20,7 @@ export function from(
       return new Payloads.Number(data, command);
     case "DDMM":
       if (typeof data !== "number") return new Payloads.DayMonth(data, command);
+      break;
     case "DTTM":
       switch (command.type.name) {
         case "DATETIME":
@@ -32,12 +33,15 @@ export function from(
       break;
     case "TMPR":
       if (typeof data !== "number") return new Payloads.TimeProg(data, command);
+      break;
     case "HHMM":
       if (typeof data !== "number")
         return new Payloads.HourMinute(data, command);
+      break;
     case "STRN":
       return new Payloads.String(data, command);
     case "DWHM":
+      break;
     // ignore only PPS
   }
 

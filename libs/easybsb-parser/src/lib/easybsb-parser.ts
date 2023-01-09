@@ -5,7 +5,7 @@ import { BSBDefinition } from "./interfaces";
 
 // @TODO singleton
 export class BsbCore {
-  private connection: BSB;
+  private connection?: BSB;
 
   log() {
     if (this.connection) {

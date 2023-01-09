@@ -144,7 +144,7 @@ export class BSB {
          * do not use anonymous function if we want to remove them.
          */
         let lastError: Error;
-        const socketError = (error) => lastError = error;
+        const socketError = (error: Error) => lastError = error;
         const socketClose = () => reject(lastError);
 
         socket.once('error', socketError);
