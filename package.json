@@ -85,7 +85,7 @@
     "@angular/language-service": "15.0.3",
     "@nestjs/schematics": "9.0.3",
     "@nestjs/testing": "9.2.1",
-    "@nrwl/angular": "15.4.4",
+    "@nrwl/angular": "15.4.5",
     "@nrwl/cli": "15.4.4",
     "@nrwl/eslint-plugin-nx": "15.4.4",
     "@nrwl/jest": "15.4.4",
