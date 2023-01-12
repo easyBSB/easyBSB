@@ -1,10 +1,8 @@
 import { Module } from "@nestjs/common";
-import { NetworkModule } from "@lib/network";
-import { ConnectionMonitor } from "./utils/connection-monitor";
+import { ConnectionFactory, ConnectionStorage } from "./utils";
 
 @Module({
-  imports: [NetworkModule],
-  providers: [ ConnectionMonitor ],
-  exports: [ ConnectionMonitor ]
+  providers: [ ConnectionStorage, ConnectionFactory ],
+  exports: [ ConnectionStorage, ConnectionFactory ]
 })
 export class ConnectionModule {}

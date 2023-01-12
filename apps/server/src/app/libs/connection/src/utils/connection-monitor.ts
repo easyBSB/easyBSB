@@ -1,35 +1,30 @@
-import { Definition } from "@easybsb/parser";
-import { Bus, Device } from "@lib/network";
 import { Injectable } from "@nestjs/common";
 import { IConnection } from "../api";
-import { Connection } from "../classes/connection";
 
 @Injectable()
-export class ConnectionMonitor {
+export class ConnectionStorage {
 
-  private connections = new Map<Bus['id'], IConnection>();
+  private connections = new Map<IConnection['id'], IConnection>();
 
-  public getConnections(): IConnection[] {
-    return Array.from(this.connections.values());
+  get(id: IConnection['id']): IConnection | undefined {
+    return this.connections.get(id);
   }
 
-  public getConnectionByBusId(id: Bus['id']): IConnection | undefined {
-    return this.connections.get(id);
+  getConnections(): IConnection[] {
+    return Array.from(this.connections.values());
   }
 
   /**
    * only add not connect directly so we can be lazy on this one
    */
-  addConnection(bus: Bus, device: Device, definition: Definition): IConnection {
-    const connection = new Connection(bus, device, definition);
-    this.connections.set(bus.id, connection);
-    return connection;
+  register(connection: IConnection): void {
+    this.connections.set(connection.id, connection);
   }
 
   /**
    * remove an existing connection and disconnect
    */
-  removeConnection(id: Bus['id']): void {
+  remove(id: IConnection['id']): void {
     if (this.connections.has(id)) {
       this.connections.get(id).disconnect();
       this.connections.delete(id);
