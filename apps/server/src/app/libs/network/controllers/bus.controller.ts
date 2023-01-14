@@ -1,11 +1,11 @@
 import { LanguageKeys } from "@easybsb/parser";
-import { EasybsbCategory } from "@lib/connection";
+import { ConnectionFactory, ConnectionStorage, EasybsbCategory } from "@lib/connection";
 import { Actions, CheckAbility } from "@lib/roles";
 import { User } from "@lib/users";
 import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query } from "@nestjs/common";
 import { ApiOperation, ApiHeaders, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { plainToClass } from 'class-transformer';
-import { ConnectionMonitor } from "../../connection/src/utils/connection-monitor";
+
 import { Bus } from "../model/bus.entity";
 import { Device } from "../model/device.entity";
 import { BusService } from "../utils/bus.service";
@@ -20,7 +20,8 @@ export class BusController {
   constructor(
     private readonly busService: BusService,
     private readonly deviceServie: DeviceService,
-    private readonly connectionMonitor: ConnectionMonitor
+    private readonly connectionStorage: ConnectionStorage,
+    private readonly connectionFactory: ConnectionFactory,
   ) {}
 
   @ApiOperation({
@@ -42,11 +43,11 @@ export class BusController {
     @Param('id', ParseIntPipe) busId: Bus['id'],
     @Query() query: { lang: LanguageKeys } 
   ): Record<string, EasybsbCategory> {
-    const connection = this.connectionMonitor.getConnectionByBusId(busId);
-
+    const connection = this.connectionStorage.get(busId);
     if (connection) {
       return connection.getConfiguration(query.lang);
     }
+    return {}
   }
 
   @ApiOperation({
@@ -60,7 +61,7 @@ export class BusController {
     @Param("id", ParseIntPipe) id: Bus['id'],
     @Param("paramId", ParseIntPipe) paramId: number,
   ): Promise<string> {
-    const connection = this.connectionMonitor.getConnectionByBusId(id);
+    const connection = this.connectionStorage.get(id);
     const result = await connection.getParam(paramId);
 
     try {
@@ -144,9 +145,34 @@ export class BusController {
   @CheckAbility({ action: Actions.Read, subject: Bus })
   @Post(':id')
   async update(
-    @Param("id", ParseIntPipe) id: number,
+    @Param("id", ParseIntPipe) busId: number,
     @Body() payload: Partial<Bus>,
   ): Promise<Bus> {
-    return this.busService.update(id, payload);
+
+    // params for reconnect
+    const origin = await this.busService.findById(busId);
+    const {name, id, ...rest } = payload;
+
+    const bus = await this.busService.update(busId, payload);
+
+    // test we have changed some properties which requires a reconnect 
+    let requireReconnect = false;
+    for (const [key, value] of Object.entries(origin)) {
+      requireReconnect = requireReconnect || (rest[key] !== undefined && rest[key] !== value);
+    }
+
+    if (requireReconnect) {
+      const connection = this.connectionStorage.get(bus.id);
+      connection.disconnect();
+
+      this.connectionStorage.remove(bus.id);
+      const devices = await this.deviceServie.list(bus.id);
+
+      const newConnection = this.connectionFactory.create(bus, devices[0]);
+      this.connectionStorage.register(newConnection);
+      newConnection.connect();
+    }
+
+    return bus;
   }
 }

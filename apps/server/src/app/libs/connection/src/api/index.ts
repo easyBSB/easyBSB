@@ -1,4 +1,5 @@
 import { busRequestAnswerC, Category, Command, LanguageKeys, Type } from "@easybsb/parser";
+import { Bus } from "@lib/network";
 import { Observable } from "rxjs";
 
 export enum ConnectionMessageType {
@@ -35,7 +36,7 @@ export interface EasybsbCategory extends Omit<Category, 'name' | 'commands'> {
 
 export interface IConnection {
 
-  readonly id: string;
+  readonly id: Bus['id'];
 
   /**
    * connect to a device

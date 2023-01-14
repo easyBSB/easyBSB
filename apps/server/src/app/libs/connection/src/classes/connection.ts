@@ -1,4 +1,3 @@
-import { Id } from "@core/decorators";
 import { BSB, busRequestAnswerC, Command, Definition, LanguageKeys, TranslateItem } from "@easybsb/parser";
 import { Bus, Device } from "@lib/network";
 import { Observable, Subject } from "rxjs";
@@ -6,8 +5,7 @@ import { ConnectionMessage, ConnectionMessageType, EasybsbCategory, EasybsbComma
 
 export class Connection implements IConnection {
 
-  @Id(`connection`)
-  public readonly id!: string;
+  public readonly id: Bus['id'];
 
   private readonly message$ = new Subject<ConnectionMessage>();
 
@@ -19,7 +17,9 @@ export class Connection implements IConnection {
     private readonly bus: Bus,
     private readonly device: Device,
     private readonly bsbDefinition: Definition
-  ) {}
+  ) {
+    this.id = bus.id;
+  }
 
   async connect(): Promise<void> {
     if (!this.isConnected) {
