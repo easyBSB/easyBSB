@@ -6,6 +6,7 @@ import { BsbModule } from "src/app/libs/bsb/bsb.module";
 
 import { DashboardRoutingModule } from "./dashboard-routing.module";
 import { DashboardComponent } from "./ui/dashboard.component";
+import { UsersModule } from "@app/libs/users";
 
 @NgModule({
   declarations: [DashboardComponent],
@@ -13,7 +14,8 @@ import { DashboardComponent } from "./ui/dashboard.component";
     BsbModule,
     CommonModule,
     DashboardRoutingModule,
-    I18NModule
+    I18NModule,
+    UsersModule
   ],
 })
 export class DashboardModule {}
