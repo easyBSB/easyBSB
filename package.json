@@ -99,7 +99,7 @@
     "@types/bcryptjs": "2.4.2",
     "@types/jest": "28.1.8",
     "@types/node": "18.11.18",
-    "@types/passport-jwt": "3.0.7",
+    "@types/passport-jwt": "3.0.8",
     "@types/passport-local": "1.0.35",
     "@typescript-eslint/eslint-plugin": "5.48.1",
     "@typescript-eslint/parser": "5.48.0",
