@@ -1,93 +1,87 @@
-import { filter, firstValueFrom, map, merge, Observable, Subject } from "rxjs";
-import { IOperation, OperationState } from "./api";
+import {Observable, of, merge} from 'rxjs'
+import {filter, map, takeUntil, tap} from 'rxjs/operators'
+import {TaskState} from './api'
+import {AbstractTask} from './task'
 
-export class Queue {
+export class Queue<T> {
+  public parallelCount = 1
 
-  private queuedItems: IOperation[] = [];
+  private active = 0
 
-  private isQueueProcessing = false;
+  private observedTasks = new WeakSet<AbstractTask<T>>()
 
-  private operationCompleted$ = new Subject<IOperation>();
+  private queuedTasks: AbstractTask[] = []
 
-  add(operation: IOperation): void {
-    if (!this.hasOperation(operation)) {
-      this.registerOperation(operation);
-
-      if (!this.isQueueProcessing) this.process();
+  public register<T extends AbstractTask>(...tasks: T[]): void {
+    for (const task of tasks) {
+      task.addBeforeStartHook(this.createBeforeStartHook(task))
     }
   }
 
-  /** 
-   * @description sends data if an operation completes
-   */
-  get operationCompleted(): Observable<IOperation> {
-    return this.operationCompleted$.asObservable();
+  private createBeforeStartHook(request: AbstractTask): Observable<boolean> {
+    return of(true).pipe(
+      /**
+       * before any task starts we registers on it, so we get notified
+       * if state has been changed
+       */
+      tap(() => this.registerOnTaskStateChange(request)),
+      /**
+       * check active uploads and max uploads we could run
+       */
+      map(() => this.active < this.parallelCount),
+      /**
+       * if we could not start task push it into queue
+       */
+      tap((isStartAble: boolean) => {
+        if (!isStartAble) {
+          this.writeToTaskQueue(request)
+        }
+      }),
+    )
   }
 
-  /**
-   * @description process queue
-   */
-  private async process() {
-    this.isQueueProcessing = true;
+  private registerOnTaskStateChange(task: AbstractTask): void {
+    if (!this.observedTasks.has(task)) {
+      this.observedTasks.add(task)
 
-    while (this.queuedItems.length > 0) {
-      const operation = this.queuedItems.shift() as IOperation;
-      const state = await this.execOperation(operation);
-
-      switch (state) {
-        case OperationState.CANCELED:
-        case OperationState.ERROR:
-        case OperationState.COMPLETED:
-          this.operationCompleted$.next(operation);
-          break;
-
-        case OperationState.RETRY:
-          // operation.updateState(OperationState.IDLE);
-          this.add(operation);
-          break
-      }
+      const change$ = task.stateChange
+      change$.pipe(
+        filter(state => state === TaskState.START),
+        takeUntil(merge(task.destroyed, task.completed)),
+      ).subscribe({
+        next: () => {
+          this.active += 1
+        },
+        complete: () => {
+          this.taskCompleted(task)
+        },
+      })
     }
-
-    this.isQueueProcessing = false;
   }
 
-  /**
-   * @description return current state of request
-   */
-  private async execOperation(operation: IOperation): Promise<unknown> {
-    const completed$ = operation.completed.pipe(
-      map((result) => result.state)
-    );
-
-    const retry$ = operation.state.pipe(
-      filter(([current]) => current === OperationState.RETRY),
-      map(([current]) => current)
-    );
-
-    const state$ = merge(completed$, retry$);
-    operation.execute();
-
-    return await firstValueFrom(state$);
+  private isInTaskQueue(task: AbstractTask): boolean {
+    return this.queuedTasks.includes(task)
   }
 
-  private hasOperation(needle: IOperation): boolean {
-    return this.queuedItems.some((operation) => needle === operation);
+  private removeFromTaskQueue(request: AbstractTask) {
+    this.queuedTasks = this.queuedTasks.filter(upload => upload !== request)
   }
 
-  private registerOperation(operation: IOperation) {
-    this.queuedItems.push(operation)
-
-    operation.state
-      .pipe(
-        filter(([current, previous]) =>
-          current === OperationState.CANCELED && 
-          previous !== OperationState.PROCESSING
-        ),
-      )
-      .subscribe(() => this.removeOperation(operation));
+  private startNextInTaskQueue() {
+    this.active = Math.max(this.active - 1, 0)
+    if (this.queuedTasks.length > 0) {
+      const nextUpload = this.queuedTasks.shift() as AbstractTask
+      nextUpload.start()
+    }
   }
 
-  private removeOperation(remove: IOperation): void {
-    this.queuedItems = this.queuedItems.filter((operation) => operation !== remove);
+  private taskCompleted(task: AbstractTask) {
+    this.isInTaskQueue(task) ? this.removeFromTaskQueue(task) : this.startNextInTaskQueue()
+    this.observedTasks.delete(task)
+  }
+
+  private writeToTaskQueue(task: AbstractTask) {
+    task.state = TaskState.PENDING
+    this.queuedTasks = [...this.queuedTasks, task]
   }
 }
