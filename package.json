@@ -54,7 +54,7 @@
     "@nestjs/serve-static": "3.0.0",
     "@nestjs/swagger": "6.1.4",
     "@nestjs/typeorm": "9.0.1",
-    "@nestjs/websockets": "9.1.5",
+    "@nestjs/websockets": "9.2.1",
     "@ngx-translate/core": "14.0.0",
     "bcryptjs": "2.4.3",
     "class-transformer": "0.5.1",
