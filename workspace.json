@@ -4,6 +4,7 @@
     "easybsb-parser": "libs/easybsb-parser",
     "electron": "apps/electron",
     "server": "apps/server",
+    "shared": "libs/shared",
     "web": "apps/web"
   },
   "$schema": "./node_modules/nx/schemas/workspace-schema.json"
