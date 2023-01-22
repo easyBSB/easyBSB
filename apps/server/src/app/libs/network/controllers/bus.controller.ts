@@ -5,7 +5,6 @@ import { User } from "@lib/users";
 import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query } from "@nestjs/common";
 import { ApiOperation, ApiHeaders, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { plainToClass } from 'class-transformer';
-
 import { Bus } from "../model/bus.entity";
 import { Device } from "../model/device.entity";
 import { BusService } from "../utils/bus.service";

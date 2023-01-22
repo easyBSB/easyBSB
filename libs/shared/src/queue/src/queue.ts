@@ -1,20 +1,47 @@
 import {Observable, of, merge} from 'rxjs'
-import {filter, map, takeUntil, tap} from 'rxjs/operators'
+import {distinctUntilChanged, filter, map, takeUntil, tap} from 'rxjs/operators'
 import {TaskState} from './api'
 import {AbstractTask} from './task'
 
 export class Queue<T> {
   public parallelCount = 1
 
-  private active = 0
+  private activeTasks: AbstractTask[] = []
 
   private observedTasks = new WeakSet<AbstractTask<T>>()
 
   private queuedTasks: AbstractTask[] = []
 
-  public register<T extends AbstractTask>(...tasks: T[]): void {
+  register<T extends AbstractTask>(...tasks: T[]): void {
     for (const task of tasks) {
       task.addBeforeStartHook(this.createBeforeStartHook(task))
+    }
+  }
+
+  /**
+   * clear queue this will remove all queued tasks and cancel them
+   */
+  clear() {
+    /**
+     * get all tasks, active and 
+     */
+    const tasks = [...this.activeTasks, ...this.queuedTasks];
+    /**
+     * remove all queued tasks now. 
+     * 
+     * Since rxjs is synchronous it will cancel first active tasks, 
+     * which one completes now and take next task in queue and start this one
+     * before we call complete on this one.
+     * 
+     * To avoid this one we clear queue directly.
+     */
+    this.queuedTasks = [];
+    /** 
+     * loop through all tasks we have found, active and queued ones
+     * and cancel them.
+     */
+    for (const task of tasks) {
+      task.cancel();
     }
   }
 
@@ -28,7 +55,7 @@ export class Queue<T> {
       /**
        * check active uploads and max uploads we could run
        */
-      map(() => this.active < this.parallelCount),
+      map(() => this.activeTasks.length < this.parallelCount),
       /**
        * if we could not start task push it into queue
        */
@@ -46,21 +73,19 @@ export class Queue<T> {
 
       const change$ = task.stateChange
       change$.pipe(
-        filter(state => state === TaskState.START),
         takeUntil(merge(task.destroyed, task.completed)),
+        distinctUntilChanged(),
+        filter(state => state === TaskState.START),
       ).subscribe({
-        next: () => {
-          this.active += 1
-        },
-        complete: () => {
-          this.taskCompleted(task)
-        },
+        next: () => this.activeTasks.push(task),
+        complete: () => this.taskCompleted(task),
       })
     }
   }
 
   private isInTaskQueue(task: AbstractTask): boolean {
-    return this.queuedTasks.includes(task)
+    const inQueue = this.queuedTasks.includes(task)
+    return inQueue
   }
 
   private removeFromTaskQueue(request: AbstractTask) {
@@ -68,14 +93,18 @@ export class Queue<T> {
   }
 
   private startNextInTaskQueue() {
-    this.active = Math.max(this.active - 1, 0)
+    // muss er den naechsten nehmen der pending idle ist und nichts anderes
     if (this.queuedTasks.length > 0) {
-      const nextUpload = this.queuedTasks.shift() as AbstractTask
-      nextUpload.start()
+      const nextTask = this.queuedTasks.shift() as AbstractTask
+      nextTask.start()
     }
   }
 
   private taskCompleted(task: AbstractTask) {
+    if (this.activeTasks.includes(task)) {
+      this.activeTasks = this.activeTasks.filter((active) => task !== active)
+    }
+
     this.isInTaskQueue(task) ? this.removeFromTaskQueue(task) : this.startNextInTaskQueue()
     this.observedTasks.delete(task)
   }

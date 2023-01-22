@@ -1,8 +1,11 @@
 <ul class="list-group">
-  <li *ngFor="let item of commandList; trackBy:trackByParameter"
-    [ngClass]="{ loading: item.valueLoading }"
+  <li *ngFor="let task of tasks"
     class="list-group-item device-parameter d-flex flex-direction-row align-items-center"
   >
-    {{ item.command.description }} - Aktueller Wert: {{ item.value }}
+    task is here
+    <!-- result and loading icon -->
+    <ng-container *ngIf="task.stateChange | async as taskState">
+      {{ taskState }} {{ task.result }}
+    </ng-container>
   </li>
 </ul>
