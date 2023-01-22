@@ -4,11 +4,13 @@ import { animationFrameScheduler, delay, of, ReplaySubject, Subject, switchMap, 
 import { I18NService } from '@app/core/i18n';
 import { DeviceDataService } from '../utils/bsb.service';
 import { Category } from '@easybsb/parser';
+import { ParameterTaskStore } from '../utils/parameter-task.store';
 
 @Component({
   selector: 'easybsb-device-data',
   templateUrl: './categories.component.html',
   styleUrls: ['./categories.component.scss'],
+  providers: [ParameterTaskStore],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CategoriesComponent implements OnInit, OnDestroy {
@@ -21,6 +23,7 @@ export class CategoriesComponent implements OnInit, OnDestroy {
     private readonly deviceDataService: DeviceDataService,
     private readonly i81nService: I18NService,
     private elRef: ElementRef<HTMLElement>,
+    private readonly store: ParameterTaskStore
   ) {}
 
   public ngOnInit(): void {
@@ -38,6 +41,8 @@ export class CategoriesComponent implements OnInit, OnDestroy {
   }
 
   public handleItemOpened(item: CdkAccordionItem) {
+    this.store.clear();
+
     of(void 0)
       .pipe(delay(0, animationFrameScheduler), take(1))
       .subscribe(() => this.scrollToPosition(item));
