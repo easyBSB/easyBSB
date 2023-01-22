@@ -59,11 +59,10 @@ export class CommandsComponent implements OnInit, OnDestroy {
     const result = [];
 
     for (const { command } of this.commandList) {
-      const task = new FetchParamTask(this.bsbService, command);
-      this.parameterTaskStore.add(task);
-      result.push(task);
+      result.push(new FetchParamTask(this.bsbService, command))
     }
 
+    this.parameterTaskStore.add(...result);
     return result;
   }
 }
