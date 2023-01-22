@@ -1,4 +1,4 @@
-import {Observable, Subject, concat, of} from 'rxjs'
+import {Observable, Subject, concat, of, ReplaySubject} from 'rxjs'
 import {tap, filter, bufferCount, map} from 'rxjs/operators'
 import {TaskState} from './api'
 
@@ -13,7 +13,7 @@ export interface ITaskResponse<T = unknown> {
 export abstract class AbstractTask<T = any> {
   abstract execute(): void;
 
-  private stateChange$ = new Subject<TaskState>()
+  private stateChange$ = new ReplaySubject<TaskState>(1)
   private completed$ = new Subject<ITaskResponse<T>>()
   private destroy$ = new Subject<void>()
 
@@ -26,9 +26,7 @@ export abstract class AbstractTask<T = any> {
    * returns observable which notify if file upload state
    * has been changed
    */
-  get stateChange(): Observable<TaskState> {
-    return this.stateChange$.asObservable()
-  }
+  stateChange: Observable<TaskState> = this.stateChange$.asObservable();
 
   get completed(): Observable<ITaskResponse<T>> {
     return this.completed$.asObservable()
@@ -47,7 +45,7 @@ export abstract class AbstractTask<T = any> {
   }
 
   set state(state: TaskState) {
-    this.taskState = state
+    this.updateState(state)
   }
 
   addBeforeStartHook(hook: Observable<boolean>): void {
@@ -55,7 +53,13 @@ export abstract class AbstractTask<T = any> {
   }
 
   cancel(): void {
+    console.log(this.isProgress());
     if (this.isProgress() || this.isPending()) {
+
+      if (this.isProgress()) {
+        console.log('cancel')
+      }
+
       this.updateState(TaskState.CANCELED)
       this.destroy()
     }
@@ -115,13 +119,16 @@ export abstract class AbstractTask<T = any> {
       filter((isAllowedToStart: boolean) => isAllowedToStart),
       tap(() => this.updateState(TaskState.START)),
     ).subscribe({
-      next: ((): void => this.execute()),
+      next: ((): void => {
+        this.updateState(TaskState.PROGRESS)
+        this.execute()
+      }),
       error: (error: Error) => console.error(error.message),
     })
   }
 
   private updateState(state: TaskState): void {
-    this.state = state
+    this.taskState = state
     this.stateChange$.next(state)
   }
 
