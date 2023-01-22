@@ -10,6 +10,7 @@
     [attr.aria-expanded]="accordionItem.expanded"
     [attr.aria-controls]="'accordion-body-' + index"
     (opened)="handleItemOpened(accordionItem)"
+    (closed)="handleItemClosed()"
     >
 
     <!-- header -->

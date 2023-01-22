@@ -1,6 +1,6 @@
 import { CdkAccordionItem } from '@angular/cdk/accordion';
 import { ChangeDetectionStrategy, Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
-import { animationFrameScheduler, delay, of, ReplaySubject, Subject, switchMap, take, takeUntil } from 'rxjs';
+import { animationFrameScheduler, delay, of, ReplaySubject, Subject, switchMap, take, takeUntil, throttleTime } from 'rxjs';
 import { I18NService } from '@app/core/i18n';
 import { DeviceDataService } from '../utils/bsb.service';
 import { Category } from '@easybsb/parser';
@@ -19,6 +19,8 @@ export class CategoriesComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
+  private clearStore$ = new Subject<void>()
+
   constructor(
     private readonly deviceDataService: DeviceDataService,
     private readonly i81nService: I18NService,
@@ -27,6 +29,19 @@ export class CategoriesComponent implements OnInit, OnDestroy {
   ) {}
 
   public ngOnInit(): void {
+
+    /**
+     * clear store if we open a new accordion item or close it,
+     * if we simple select an other one it will send 2 times.
+     * 
+     * First time if we open and after that the old one gets closed,
+     * to handle this use throttleTime to ignore the second call.
+     */
+    this.clearStore$.pipe(
+      takeUntil(this.destroy$),
+      throttleTime(0, animationFrameScheduler)
+    ).subscribe(() => this.store.clear())
+
     this.i81nService.getLanguage()
       .pipe(
         takeUntil(this.destroy$),
@@ -36,16 +51,21 @@ export class CategoriesComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
+    this.store.clear();
     this.destroy$.next();
     this.destroy$.complete();
   }
 
   public handleItemOpened(item: CdkAccordionItem) {
-    this.store.clear();
+    this.clearStore$.next()
 
     of(void 0)
       .pipe(delay(0, animationFrameScheduler), take(1))
       .subscribe(() => this.scrollToPosition(item));
+  }
+
+  public handleItemClosed() {
+    this.clearStore$.next()
   }
 
   public noSort(): number {

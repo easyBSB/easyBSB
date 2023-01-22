@@ -22,9 +22,24 @@ export class Queue<T> {
    * clear queue this will remove all queued tasks and cancel them
    */
   clear() {
+    /**
+     * get all tasks, active and 
+     */
     const tasks = [...this.activeTasks, ...this.queuedTasks];
-    // clear this directly
+    /**
+     * remove all queued tasks now. 
+     * 
+     * Since rxjs is synchronous it will cancel first active tasks, 
+     * which one completes now and take next task in queue and start this one
+     * before we call complete on this one.
+     * 
+     * To avoid this one we clear queue directly.
+     */
     this.queuedTasks = [];
+    /** 
+     * loop through all tasks we have found, active and queued ones
+     * and cancel them.
+     */
     for (const task of tasks) {
       task.cancel();
     }

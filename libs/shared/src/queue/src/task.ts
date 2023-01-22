@@ -53,13 +53,7 @@ export abstract class AbstractTask<T = any> {
   }
 
   cancel(): void {
-    console.log(this.isProgress());
     if (this.isProgress() || this.isPending()) {
-
-      if (this.isProgress()) {
-        console.log('cancel')
-      }
-
       this.updateState(TaskState.CANCELED)
       this.destroy()
     }

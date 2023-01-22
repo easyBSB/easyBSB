@@ -25,7 +25,5 @@ export class ParameterTaskStore {
   clear() {
     this.queue.clear();
     this.tasks = [];
-
-    console.log(this.tasks);
   }
 }

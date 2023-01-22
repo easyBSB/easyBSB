@@ -13,7 +13,6 @@ export class FetchParamTask extends AbstractTask<string | number | null> {
   }
 
   execute(): void {
-    this.destroyed.subscribe(() => console.log('destroyed'));
     this.deviceDataService.getParamValue(1, this.command.parameter)
       .pipe(takeUntil(this.destroyed))
       .subscribe({
