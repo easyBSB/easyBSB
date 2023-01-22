@@ -23,7 +23,8 @@ export class ParameterTaskStore {
   }
 
   clear() {
-    this.queue.clear();
-    this.tasks = [];
+    for (const task of this.tasks) {
+      task.cancel();
+    }
   }
 }
