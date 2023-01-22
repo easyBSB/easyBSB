@@ -1,5 +1,5 @@
-import {Observable, of, merge} from 'rxjs'
-import {distinctUntilChanged, filter, map, takeUntil, tap} from 'rxjs/operators'
+import {Observable, of, merge, interval, asyncScheduler} from 'rxjs'
+import {distinctUntilChanged, filter, finalize, map, takeUntil, takeWhile, tap} from 'rxjs/operators'
 import {TaskState} from './api'
 import {AbstractTask} from './task'
 
@@ -8,6 +8,8 @@ export class Queue<T> {
 
   private activeTasks: AbstractTask[] = []
 
+  private isQueueSchedulerRunning = false;
+
   private observedTasks = new WeakSet<AbstractTask<T>>()
 
   private queuedTasks: AbstractTask[] = []
@@ -15,33 +17,6 @@ export class Queue<T> {
   register<T extends AbstractTask>(...tasks: T[]): void {
     for (const task of tasks) {
       task.addBeforeStartHook(this.createBeforeStartHook(task))
-    }
-  }
-
-  /**
-   * clear queue this will remove all queued tasks and cancel them
-   */
-  clear() {
-    /**
-     * get all tasks, active and 
-     */
-    const tasks = [...this.activeTasks, ...this.queuedTasks];
-    /**
-     * remove all queued tasks now. 
-     * 
-     * Since rxjs is synchronous it will cancel first active tasks, 
-     * which one completes now and take next task in queue and start this one
-     * before we call complete on this one.
-     * 
-     * To avoid this one we clear queue directly.
-     */
-    this.queuedTasks = [];
-    /** 
-     * loop through all tasks we have found, active and queued ones
-     * and cancel them.
-     */
-    for (const task of tasks) {
-      task.cancel();
     }
   }
 
@@ -62,9 +37,26 @@ export class Queue<T> {
       tap((isStartAble: boolean) => {
         if (!isStartAble) {
           this.writeToTaskQueue(request)
+          this.startQueueScheduler()
         }
       }),
     )
+  }
+
+  /**
+   * simple queue scheduler to checker evey xMS we have a free place in queue
+   */
+  private startQueueScheduler(): void {
+    if (!this.isQueueSchedulerRunning) {
+      interval(0, asyncScheduler).pipe(
+        takeWhile(() => this.queuedTasks.length > 0),
+        filter(() => this.activeTasks.length < this.parallelCount),
+        finalize(() => this.isQueueSchedulerRunning = false)
+      ).subscribe(() => {
+        this.queuedTasks.shift()?.start()
+      })
+    }
+    this.isQueueSchedulerRunning = true;
   }
 
   private registerOnTaskStateChange(task: AbstractTask): void {
@@ -92,20 +84,16 @@ export class Queue<T> {
     this.queuedTasks = this.queuedTasks.filter(upload => upload !== request)
   }
 
-  private startNextInTaskQueue() {
-    // muss er den naechsten nehmen der pending idle ist und nichts anderes
-    if (this.queuedTasks.length > 0) {
-      const nextTask = this.queuedTasks.shift() as AbstractTask
-      nextTask.start()
-    }
-  }
-
   private taskCompleted(task: AbstractTask) {
+    // task is active remove from active tasks
     if (this.activeTasks.includes(task)) {
       this.activeTasks = this.activeTasks.filter((active) => task !== active)
     }
 
-    this.isInTaskQueue(task) ? this.removeFromTaskQueue(task) : this.startNextInTaskQueue()
+    if (this.isInTaskQueue(task)) { 
+      this.removeFromTaskQueue(task)
+    }
+
     this.observedTasks.delete(task)
   }
 
