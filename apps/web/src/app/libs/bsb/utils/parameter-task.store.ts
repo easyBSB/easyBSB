@@ -26,5 +26,6 @@ export class ParameterTaskStore {
     for (const task of this.tasks) {
       task.cancel();
     }
+    this.tasks = [];
   }
 }
