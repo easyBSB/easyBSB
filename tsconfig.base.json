@@ -24,8 +24,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@easy-bsb/shared": [
-        "libs/shared/src/index.ts"
+      "@easy-bsb/shared/*": [
+        "libs/shared/src/*/public-api.ts"
       ]
     }
   },

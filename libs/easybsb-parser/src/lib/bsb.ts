@@ -1,7 +1,8 @@
 import { Command, Device, Payload } from "./interfaces";
-import { Observable, Subject } from "rxjs";
+import { lastValueFrom, map, Observable, Subject } from "rxjs";
 import * as net from "net";
 import * as stream from "stream";
+import { AbstractTask, Queue } from "../../../shared/src/queue/public-api";
 
 import { Helper } from "./Helper";
 import * as Payloads from "./Payloads/";
@@ -66,14 +67,6 @@ export interface RAWMessage {
   data: number[];
 }
 
-type busRequest = {
-  timestamp?: Date;
-  command: Command;
-  data: number[];
-  done: (value: busRequestAnswer) => void;
-  error: (reason?: unknown) => void;
-};
-
 export interface busRequestAnswerNC {
   command: Command | null | undefined;
   value: Payload;
@@ -89,7 +82,33 @@ interface DuplexToClose extends stream.Duplex {
 }
 
 export type busRequestAnswer = null | busRequestAnswerC;
+
+class BsbMessageTask extends AbstractTask<busRequestAnswer | undefined> {
+  constructor(
+    private readonly client: DuplexToClose | null,
+    private readonly busCommand: Command,
+    private readonly message: Uint8Array
+  ) {
+    super(5000)
+  }
+
+  get command(): Command {
+    return this.busCommand
+  }
+
+  execute(): void {
+    this.client?.write(this.message)
+  }
+
+  public finish(response: busRequestAnswer): void {
+    super.complete(response)
+  }
+}
+
 export class BSB {
+
+  private queue: Queue<BsbMessageTask>;
+
   //#region Variables & Properties
   public Log$: Observable<busRequestAnswerNC>;
   private log$: Subject<busRequestAnswerNC>;
@@ -103,12 +122,9 @@ export class BSB {
 
   private src: number;
 
-  // private lastReceivedData: Date = new Date(0)
   lastReceivedData: Date = new Date(0);
   private lastFetchDevice = 0;
 
-  private sentQueue: busRequest[] = [];
-  private openRequest: busRequest | null = null;
   //#endregion
 
   //#region constructor
@@ -120,6 +136,10 @@ export class BSB {
     this.log$ = new Subject();
     this.Log$ = this.log$.asObservable();
 
+    this.queue = new Queue();
+    this.queue.parallelCount = 1;
+
+    /** should we keep this one ? */
     setInterval(() => this.checkSendQueue(), 10);
   }
   //#endregion
@@ -133,7 +153,7 @@ export class BSB {
         this.client?.off("data", (data) => this.newData(data));
         if (this.client?.toClose) this.client.destroy();
         // eslint-disable-next-line no-empty
-      } catch {}
+      } catch { }
 
       if (param1 instanceof stream.Duplex) {
         this.client = param1;
@@ -166,31 +186,6 @@ export class BSB {
   //#endregion
 
   private checkSendQueue() {
-    // ToDo check for timeout
-    // if answers from the dst are already delivered,....
-    if (this.openRequest) {
-      if (this.openRequest.timestamp) {
-        const timeDiff =
-          (new Date().getTime() - this.openRequest.timestamp.getTime()) / 1000;
-
-        // ToDo: make Timeout configurable now 5seconds
-        if (timeDiff > 5) {
-          this.openRequest.done(null);
-          this.openRequest = null;
-        }
-      } else {
-        this.openRequest.timestamp = new Date();
-      }
-    }
-
-    if (!this.openRequest && this.sentQueue.length > 0 && this.client) {
-      const newRequest = this.sentQueue.shift();
-      if (newRequest) {
-        this.openRequest = newRequest;
-        // todo move the call of the client write to a timer
-        this.client.write(Uint8Array.from(newRequest.data));
-      }
-    }
 
     // if no device family or variant is set try to fetch
     if (
@@ -288,16 +283,15 @@ export class BSB {
         msg.typ != MSG_TYPE.QRV &&
         msg.typ != MSG_TYPE.SET
       ) {
-        if (
-          this.openRequest &&
-          this.openRequest?.command.command === command.command
-        ) {
-          this.openRequest.done({
-            msg: msg,
-            command: command,
-            value: value as Payload,
-          });
-          this.openRequest = null;
+
+        for (const task of this.queue.ActiveTasks) {
+          if (task.command.command === command.command) {
+            task.finish({
+              msg: msg,
+              command: command,
+              value: value as Payload,
+            })
+          }
         }
       }
     }
@@ -411,14 +405,14 @@ export class BSB {
 
       for (let i = 0; i < data.length; i++) data[i] = ~data[i] & 0xff;
 
-      return new Promise<busRequestAnswer>((done, error) => {
-        this.sentQueue.push({
-          command: command,
-          data: data,
-          done: done,
-          error: error,
-        });
-      });
+      const task = new BsbMessageTask(this.client, command, Uint8Array.from(data));
+      this.queue.registerAndStart(task)
+      /** 
+       * @todo return task directly so we can cancel it
+       */
+      return lastValueFrom(task.destroyed.pipe(
+        map(() => task.result!)
+      ))
     }
 
     return new Promise((done) => {

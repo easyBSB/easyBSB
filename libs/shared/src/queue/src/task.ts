@@ -1,5 +1,5 @@
-import {Observable, Subject, concat, of, ReplaySubject} from 'rxjs'
-import {tap, filter, bufferCount, map} from 'rxjs/operators'
+import {Observable, Subject, concat, of, ReplaySubject, timer} from 'rxjs'
+import {tap, filter, bufferCount, map, takeUntil} from 'rxjs/operators'
 import {TaskState} from './api'
 
 export interface ITaskResponse<T = unknown> {
@@ -23,10 +23,14 @@ export abstract class AbstractTask<T = any> {
   private taskState: TaskState = TaskState.IDLE;
 
   /**
-   * returns observable which notify if file upload state
-   * has been changed
+   * returns observable which notify if task state has been changed
    */
   stateChange: Observable<TaskState> = this.stateChange$.asObservable();
+
+  constructor(
+    /** default timeout after 30sec */
+    private readonly timeout = 30000
+  ) {}
 
   get completed(): Observable<ITaskResponse<T>> {
     return this.completed$.asObservable()
@@ -114,11 +118,18 @@ export abstract class AbstractTask<T = any> {
       tap(() => this.updateState(TaskState.START)),
     ).subscribe({
       next: ((): void => {
+        if (this.timeout > 0) this.startTimeoutScheduler()
         this.updateState(TaskState.PROGRESS)
         this.execute()
       }),
       error: (error: Error) => console.error(error.message),
     })
+  }
+
+  private startTimeoutScheduler(): void {
+    timer(this.timeout).pipe(
+      takeUntil(this.destroyed),
+    ).subscribe(() => this.error(new Error('Timed out')))
   }
 
   private updateState(state: TaskState): void {
