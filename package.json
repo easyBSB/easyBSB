@@ -83,7 +83,7 @@
     "@angular/cli": "~15.1.2",
     "@angular/common": "15.1.0",
     "@angular/compiler-cli": "15.1.0",
-    "@angular/language-service": "15.1.0",
+    "@angular/language-service": "15.1.1",
     "@nestjs/schematics": "9.0.4",
     "@nestjs/testing": "9.2.1",
     "@nrwl/angular": "15.5.3",
