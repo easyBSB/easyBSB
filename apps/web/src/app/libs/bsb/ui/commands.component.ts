@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ReplaySubject, Subject } from 'rxjs';
-import { Command } from '@easybsb/parser';
+import type { Command } from '@easybsb/parser/api';
 import { DeviceDataService } from '../utils/bsb.service';
 import { FetchParamTask } from '../utils/fetch-param.task';
 import { ParameterTaskStore } from '../utils/parameter-task.store';
