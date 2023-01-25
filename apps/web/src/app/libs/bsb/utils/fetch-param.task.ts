@@ -1,4 +1,4 @@
-import { Command } from "@easybsb/parser";
+import type { Command } from "@easybsb/parser/api";
 import { AbstractTask } from "@shared/queue";
 import { takeUntil } from "rxjs";
 import { DeviceDataService } from "./bsb.service";
