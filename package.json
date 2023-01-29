@@ -142,9 +142,6 @@
       "@nestjs/mapped-types": {
         "class-validator": "$class-validator"
       }
-    },
-    "@nrwl/angular": {
-      "rxjs": "$rxjs"
     }
   }
 }
