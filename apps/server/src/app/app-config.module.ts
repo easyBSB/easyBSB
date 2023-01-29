@@ -2,7 +2,7 @@ import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { homedir } from "os";
 import path = require("path");
-import { environment } from "src/environments/environment";
+import { environment } from "../environments/environment";
 
 const isProd = environment.production;
 

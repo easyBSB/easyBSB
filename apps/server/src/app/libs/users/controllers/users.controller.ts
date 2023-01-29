@@ -12,7 +12,7 @@ import {
   Put,
 } from "@nestjs/common";
 import { ApiOperation, ApiHeaders, ApiResponse, ApiBody, ApiTags } from "@nestjs/swagger";
-import { AbilityFactory, Actions, CheckAbility } from "@lib/roles";
+import { AbilityFactory, Actions, CheckAbility } from "@easy-bsb/server/lib/roles";
 import { FindManyOptions } from "typeorm";
 import { GetUser } from "../constants/get-user.decorator";
 import { User, UserRoles } from "../entities/user";

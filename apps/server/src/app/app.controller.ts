@@ -1,4 +1,4 @@
-import { BypassAuthorization } from "@lib/auth";
+import { BypassAuthorization } from "@easy-bsb/server/lib/auth";
 import { Controller, Get, Head } from "@nestjs/common";
 import {
   ApiBearerAuth,

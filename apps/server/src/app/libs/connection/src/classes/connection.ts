@@ -1,5 +1,5 @@
-import { BSB, busRequestAnswerC, Command, Definition, LanguageKeys, TranslateItem } from "@easybsb/parser";
-import { Bus, Device } from "@lib/network";
+import { BSB, busRequestAnswerC, Command, Definition, LanguageKeys, TranslateItem } from "@easy-bsb/parser";
+import { Bus, Device } from "@easy-bsb/server/lib/network";
 import { Observable, Subject } from "rxjs";
 import { ConnectionMessage, ConnectionMessageType, EasybsbCategory, EasybsbCommand, EasybsbCommandEnum, EasybsbCommandType, IConnection } from "../api";
 

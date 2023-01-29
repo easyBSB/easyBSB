@@ -1,5 +1,5 @@
-import { Actions, CheckAbility } from "@lib/roles";
-import { User } from "@lib/users";
+import { Actions, CheckAbility } from "@easy-bsb/server/lib/roles";
+import { User } from "@easy-bsb/server/lib/users";
 import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put } from "@nestjs/common";
 import { ApiOperation, ApiHeaders, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { plainToClass } from "class-transformer";

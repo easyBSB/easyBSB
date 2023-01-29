@@ -3,24 +3,32 @@ import {distinctUntilChanged, filter, finalize, map, takeUntil, takeWhile, tap} 
 import {TaskState} from './api'
 import {AbstractTask} from './task'
 
-export class Queue<T> {
+export class Queue<T extends AbstractTask> {
   public parallelCount = 1
 
-  private activeTasks: AbstractTask[] = []
-
+  private activeTasks: T[] = []
   private isQueueSchedulerRunning = false;
+  private observedTasks = new WeakSet<T>()
+  private queuedTasks: T[] = []
 
-  private observedTasks = new WeakSet<AbstractTask<T>>()
+  get ActiveTasks(): T[] {
+    return this.activeTasks;
+  }
 
-  private queuedTasks: AbstractTask[] = []
-
-  register<T extends AbstractTask>(...tasks: T[]): void {
+  register(...tasks: T[]): void {
     for (const task of tasks) {
       task.addBeforeStartHook(this.createBeforeStartHook(task))
     }
   }
 
-  private createBeforeStartHook(request: AbstractTask): Observable<boolean> {
+  registerAndStart(...tasks: T[]): void {
+    for (const task of tasks) {
+      task.addBeforeStartHook(this.createBeforeStartHook(task))
+      task.start()
+    }
+  }
+
+  private createBeforeStartHook(request: T): Observable<boolean> {
     return of(true).pipe(
       /**
        * before any task starts we registers on it, so we get notified
@@ -59,7 +67,7 @@ export class Queue<T> {
     this.isQueueSchedulerRunning = true;
   }
 
-  private registerOnTaskStateChange(task: AbstractTask): void {
+  private registerOnTaskStateChange(task: T): void {
     if (!this.observedTasks.has(task)) {
       this.observedTasks.add(task)
 
@@ -75,29 +83,25 @@ export class Queue<T> {
     }
   }
 
-  private isInTaskQueue(task: AbstractTask): boolean {
+  private isInTaskQueue(task: T): boolean {
     const inQueue = this.queuedTasks.includes(task)
     return inQueue
   }
 
-  private removeFromTaskQueue(request: AbstractTask) {
-    this.queuedTasks = this.queuedTasks.filter(upload => upload !== request)
-  }
-
-  private taskCompleted(task: AbstractTask) {
+  private taskCompleted(task: T) {
     // task is active remove from active tasks
     if (this.activeTasks.includes(task)) {
       this.activeTasks = this.activeTasks.filter((active) => task !== active)
     }
 
     if (this.isInTaskQueue(task)) { 
-      this.removeFromTaskQueue(task)
+      this.queuedTasks = this.queuedTasks.filter(queued => queued !== task)
     }
 
     this.observedTasks.delete(task)
   }
 
-  private writeToTaskQueue(task: AbstractTask) {
+  private writeToTaskQueue(task: T) {
     task.state = TaskState.PENDING
     this.queuedTasks = [...this.queuedTasks, task]
   }

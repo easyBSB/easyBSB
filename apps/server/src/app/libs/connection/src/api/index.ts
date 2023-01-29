@@ -1,5 +1,5 @@
-import { busRequestAnswerC, Category, Command, LanguageKeys, Type } from "@easybsb/parser";
-import { Bus } from "@lib/network";
+import { busRequestAnswerC, Category, Command, LanguageKeys, Type } from "@easy-bsb/parser";
+import { Bus } from "@easy-bsb/server/lib/network";
 import { Observable } from "rxjs";
 
 export enum ConnectionMessageType {

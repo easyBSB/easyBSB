@@ -4,13 +4,13 @@ import { TranslateModule } from "@ngx-translate/core";
 import { CommonModule } from "@angular/common";
 
 // core modules
-import { MessageModule } from "@app/core/message";
-import { ErrorHandlerModule } from "@app/core/error-handler";
-import { I18NModule } from "@app/core/i18n";
+import { MessageModule } from "@easy-bsb/web/core/message";
+import { ErrorHandlerModule } from "@easy-bsb/web/core/error-handler";
+import { I18NModule } from "@easy-bsb/web/core/i18n";
 
 // libs
-import { AuthorizationModule } from "@app/core/authorization";
-import { SidebarModule } from "@app/libs/sidebar";
+import { AuthorizationModule } from "@easy-bsb/web/core/authorization";
+import { SidebarModule } from "@easy-bsb/web/lib/sidebar";
 
 import { AppComponent } from "./app.component";
 import { AppRoutingModule } from "./app-routing.module";

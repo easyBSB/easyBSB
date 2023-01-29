@@ -1,4 +1,4 @@
-import { UsersModule } from "@lib/users";
+import { UsersModule } from "@easy-bsb/server/lib/users";
 import { Module } from "@nestjs/common";
 import { PassportModule } from "@nestjs/passport";
 import { JwtModule } from "@nestjs/jwt";

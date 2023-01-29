@@ -1,5 +1,5 @@
 import { Route } from "@angular/router";
-import { PermissionGuard } from "@app/core/permissions";
+import { PermissionGuard } from "@easy-bsb/web/core/permissions";
 import { SettingsComponent } from "../ui/settings.component";
 
 export const SettingRoutes: Route[] = [

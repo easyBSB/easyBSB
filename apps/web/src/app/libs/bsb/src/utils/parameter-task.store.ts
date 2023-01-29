@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Queue } from "@shared/queue";
+import { Queue } from "@easy-bsb/queue";
 import { FetchParamTask } from "./fetch-param.task";
 
 @Injectable()

@@ -7,7 +7,7 @@ import {
 import { Reflector } from "@nestjs/core";
 import { Observable } from "rxjs";
 import { ForbiddenError } from "@casl/ability";
-import { User } from "@lib/users";
+import { User } from "@easy-bsb/server/lib/users";
 
 import { AbilityFactory } from "../providers/ability.factory";
 import { RoleRequirement } from "../api";

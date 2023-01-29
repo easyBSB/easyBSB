@@ -1,5 +1,5 @@
 import { InferSubjects, Ability } from "@casl/ability";
-import { User } from "@lib/users";
+import { User } from "@easy-bsb/server/lib/users";
 import { Actions } from "../constants";
 
 export interface RoleRequirement {

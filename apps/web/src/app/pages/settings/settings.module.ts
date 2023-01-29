@@ -3,12 +3,12 @@ import { CommonModule } from "@angular/common";
 import { MatTabsModule } from "@angular/material/tabs";
 import { AbilityModule } from "@casl/angular";
 
-import { DialogModule } from "@app/core/dialog";
-import { I18NModule } from "@app/core/i18n";
-import { PermissionsModule } from "@app/core/permissions";
+import { I18NModule } from "@easy-bsb/web/core/i18n";
+import { PermissionsModule } from "@easy-bsb/web/core/permissions";
+import { DialogModule } from "@easy-bsb/web/core/dialog";
 
-import { UsersModule } from "@app/libs/users";
-import { NetworkModule } from "@app/libs/network";
+import { UsersModule } from "@easy-bsb/web/lib/users";
+import { NetworkModule } from "@easy-bsb/web/lib/network";
 
 import { SettingsComponent } from "./ui/settings.component";
 import { SettingsRoutingModule } from "./settings.routing.module";
