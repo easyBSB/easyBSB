@@ -20,16 +20,7 @@
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    "target": "es2020",
-    "baseUrl": ".",
-    "paths": {
-      "@app/core/*": ["./src/app/core/*/public-api.ts"],
-      "@app/interfaces/*": ["./src/app/interfaces/*/index.ts"],
-      "@app/libs/*": ["./src/app/libs/*/public-api.ts"],
-      "app/i18n/*": ["./src/app/i18n/*"],
-      "@easybsb/parser/api": ["../../libs/easybsb-parser/src/lib/interfaces"],
-      "@shared/*": ["../../libs/shared/src/*/public-api"]
-    }
+    "target": "es2020"
   },
   "angularCompilerOptions": {
     "strictInjectionParameters": true,

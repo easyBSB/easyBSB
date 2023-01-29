@@ -1,12 +1,12 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { I18NModule } from "@app/core/i18n";
+import { I18NModule } from "@easy-bsb/web/core/i18n";
 
-import { BsbModule } from "src/app/libs/bsb/bsb.module";
+import { UsersModule } from "@easy-bsb/web/lib/users";
+import { BsbModule } from "@easy-bsb/web/lib/bsb";
 
 import { DashboardRoutingModule } from "./dashboard-routing.module";
 import { DashboardComponent } from "./ui/dashboard.component";
-import { UsersModule } from "@app/libs/users";
 
 @NgModule({
   declarations: [DashboardComponent],

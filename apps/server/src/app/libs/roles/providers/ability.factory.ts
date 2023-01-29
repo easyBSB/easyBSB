@@ -5,7 +5,7 @@ import {
   ExtractSubjectType,
 } from "@casl/ability";
 import { Injectable } from "@nestjs/common";
-import { User, UserRoles } from "@lib/users";
+import { User, UserRoles } from "@easy-bsb/server/lib/users";
 
 import { AppAbility, Subjects } from "../api";
 import { Actions } from "../constants";

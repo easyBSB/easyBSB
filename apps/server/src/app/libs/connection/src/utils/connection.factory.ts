@@ -1,7 +1,7 @@
-import { BSBDefinition, Category, Definition } from "@easybsb/parser";
+import { BSBDefinition, Category, Definition } from "@easy-bsb/parser";
 import * as definition from "@easybsb/bsbdef";
 import { Injectable } from "@nestjs/common";
-import { Bus, Device } from "@lib/network";
+import { Bus, Device } from "@easy-bsb/server/lib/network";
 
 import { IConnection } from "../api";
 import { Connection } from "../classes/connection";
@@ -19,7 +19,6 @@ export class ConnectionFactory {
    * sanitize definition
    */
   private sanitizeDefinition(definition: BSBDefinition): BSBDefinition {
-
     const { version, compiletime, categories } = definition;
     const sanitized: BSBDefinition = {
       categories: {},

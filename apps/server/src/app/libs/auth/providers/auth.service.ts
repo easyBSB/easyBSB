@@ -6,7 +6,7 @@ import {
 import { validate } from "class-validator";
 import { compareSync } from "bcryptjs";
 import { JwtService } from "@nestjs/jwt";
-import { User, UserService } from "@lib/users";
+import { User, UserService } from "@easy-bsb/server/lib/users";
 
 import { LoginResponseDto } from "../api";
 

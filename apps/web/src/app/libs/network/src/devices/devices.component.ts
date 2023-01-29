@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { ListItem } from '@app/core/datasource';
+import { ListItem } from '@easy-bsb/web/core/datasource';
 import { filter, Observable } from 'rxjs';
 import { Bus, Device } from '../api';
 import { NetworkViewHelper, ViewState } from '../utils/network-view.helper';

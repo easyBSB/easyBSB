@@ -5,8 +5,8 @@ import { HTTP_INTERCEPTORS } from "@angular/common/http";
 import { AuthorizationBearerInterceptor } from "./utils/authorization-bearer.interceptor";
 import { MatInputModule } from "@angular/material/input";
 import { MatButtonModule } from "@angular/material/button";
-import { PermissionsModule } from "@app/core/permissions";
-import { I18NModule } from "@app/core/i18n";
+import { PermissionsModule } from "@easy-bsb/web/core/permissions";
+import { I18NModule } from "@easy-bsb/web/core/i18n";
 
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { Router } from "@angular/router";

@@ -4,8 +4,8 @@ import { LoginDto } from "../api";
 import { LoginResponseDto } from "../api/login-response.dto";
 import { BypassAuthorization } from "../utils/bypass-authorization";
 import { AuthService } from "../providers/auth.service";
-import { LoggedInUser } from "@core/decorators";
-import { User } from "@lib/users";
+import { LoggedInUser } from "@easy-bsb/server/core/decorators";
+import { User } from "@easy-bsb/server/lib/users";
 
 @ApiTags("auth")
 @Controller({

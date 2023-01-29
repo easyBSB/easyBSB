@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ListDatasource } from '@app/core/datasource';
-import { MessageService } from '@app/core/message';
+import { ListDatasource } from '@easy-bsb/web/core/datasource';
+import { MessageService } from '@easy-bsb/web/core/message';
 import { Observable, of } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Bus } from '../api';

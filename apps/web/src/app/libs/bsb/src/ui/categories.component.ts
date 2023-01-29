@@ -1,9 +1,9 @@
 import { CdkAccordionItem } from '@angular/cdk/accordion';
 import { ChangeDetectionStrategy, Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { animationFrameScheduler, delay, of, ReplaySubject, Subject, switchMap, take, takeUntil, throttleTime } from 'rxjs';
-import { I18NService } from '@app/core/i18n';
+import { I18NService } from '@easy-bsb/web/core/i18n';
 import { DeviceDataService } from '../utils/bsb.service';
-import type { Category } from '@easybsb/parser/api';
+import type { Category } from '@easy-bsb/parser';
 import { ParameterTaskStore } from '../utils/parameter-task.store';
 
 @Component({

@@ -1,4 +1,4 @@
-import { Subjects } from "@app/core/permissions";
+import { Subjects } from "@easy-bsb/web/core/permissions";
 
 interface MenuEntry {
   label: string;

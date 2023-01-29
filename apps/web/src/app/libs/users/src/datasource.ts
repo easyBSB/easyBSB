@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ListDatasource, ListItem } from '@app/core/datasource';
+import { ListDatasource, ListItem } from '@easy-bsb/web/core/datasource';
 import { Observable, tap } from 'rxjs';
-import { MessageService } from '@app/core/message';
+import { MessageService } from '@easy-bsb/web/core/message';
 import { User, UserRoles } from '../../../interfaces/users';
 
 @Injectable()

@@ -6,9 +6,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 
-import { PipesModule } from '@app/core/pipes';
-import { I18NModule } from '@app/core/i18n';
-import { MessageModule } from '@app/core/message';
+import { PipesModule } from '@easy-bsb/web/core/pipes';
+import { I18NModule } from '@easy-bsb/web/core/i18n';
+import { MessageModule } from '@easy-bsb/web/core/message';
 
 import { BusComponent } from './bus/bus.component';
 import { BusListDatasource } from './utils/bus.datasource';

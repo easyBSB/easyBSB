@@ -2,7 +2,8 @@ import { Command, Device, Payload } from "./interfaces";
 import { lastValueFrom, map, Observable, Subject } from "rxjs";
 import * as net from "net";
 import * as stream from "stream";
-import { AbstractTask, Queue } from "../../../shared/src/queue/public-api";
+
+import {AbstractTask, Queue} from "@easy-bsb/queue";
 
 import { Helper } from "./Helper";
 import * as Payloads from "./Payloads/";
@@ -411,7 +412,7 @@ export class BSB {
        * @todo return task directly so we can cancel it
        */
       return lastValueFrom(task.destroyed.pipe(
-        map(() => task.result!)
+        map(() => task.result as busRequestAnswer)
       ))
     }
 

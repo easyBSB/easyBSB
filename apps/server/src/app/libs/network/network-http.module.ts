@@ -1,5 +1,5 @@
-import { ConnectionModule } from "@lib/connection";
-import { RolesModule } from "@lib/roles";
+import { ConnectionModule } from "@easy-bsb/server/lib/connection";
+import { RolesModule } from "@easy-bsb/server/lib/roles";
 import { Module } from "@nestjs/common";
 
 import { BusController } from "./controllers/bus.controller";

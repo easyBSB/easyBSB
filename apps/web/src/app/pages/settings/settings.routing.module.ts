@@ -1,6 +1,6 @@
 import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
-import { ABILITY_RESOLVER } from "@app/core/permissions";
+import { ABILITY_RESOLVER } from "@easy-bsb/web/core/permissions";
 import { SettingRoutes } from "./constants/setting.routes";
 import { settingsPermissionsResolver } from "./guards/settings-permission-resolver";
 

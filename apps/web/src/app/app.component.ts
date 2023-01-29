@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { AuthorizationService } from "@app/core/authorization";
+import { AuthorizationService } from "@easy-bsb/web/core/authorization";
 import { map, Observable } from "rxjs";
 
 @Component({

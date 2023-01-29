@@ -1,6 +1,6 @@
 /* eslint-disable */
 export default {
-  displayName: 'shared',
+  displayName: 'queue',
   preset: '../../jest.preset.js',
   globals: {
     'ts-jest': {
@@ -11,8 +11,5 @@ export default {
     '^.+\\.[tj]sx?$': 'ts-jest'
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-  coverageDirectory: '../../coverage/libs/shared',
-  moduleNameMapper: {
-    "^@lib/(.*)": "<rootDir>/src/$1/public-api.ts"
-  }
+  coverageDirectory: '../../coverage/libs/queue'
 };

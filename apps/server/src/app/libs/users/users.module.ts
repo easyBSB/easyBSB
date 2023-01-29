@@ -1,4 +1,4 @@
-import { RolesModule } from "@lib/roles";
+import { RolesModule } from "@easy-bsb/server/lib/roles";
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { UsersController } from "./controllers/users.controller";

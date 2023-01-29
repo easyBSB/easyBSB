@@ -1,9 +1,10 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
-import { User } from "@app/libs/users";
 import { BehaviorSubject, catchError, map, Observable, of, switchMap, take, tap } from "rxjs";
-import { PermissionService } from "@app/core/permissions";
+import { PermissionService } from "@easy-bsb/web/core/permissions";
+import { User } from "@easy-bsb/web/api/users";
+
 import { LoginDto, LoginResponseDto } from "../api/login.dto";
 import { STORAGE_KEY_JWT } from "../constants";
 

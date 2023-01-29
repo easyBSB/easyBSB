@@ -1,7 +1,7 @@
-import { LanguageKeys } from "@easybsb/parser";
-import { ConnectionFactory, ConnectionStorage, EasybsbCategory } from "@lib/connection";
-import { Actions, CheckAbility } from "@lib/roles";
-import { User } from "@lib/users";
+import { LanguageKeys } from "@easy-bsb/parser";
+import { ConnectionFactory, ConnectionStorage, EasybsbCategory } from "@easy-bsb/server/lib/connection";
+import { Actions, CheckAbility } from "@easy-bsb/server/lib/roles";
+import { User } from "@easy-bsb/server/lib/users";
 import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query } from "@nestjs/common";
 import { ApiOperation, ApiHeaders, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { plainToClass } from 'class-transformer';

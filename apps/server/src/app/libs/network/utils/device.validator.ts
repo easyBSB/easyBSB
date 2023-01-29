@@ -1,4 +1,4 @@
-import { ValidationErrors, ValidationResult } from "@core/validators";
+import { ValidationErrors, ValidationResult } from "@easy-bsb/server/core/validators";
 import { InjectRepository } from "@nestjs/typeorm";
 import { validate } from "class-validator";
 import { FindOptionsWhere, Not, Repository } from "typeorm";
