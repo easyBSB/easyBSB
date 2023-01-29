@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ListDatasource } from '@easy-bsb/web/core/datasource';
-import { MessageService } from '@easy-bsb/web/core/message';
 import { Observable, of } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Bus } from '../api';
 import { NetworkStore } from './network-store';
+import { MessageService } from '../../../../core/message';
+import { ListDatasource } from '../../../../core/datasource';
 
 @Injectable()
 export class BusListDatasource extends ListDatasource<Bus> {

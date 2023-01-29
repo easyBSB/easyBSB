@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
 import { Observable, skip, Subject, takeUntil } from "rxjs";
-import { UserListItem, UserRoles } from "@easy-bsb/web/api/users";
+import { UserListItem, UserRoles } from "../../../interfaces";
 import { UserListDatasource } from "./datasource";
 
 @Component({

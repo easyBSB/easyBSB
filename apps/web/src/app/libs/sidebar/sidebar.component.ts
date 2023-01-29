@@ -1,7 +1,7 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
-import type { User } from '@easy-bsb/web/api/users';
-import { AuthorizationService } from '@easy-bsb/web/core/authorization';
+import { AuthorizationService } from '../../core/authorization';
+import { User } from '../../interfaces';
 import { MenuEntries, MENU_MAX_WIDTH, MENU_MIN_WIDTH } from './constants';
 
 @Component({

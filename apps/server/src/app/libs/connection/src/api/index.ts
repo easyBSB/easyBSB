@@ -1,6 +1,6 @@
 import { busRequestAnswerC, Category, Command, LanguageKeys, Type } from "@easy-bsb/parser";
-import { Bus } from "@easy-bsb/server/lib/network";
 import { Observable } from "rxjs";
+import type { Bus } from "../../../network/public-api";
 
 export enum ConnectionMessageType {
   CONNECTED,

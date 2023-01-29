@@ -1,8 +1,8 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { map, Observable } from "rxjs";
-import { Bus } from "@easy-bsb/web/lib/network";
 import type { Category, Command } from "@easy-bsb/parser";
+import type { Bus } from "../../../network";
 
 @Injectable()
 export class DeviceDataService {

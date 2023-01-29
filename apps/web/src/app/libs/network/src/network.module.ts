@@ -6,9 +6,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 
-import { PipesModule } from '@easy-bsb/web/core/pipes';
-import { I18NModule } from '@easy-bsb/web/core/i18n';
-import { MessageModule } from '@easy-bsb/web/core/message';
 
 import { BusComponent } from './bus/bus.component';
 import { BusListDatasource } from './utils/bus.datasource';
@@ -16,6 +13,9 @@ import { DevicesListDatasource } from './utils/device.datasource';
 import { DevicesComponent } from './devices/devices.component';
 import { NetworkViewHelper } from './utils/network-view.helper';
 import { NetworkStore, NetworkMemoryStore } from './utils/network-store';
+import { I18NModule } from '../../../core/i18n';
+import { MessageModule } from '../../../core/message';
+import { PipesModule } from '../../../core/pipes';
 
 @NgModule({
   declarations: [

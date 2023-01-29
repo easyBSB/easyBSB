@@ -1,5 +1,5 @@
 import { Route } from "@angular/router";
-import { AuthorizationGuard } from "@easy-bsb/web/core/authorization";
+import { AuthorizationGuard } from "../core/authorization";
 
 export const AppRoutes: Route[] = [
   {

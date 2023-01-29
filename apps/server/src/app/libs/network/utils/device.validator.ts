@@ -1,9 +1,10 @@
-import { ValidationErrors, ValidationResult } from "@easy-bsb/server/core/validators";
 import { InjectRepository } from "@nestjs/typeorm";
 import { validate } from "class-validator";
 import { FindOptionsWhere, Not, Repository } from "typeorm";
 import { Bus } from "../model/bus.entity";
 import { Device } from "../model/device.entity";
+
+import type { ValidationResult, ValidationErrors } from "../../../core/validators";
 
 /**
  * device validation helper

@@ -1,5 +1,5 @@
 import { ActivatedRouteSnapshot } from "@angular/router";
-import { Actions, Subjects } from "@easy-bsb/web/core/permissions";
+import { Actions, Subjects } from "../../../core/permissions";
 
 export function settingsPermissionsResolver(
   activatedRoute: ActivatedRouteSnapshot

@@ -1,10 +1,11 @@
-import { Actions, CheckAbility } from "@easy-bsb/server/lib/roles";
-import { User } from "@easy-bsb/server/lib/users";
 import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put } from "@nestjs/common";
 import { ApiOperation, ApiHeaders, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { plainToClass } from "class-transformer";
+import { CheckAbility, Actions } from "../../roles";
 import { Device } from "../model/device.entity";
 import { DeviceService } from "../utils/device.service";
+
+import type { User } from "../../users";
 
 @ApiTags("device")
 @Controller({

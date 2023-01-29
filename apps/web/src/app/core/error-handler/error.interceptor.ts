@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpInterceptor, HttpHandler, HttpRequest, HttpErrorResponse } from '@angular/common/http';
 import { catchError } from 'rxjs';
 import { RequestContextToken } from '../../constants/api';
-import { MessageService } from '../message/message.service';
+import { MessageService } from '../message';
 
 /**
  * @description HttpContext but generic, HttpContextToken got a type and we have 

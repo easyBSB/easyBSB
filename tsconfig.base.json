@@ -29,25 +29,6 @@
       ],
       "@easy-bsb/queue": [
         "libs/queue/src/index.ts"
-      ],
-      "@easy-bsb/server/core/*": [
-        "apps/server/src/app/core/*/index.ts",
-        "apps/server/src/app/core/*/public-api.ts"
-      ],
-      "@easy-bsb/server/lib/*": [
-        "apps/server/src/app/libs/*/index.ts",
-        "apps/server/src/app/libs/*/public-api.ts"
-      ],
-      "@easy-bsb/web/api/*": [
-        "apps/web/src/app/interfaces/*/index.ts"
-      ],
-      "@easy-bsb/web/core/*": [
-        "apps/web/src/app/core/*/index.ts",
-        "apps/web/src/app/core/*/public-api.ts"
-      ],
-      "@easy-bsb/web/lib/*": [
-        "apps/web/src/app/libs/*/index.ts",
-        "apps/web/src/app/libs/*/public-api.ts"
       ]
     }
   },

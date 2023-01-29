@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { ListItem } from '@easy-bsb/web/core/datasource';
 import { filter, Observable, Subject, take, takeUntil } from 'rxjs';
-import { DialogService, DialogType } from '@easy-bsb/web/core/dialog';
+import { ListItem } from '../../../../core/datasource';
+import { DialogService, DialogType } from '../../../../core/dialog';
 import { Bus } from '../api';
 import { NetworkViewHelper, ViewState } from '../utils/network-view.helper';
 import { BusListDatasource } from '../utils/bus.datasource';

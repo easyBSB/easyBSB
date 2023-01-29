@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { ListItem } from '@easy-bsb/web/core/datasource';
 import { filter, Observable } from 'rxjs';
 import { Bus, Device } from '../api';
+import { ListItem } from '../../../../core/datasource';
 import { NetworkViewHelper, ViewState } from '../utils/network-view.helper';
 import { DevicesListDatasource } from '../utils/device.datasource';
 

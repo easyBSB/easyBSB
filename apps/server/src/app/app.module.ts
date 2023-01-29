@@ -2,8 +2,6 @@ import { DynamicModule, Module } from "@nestjs/common";
 import { APP_GUARD, Reflector } from "@nestjs/core";
 import { ServeStaticModule } from "@nestjs/serve-static";
 
-import { AuthModule, JwtAuthGuard } from "@easy-bsb/server/lib/auth";
-import { UsersModule } from "@easy-bsb/server/lib/users";
 
 import { EventsModule } from "./events/events.module";
 
@@ -15,10 +13,12 @@ import { AppTypeormModule } from "./app-typeorm.module";
 // add serve static module only for production
 import { environment as APP_ENVIRONMENT } from "../environments/environment";
 import { ConfigModule, ConfigService } from "@nestjs/config";
-import { RoleGuard, RolesModule } from "@easy-bsb/server/lib/roles";
-import { ConnectionModule } from "@easy-bsb/server/lib/connection";
 import { ConnectionBootstrap } from "./connection.bootstrap";
 import { NetworkHttpModule } from "./libs/network/network-http.module";
+import { AuthModule, JwtAuthGuard } from "./libs/auth";
+import { ConnectionModule } from "./libs/connection/public-api";
+import { RolesModule, RoleGuard } from "./libs/roles";
+import { UsersModule } from "./libs/users";
 
 const extraImports: DynamicModule[] = [];
 if (APP_ENVIRONMENT.production) {

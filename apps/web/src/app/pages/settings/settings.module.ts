@@ -3,15 +3,14 @@ import { CommonModule } from "@angular/common";
 import { MatTabsModule } from "@angular/material/tabs";
 import { AbilityModule } from "@casl/angular";
 
-import { I18NModule } from "@easy-bsb/web/core/i18n";
-import { PermissionsModule } from "@easy-bsb/web/core/permissions";
-import { DialogModule } from "@easy-bsb/web/core/dialog";
-
-import { UsersModule } from "@easy-bsb/web/lib/users";
-import { NetworkModule } from "@easy-bsb/web/lib/network";
+import { I18NModule } from "../../core/i18n";
+import { PermissionsModule } from "../../core/permissions";
+import { NetworkModule } from "../../libs/network";
+import { UsersModule } from "../../libs/users";
 
 import { SettingsComponent } from "./ui/settings.component";
 import { SettingsRoutingModule } from "./settings.routing.module";
+import { DialogModule } from "@angular/cdk/dialog";
 
 @NgModule({
   declarations: [SettingsComponent],
