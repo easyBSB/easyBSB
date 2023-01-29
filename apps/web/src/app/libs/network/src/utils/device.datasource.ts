@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ListDatasource } from '@easy-bsb/web/core/datasource';
 import { Observable, of, tap, throwError } from 'rxjs';
+import { ListDatasource } from '../../../../core/datasource';
 import { Bus, Device } from '../api';
 import { NetworkStore } from './network-store';
 

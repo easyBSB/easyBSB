@@ -1,7 +1,7 @@
 import { BSBDefinition, Category, Definition } from "@easy-bsb/parser";
 import * as definition from "@easybsb/bsbdef";
 import { Injectable } from "@nestjs/common";
-import { Bus, Device } from "@easy-bsb/server/lib/network";
+import type { Bus, Device } from "../../../network/public-api";
 
 import { IConnection } from "../api";
 import { Connection } from "../classes/connection";

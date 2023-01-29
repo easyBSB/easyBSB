@@ -1,6 +1,6 @@
-import { ConnectionModule } from "@easy-bsb/server/lib/connection";
-import { RolesModule } from "@easy-bsb/server/lib/roles";
 import { Module } from "@nestjs/common";
+import { ConnectionModule } from "../connection/public-api";
+import { RolesModule } from "../roles";
 
 import { BusController } from "./controllers/bus.controller";
 import { DeviceController } from "./controllers/device.controller";

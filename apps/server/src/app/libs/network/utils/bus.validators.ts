@@ -1,7 +1,8 @@
-import { ValidationResult, ValidationErrors } from "@easy-bsb/server/core/validators";
 import { validate } from "class-validator";
 import { FindOptionsWhere, Not, Repository } from "typeorm";
-import { Bus } from "../model/bus.entity";
+
+import type { ValidationResult, ValidationErrors } from "../../../core/validators";
+import type { Bus } from "../model/bus.entity";
 
 export class BusValidation {
 

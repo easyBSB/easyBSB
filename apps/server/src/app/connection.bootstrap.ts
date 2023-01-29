@@ -1,6 +1,6 @@
 import { Injectable, OnApplicationBootstrap } from "@nestjs/common";
-import { BusService, DeviceService } from "@easy-bsb/server/lib/network";
-import { ConnectionFactory, ConnectionStorage } from "@easy-bsb/server/lib/connection";
+import { ConnectionStorage, ConnectionFactory } from "./libs/connection/public-api";
+import { BusService, DeviceService } from "./libs/network/public-api";
 
 @Injectable()
 export class ConnectionBootstrap implements OnApplicationBootstrap {

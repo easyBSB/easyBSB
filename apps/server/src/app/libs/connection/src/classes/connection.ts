@@ -1,6 +1,6 @@
 import { BSB, busRequestAnswerC, Command, Definition, LanguageKeys, TranslateItem } from "@easy-bsb/parser";
-import { Bus, Device } from "@easy-bsb/server/lib/network";
 import { Observable, Subject } from "rxjs";
+import type { Bus, Device } from "../../../network/public-api";
 import { ConnectionMessage, ConnectionMessageType, EasybsbCategory, EasybsbCommand, EasybsbCommandEnum, EasybsbCommandType, IConnection } from "../api";
 
 export class Connection implements IConnection {

@@ -1,4 +1,3 @@
-import { BypassAuthorization } from "@easy-bsb/server/lib/auth";
 import { Controller, Get, Head } from "@nestjs/common";
 import {
   ApiBearerAuth,
@@ -8,6 +7,7 @@ import {
 } from "@nestjs/swagger";
 
 import { AppService } from "./app.service";
+import { BypassAuthorization } from "./libs/auth";
 
 @ApiBearerAuth()
 @ApiTags("App")

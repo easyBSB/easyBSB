@@ -5,11 +5,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
 import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
-import { I18NModule } from '@easy-bsb/web/core/i18n';
-import { MessageModule } from '@easy-bsb/web/core/message';
-import { PermissionsModule } from '@easy-bsb/web/core/permissions';
 
 import { UsersComponent } from './users.component';
+import { I18NModule } from '../../../core/i18n';
+import { MessageModule } from '../../../core/message';
+import { PermissionsModule } from '../../../core/permissions';
 
 @NgModule({
   declarations: [

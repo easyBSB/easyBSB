@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { User, UserRoles } from '@easy-bsb/web/api/users';
 import { AbilityBuilder } from '@casl/ability';
+import { User, UserRoles } from '../../../../interfaces';
 import { Actions, AppAbility, Subjects } from '../api';
 
 @Injectable({
