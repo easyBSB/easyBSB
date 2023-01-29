@@ -6,7 +6,7 @@ import { BypassAuthorization } from "../utils/bypass-authorization";
 
 import { LoggedInUser } from "../../../../core/decorators";
 import { User } from "../../../users";
-import type { AuthService } from "../providers/auth.service";
+import { AuthService } from "../providers/auth.service";
 
 @ApiTags("auth")
 @Controller({
