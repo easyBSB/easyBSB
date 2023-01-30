@@ -70,7 +70,7 @@
     "socket.io": "4.5.4",
     "sql.js": "1.8.0",
     "swagger-ui-express": "4.6.0",
-    "tslib": "2.4.1",
+    "tslib": "2.5.0",
     "typeorm": "0.3.11",
     "zone.js": "0.12.0"
   },
